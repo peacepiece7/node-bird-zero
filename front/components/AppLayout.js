@@ -28,16 +28,16 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu key="node-bird" mode="horizontal">
-        <Menu.Item>
+        <Menu.Item key="main">
           <Link href="/">node bird</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="profile">
           <Link href="/profile">profile</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="enter-button">
           <SearchInput enterButton></SearchInput>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="signup">
           <Link href="/signup">sign up</Link>
         </Menu.Item>
       </Menu>
