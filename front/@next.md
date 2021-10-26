@@ -1,10 +1,9 @@
 # pages folder
 
-- 이 폴더의 파일은 하나의 page로 인식됨, page component로 만들어 줌
+- pages 폴더안 각각의 파일은 page로 인식
+- code spliting이 가능
 
-- code spliting이 가능해짐
-
-- `import React from "react`가 필요없음
+- `import React from "react`가 불필요 (하지만 작성을 권유, eslint는 import from "react" 가 없으면 오탈자로 인식)
 
 # page.json script
 
@@ -14,3 +13,5 @@
     "build": "next build"
   },
 ```
+
+# re-rendering

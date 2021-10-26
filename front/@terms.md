@@ -47,3 +47,18 @@
 - B2B, B2C의 경우 react, vue로 만들었다면 SSR, code spliting을 적용해야 함
 - SSR은 첫 방문시 SEO 순위를 올리기위해 필요한 페이지의 데이터만 가져오고 a tag나 link 클릭시 SPA방식으로 빠르게 랜더링 하도록 해주고
 - code spliting은 admin, profile같은 클라이언트가 당장에 필요하지 않는 라우터의 데이터를 받아오지 않도록 함
+
+# re-rendering
+
+- 함수가 호출될 때, 관계가 없는 컴포넌트가 변경되었다고 react dev tool이 표시를 하더라도 성능상 크게 문제가 되진 않음
+- 왜냐면 컴포넌트의 return을 모두 다시 그리는게 아니라 변경된 부분이 없다면 다시 호출을 하기 때문
+- 해당 컴포넌트의 로직이 복잡하지 않다면, memo, useMemo, useCallback을 사용하는게 메모리 낭비가 더 클 수도 있음
+
+# j-query + react
+
+- j-query -> 직접 화면을 다시 그러야 함 btn Click -> doc.query("button").text("hello")
+- react, vue -> 데이터만 변경해줌 text = hello 이래서 같이 쓰면 react의 이점이 없음
+
+# 대륙의 실수
+
+- vue, e-chart, antd
