@@ -84,5 +84,4 @@ const Signup = () => {
     </AppLayout>
   )
 }
-
 export default Signup

@@ -92,7 +92,60 @@ state을 저장할 때, 변수 명만 다르고 로직이 같다면 custom hook�
 
 # redux
 
+아래 세 가지 라이브러리를 다운
 ```
 npm install next-redux-wrapper@6
 npm install react-redux
+npm install redux
 ```
+
+store/configureStore.js에 state store를 만듬 (파일 참고)
+
+이제, next-redux-wrapper에 의해 state가 변경될 경우 이 곳에 저장됨
+
+
+총 3단계를 거침, 
+1. reducer에 초기 state를 입력 (BE or db에서 가져오거나 dummyData를 사용)
+2. component에서 state 변경 요청을 보냄 (useDispatch), 초기 state를 요청 콜백으로 받아 옴(useSelector)
+3. next-reduce-wrapper가 요청을 처리 초기 state를 변경 
+
+reducer 작성 요령
+```js
+// reducer/index.js
+import {HTDRATE} from "next-redux-wrapper"
+
+const initialState = {
+  user : {
+    ...
+  }
+}
+
+export const loginAction = (data) => {
+  return {
+    type: 'LOGIN',
+    data,
+  }
+}
+
+// .. 계속해서 action을 작성 
+
+
+const reducer = (state = initialState, action) => {
+  switch (state.type){
+      case HYDRATE:
+      console.log(HYDRATE)
+      return { ...state, ...action.payload }
+    case 'LOGIN':
+      return {...state, state.user.isLoggedIn :true}
+  } // .. 계속해서 action에 따른 로직을 작성
+  default 
+    return state
+}
+```
+위의 코드 진행 순서
+1. component에서 dispatch(loginAction(state)) 수정된 state를 loginAction으로 보냄
+2. 해당 type 이 'LOGIN'이고, reducer의 두번쨰 인자로 loginAction의 return값이 보내짐
+3. re-rendering되고 state가 적용 됨
+
+
+# tracking을 위한 redux middleware-dev-tools

@@ -1,10 +1,20 @@
 // version 6로 고정
 import { createWrapper } from 'next-redux-wrapper'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+// import reducer from "../reducers"
 import reducer from '../reducers/index'
 
 const configureStore = () => {
-  const store = createStore(reducer)
+  const middlewares = []
+  console.log(process.env.NODE_ENV)
+
+  // prettier-ignore
+  const enhancer = process.env.NODE_ENV === 'production' 
+  ? compose(applyMiddleware(...middlewares)) 
+  : composeWithDevTools(applyMiddleware(...middlewares))
+  const store = createStore(reducer, enhancer)
   return store
 }
 

@@ -20,7 +20,7 @@ export const loginAction = (data) => {
 
 export const logoutAction = (data) => {
   return {
-    type: 'LOG_IN',
+    type: 'LOG_OUT',
     data,
   }
 }
@@ -49,7 +49,7 @@ const rootReducer = (state = initialState, action) => {
         },
       }
     default:
-      return rootReducer
+      return state
   }
 }
 

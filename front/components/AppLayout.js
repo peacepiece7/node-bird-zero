@@ -17,16 +17,18 @@ import UserProfile from '../components/UserProfile'
 // md : small desktop
 // gutter : 간격
 
+// * style
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`
+
 // _black의 보안 이슈로 ref='noreferrer noopener'작성 referrer(참조 주소), opener(오픈한 사람)정보를 삭제함
 // https://ko.wikipedia.org/wiki/HTTP_%EB%A6%AC%ED%8D%BC%EB%9F%AC
 const AppLayout = ({ children }) => {
   const isLoggedIn = useSelector((state) => {
+    console.log('AppLayout user state is', state.user)
     return state.user.isLoggedIn
   })
-
-  const SearchInput = styled(Input.Search)`
-    vertical-align: middle;
-  `
 
   return (
     <div>
