@@ -83,3 +83,16 @@ const ButtonWrapper = styled.div`
     <Button htmlType="submit" />
 </ButtonWrapper>
 ```
+
+# Custom hook
+
+hooks/useInput.js를 참고
+
+state을 저장할 때, 변수 명만 다르고 로직이 같다면 custom hook을 만들 수 있음.
+
+# redux
+
+```
+npm install next-redux-wrapper@6
+npm install react-redux
+```
