@@ -149,3 +149,34 @@ const reducer = (state = initialState, action) => {
 
 
 # tracking을 위한 redux middleware-dev-tools
+
+`npm install redux-devtools-extention`
+
+store/configureStore.js에 enhancer를 추가 (코드는 configuerStae.js를 참고)
+```js
+// redux saga를 위한 middware
+const middlewares = []
+const enhancer = procees.env.NODE_ENV === "production:
+? compose(applyMiddleware(...middlewares))
+: composeWithDevTolls(applyMiddleware(...middlewares))
+
+// 두 번째 인자로 enhancer를 할당
+const store = craeteStore(reducer, enhancer)
+```
+redux devtools extention을 다운 받고 state변경 기록을 확인
+
+### Immutablity (불변성)
+
+state의 immutablity가 지켜지지 않으면 redex devtool은 history를 남길 수 없음
+
+이를 지키키위해 아래와 같이 항상 같은 reference를 가르키도록 작성할 것
+
+```js
+return {
+  ...state,
+user : {
+  ...state.user,
+  isLoggedIn : true
+}
+}
+```

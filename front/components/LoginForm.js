@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import propTypes from 'prop-types'
 import useInput from '../hooks/useInput'
 import { useDispatch } from 'react-redux'
-import { loginAction } from '../reducers/index'
+import { loginAction } from '../reducers/user'
 
 // * 이 부분은 고려하지 말자, garbage collection에서 함수를 제외 시켜서 메모리 남용이 큼
 //   const buttonStyle = useMemo(() => {
