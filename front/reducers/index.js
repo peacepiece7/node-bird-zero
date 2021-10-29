@@ -11,14 +11,15 @@ const rootReducer = combineReducers({
   index: (state = {}, action) => {
     switch (action.type) {
       case HYDRATE:
-        console.log('HYDRATE :', HYDRATE)
+        console.log('HYDRATE', action)
         return { ...state, ...action.payload }
       default:
         // 여기에 spread operator를 쓰면 초기값은 새로운 객체(shallow copy)(변경됨), 그냥 보내면 reference가 같은 객체(변경되지 않음)
-        return { ...state }
+        return state
     }
   },
   user,
   post,
 })
+
 export default rootReducer

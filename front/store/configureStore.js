@@ -1,12 +1,13 @@
 // version 6로 고정
+import { applyMiddleware, createStore, compose } from 'redux'
 import { createWrapper } from 'next-redux-wrapper'
-import { createStore, applyMiddleware, compose } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 // import reducer from "../reducers"
-import reducer from '../reducers/index'
+import reducer from '../reducers'
 
-const configureStore = () => {
+const configureStore = (context) => {
+  console.log('context', context)
   const middlewares = []
   console.log('process.env.NODE_ENV :', process.env.NODE_ENV)
 
@@ -19,7 +20,7 @@ const configureStore = () => {
 }
 
 const wrapper = createWrapper(configureStore, {
-  //   debug: process.NODE_ENV === 'development',
+  debug: process.NODE_ENV === 'development',
   debug: true,
 })
 
