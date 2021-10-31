@@ -7,6 +7,8 @@ front/pages에 page.js 생성 (폴더 이름 변경 불가)
 
 front/component에 component (폴더 이름 변경 가능)
 
+`npx i create-next-app 도 가능`
+
 # Tips
 
 ### props.chilren으로 하휘 요소 랜더링하는 방법
@@ -19,7 +21,9 @@ front/component에 component (폴더 이름 변경 가능)
 
 ### useCallback = 함수를 저장(props를 인자로 넘겨주는 함수는 useCallback을 반드시 작성해주자), useMemo = 값을 저장
 
-## Link (Next Router)
+### Link (Next Router)
+
+### _app.js , _document,js의 차이 https://merrily-code.tistory.com/154 (_app.js = reactDom.render(), _docuemnt,js = common <head>)
 
 ```js
 import Link from 'next/link'
