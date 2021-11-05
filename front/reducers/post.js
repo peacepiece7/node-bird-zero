@@ -39,7 +39,6 @@ export const initialState = {
 }
 
 const ADD_POST = 'ADD_POST'
-
 export const addPost = {
   type: ADD_POST,
 }
@@ -58,6 +57,7 @@ const dummyPost = {
 const post = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST: {
+      // 배열의 앞에 dummyPost를 추가해서 post를 맨 위로 올림
       return {
         ...state,
         mainPosts: [dummyPost, ...state.mainPosts],

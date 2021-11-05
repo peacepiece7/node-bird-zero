@@ -28,18 +28,17 @@ export const signUpAction = (data) => {
   }
 }
 
-export const signUpSuccess = {
-  type: SIGN_UP_SUCCESS,
-}
-
 export const loginAction = (data) => {
   return {
     type: LOG_IN,
     data,
   }
 }
-export const logoutAction = {
-  type: LOG_OUT,
+export const logoutAction = (data) => {
+  return {
+    type: LOG_OUT,
+    data,
+  }
 }
 export const signUp = (data) => {
   return {

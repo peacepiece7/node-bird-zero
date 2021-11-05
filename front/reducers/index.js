@@ -6,6 +6,7 @@ import user from './user'
 import post from './post'
 
 // combinReducers({index, user, post})
+// combinReducers에서 initialState(user, post) initState를 합쳐 줌
 // index reducer에는 HYDRATE(SSR을 위한)을 추가
 const rootReducer = combineReducers({
   index: (state = {}, action) => {
