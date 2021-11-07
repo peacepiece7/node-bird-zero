@@ -9,7 +9,7 @@ const dummyUser = {
 
 export const initialState = {
   isLoggedIn: false,
-  user: null,
+  me: null,
   signUpData: {},
   loginData: {},
 }
@@ -38,8 +38,11 @@ export const loginAction = (data) => {
     data,
   }
 }
-export const logoutAction = {
-  type: LOG_OUT,
+export const logoutAction = (data) => {
+  return {
+    type: LOG_OUT,
+    data,
+  }
 }
 export const signUp = (data) => {
   return {
@@ -54,7 +57,7 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        user: dummyUser,
+        me: dummyUser,
         loginData: action.data,
       }
     }
@@ -62,7 +65,7 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: false,
-        user: null,
+        me: null,
       }
     }
     case SIGN_UP: {
