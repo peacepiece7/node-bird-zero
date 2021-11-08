@@ -31,13 +31,19 @@ const PostForm = () => {
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
-      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
+      <Input.TextArea
+        value={text}
+        onChange={onChangeText}
+        maxLength={140}
+        placeholder="어떤 신기한 일이 있었나요?"
+      />
       <div>
         <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit">
           짹짹
         </Button>
+        0ol
       </div>
       <div>
         {imagePaths.map((v) => {

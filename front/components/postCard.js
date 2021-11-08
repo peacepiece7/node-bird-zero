@@ -2,17 +2,12 @@ import React, { useCallback, useState } from 'react'
 import { Button, Card, Avatar, Popover, List, Comment } from 'antd'
 import { useSelector } from 'react-redux'
 
-import {
-  RetweetOutlined,
-  HeartOutlined,
-  HeartTwoTone,
-  MessageOutlined,
-  EllipsisOutlined,
-} from '@ant-design/icons'
+import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
 
 import PostImages from './PostImages'
 import CommentForm from './CommentForm'
+import PostCardContent from './PostCardContent'
 
 // array안의 jsx는 반드시 key를 입력해줘야 함
 const PostCard = ({ post }) => {
@@ -36,18 +31,11 @@ const PostCard = ({ post }) => {
         actions={[
           <RetweetOutlined key="retweet"></RetweetOutlined>,
           liked ? (
-            <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="toToneHeart"
-              onClick={onToggleLike}
-            ></HeartTwoTone>
+            <HeartTwoTone twoToneColor="#eb2f96" key="toToneHeart" onClick={onToggleLike}></HeartTwoTone>
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike}></HeartOutlined>
           ),
-          <MessageOutlined
-            key="comment"
-            onClick={onToggleComment}
-          ></MessageOutlined>,
+          <MessageOutlined key="comment" onClick={onToggleComment}></MessageOutlined>,
           <Popover
             key="more"
             content={
@@ -69,7 +57,7 @@ const PostCard = ({ post }) => {
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          description={post.content}
+          description={<PostCardContent postData={post.content}></PostCardContent>}
           title={post.User.nickname}
         ></Card.Meta>
       </Card>

@@ -88,6 +88,13 @@ const ButtonWrapper = styled.div`
 </ButtonWrapper>
 ```
 
+
+# tagged templete literal
+
+``는 ()랑 같음 내부 구현이 조금 다르다고 함 (div가 method)
+```js
+styled.div``
+```
 # Custom hook
 
 hooks/useInput.js를 참고
@@ -116,7 +123,7 @@ store/configureStore.js에 state store를 만듬 (파일 참고)
 reducer 작성 요령
 ```js
 // reducer/index.js
-import {HTDRATE} from "next-redux-wrapper"
+import { HTDRATE } from "next-redux-wrapper"
 
 const initialState = {
   user : {
@@ -184,3 +191,20 @@ user : {
 }
 }
 ```
+
+### antd Form
+
+- postFrom, PostImages, CommentForm.js를 참고하여 comment form을 작성
+
+### Image Caroucel ( 이미지 회전목마 )
+
+react-slick을 이용해서 게시물의 이미지를 이동해서 볼 수 있도록 작성
+
+`npm i react-slick`
+
+### 컴포넌트 구조화
+
+ >> imageZoom 폴더를 참고
+
+styled-componenet의 createGlobalStyle를 사용해서 스타일링
+
