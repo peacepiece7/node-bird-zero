@@ -10,12 +10,9 @@ const PostForm = () => {
   const imageInput = useRef()
   const [text, setText] = useState('')
 
-  const onClickImageUpload = useCallback(
-    (e) => {
-      imageInput.currnet.click()
-    },
-    [imageInput.current]
-  )
+  const onClickImageUpload = useCallback(() => {
+    imageInput.current.click()
+  }, [imageInput.current])
 
   useEffect(() => {
     if (postAdded) {

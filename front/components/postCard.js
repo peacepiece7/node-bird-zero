@@ -1,25 +1,34 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Card, Avatar, Popover } from 'antd'
+import { Button, Card, Avatar, Popover, List, Comment } from 'antd'
 import { useSelector } from 'react-redux'
 
-import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons'
+import {
+  RetweetOutlined,
+  HeartOutlined,
+  HeartTwoTone,
+  MessageOutlined,
+  EllipsisOutlined,
+} from '@ant-design/icons'
 import PropTypes from 'prop-types'
-import post from '../reducers/post'
 
 import PostImages from './PostImages'
+import CommentForm from './CommentForm'
 
 // array안의 jsx는 반드시 key를 입력해줘야 함
 const PostCard = ({ post }) => {
-  const [liked, setLiked] = useState(false)
   const [commentFormOpened, setCommentFormOpened] = useState(false)
   // Optional chaning 아니면 &&
   const id = useSelector((state) => state.user.me?.id)
+
+  const [liked, setLiked] = useState(false)
+
   const onToggleLike = useCallback(() => {
     setLiked((prev) => !prev)
   })
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev)
   })
+
   return (
     <div>
       <Card
@@ -27,11 +36,18 @@ const PostCard = ({ post }) => {
         actions={[
           <RetweetOutlined key="retweet"></RetweetOutlined>,
           liked ? (
-            <HeartTwoTone twoToneColor="#eb2f96" key="toToneHeart" onClick={onToggleLike}></HeartTwoTone>
+            <HeartTwoTone
+              twoToneColor="#eb2f96"
+              key="toToneHeart"
+              onClick={onToggleLike}
+            ></HeartTwoTone>
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike}></HeartOutlined>
           ),
-          <MessageOutlined key="comment" onClick={onToggleComment}></MessageOutlined>,
+          <MessageOutlined
+            key="comment"
+            onClick={onToggleComment}
+          ></MessageOutlined>,
           <Popover
             key="more"
             content={
@@ -51,9 +67,31 @@ const PostCard = ({ post }) => {
           </Popover>,
         ]}
       >
-        <Card.Meta avatar={<Avatar>{post.User.nickname[0]}</Avatar>} description={post.content} title={post.User.nickname}></Card.Meta>
+        <Card.Meta
+          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+          description={post.content}
+          title={post.User.nickname}
+        ></Card.Meta>
       </Card>
-      {commentFormOpened && <div>댓글 부분</div>}
+      {commentFormOpened && (
+        <div>
+          <CommentForm />
+          <List
+            header={`${post.Comments.length}개의 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.nickname}
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  content={item.content}
+                ></Comment>
+              </li>
+            )}
+          />
+        </div>
+      )}
       {/* <CommentForm></CommentForm>
       <Comments></Comments> */}
     </div>
@@ -67,6 +105,7 @@ PostCard.propTypes = {
     content: PropTypes.string,
     createdAt: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
+    Comments: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
 }
 export default PostCard
