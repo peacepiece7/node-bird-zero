@@ -184,6 +184,20 @@ redux devtools extention을 다운 받고 state변경 기록을 확인
 
 ### Immutablity (불변성)
 
+### loginAction
+
+action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않을 경우 객체로 표현할 수 있다 (addpost참고)
+```js
+export const loginAction = (data) => {
+  return {
+    type : "LOG_IN",
+    data
+  }
+}
+const dispatch = Dispatch()
+dispatch(loginAction([id, password]))
+```
+
 state의 immutablity가 지켜지지 않으면 redex devtool은 history를 남길 수 없음
 
 이를 지키키위해 아래와 같이 항상 같은 reference를 가르키도록 작성할 것
@@ -196,6 +210,78 @@ return {
     isLoggedIn: true,
   },
 }
+```
+
+# 간단하게 작성해본 redux 내부 기능 구조 (실제와 다름)
+
+```js
+// init state
+// 실제로는 combinReducers method로 구조화 시킴
+const initiationState = {
+  id : 1,
+  name : "foo",
+  age : "27",
+  location : "Busan",
+  isLoggedIn : false
+}
+
+// Action function, type를 추가해 주는 역할을 함
+const loginAction = (data) => {
+  return {
+    type : "LOG_IN",
+    data
+  }
+}
+const logoutAction = (data) => {
+  return {
+    type : "LOG_OUT",
+    data
+  }
+}
+
+// Reducer, 실질적으로 state를 변경하는 코드 
+const reducer = (state, action) => {
+  switch(action.type){
+    case "LOG_IN":
+    return {
+      ...state,
+      isLoggedIn : true
+    }
+    case "LOG_OUT":
+    return {
+      ...state,
+      isLoggedIn : false
+    }
+  }
+}
+
+// Store
+const store = (state = initiationState) => {
+  // 실제로는 모든 state를 저장할 수 있도록
+  // 많은 기능을 지원함
+  return state
+}
+
+// COMPONENET METHODS ... 
+// 1. useSelector
+const useSelector = (cbState) => {
+  // initiation state
+  const cur = store()
+  return cbState(cur)
+}
+const b = useSelector((state) => state.isLoggedIn)
+// <div>b</div>
+console.log(b)
+
+// 2. dispatch, Dispatch는 생성자 함수임, 간단하게 함수로 변경
+const dispatch = (action) => {
+  // action.type을 제외한 action 객체와 cur를 비교, 변경하는 코드
+  const cur = store()
+  const fetched = reducer(cur, action)
+  console.log(fetched)
+}
+// const onSubmit(() => { dispatch(...)})
+dispatch(loginAction([{name : "bar"},{ age : "29"}]))
 ```
 
 ### antd Form
@@ -218,9 +304,28 @@ styled-componenet의 createGlobalStyle를 사용해서 스타일링
 
 ### redux-thunk
 
-action을 async로 사용가능
 
-비동기에서는 아래 세 가지 요청을 기본으로 작성
-Request, Success, Failure
+1. dispatch를 async로 사용할 수 있도록 지원해주는 middleware
+2. 하나의 action에 여러개의 dispatch를 사용할 수 있음
+3. 비동기는 보통 세 가지 요청을 기본으로 작성(Request, Success, Failure)
 
 Self DDOS를 막기위해 lodash or saga의 Throttle, debounce
+
+```js
+export const loginAction = (data) => {
+  return (dispatch, getState) => {
+    // initialState (rootReducer)부분이 나옴
+    const state = getState()
+
+    // 한 번에 여러개의 dispatch
+    dispatch(loginRequestAction())
+    axios.post('/api/login')
+      .then((res) => {
+        dispatch(loginSuccessAction(res.data))
+      }).catch((err) => {
+        dispatch(loginFailureAction(res.data))
+      })
+  }
+}
+
+```

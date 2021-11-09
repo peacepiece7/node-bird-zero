@@ -1,9 +1,8 @@
-// version 6로 고정
+//! version 6로 고정
 import { applyMiddleware, createStore, compose } from 'redux'
 import { createWrapper } from 'next-redux-wrapper'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-// import reducer from "../reducers"
 import reducer from '../reducers'
 
 const configureStore = (context) => {
