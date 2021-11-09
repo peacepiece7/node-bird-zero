@@ -329,3 +329,8 @@ export const loginAction = (data) => {
 }
 
 ```
+- redux가 없으면
+1. client가 로그인 시 -> state.user.isLogged = true로 변경
+2. 비동기 요청으로 user data, cookie를 얻음 
+`axios.post("api/login", options).then((res) => ( setUserState(res.data) ))`
+3. ...? 
