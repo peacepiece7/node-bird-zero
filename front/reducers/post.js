@@ -6,7 +6,7 @@ export const initialState = {
         id: 1,
         nickname: '제로초',
       },
-      content: '첫 번째 게시글',
+      content: '첫 번째 게시글 #좋아요 #부탁해요',
       Images: [
         {
           src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',

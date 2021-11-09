@@ -63,3 +63,4 @@
 
 - vue, e-chart, antd
 
+# redux-thunk
