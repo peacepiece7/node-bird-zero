@@ -3,10 +3,10 @@ import { Form, Button } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
 import propTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { useDispatch } from 'react-redux'
 import useInput from '../hooks/useInput'
-import { loginAction } from '../reducers/user'
+import { loginRequestAction } from '../reducers/user'
 
 // * 이 부분은 고려하지 말자, garbage collection에서 함수를 제외 시켜서 메모리 남용이 큼
 //   const buttonStyle = useMemo(() => {
@@ -17,22 +17,22 @@ import { loginAction } from '../reducers/user'
 const FormWrapper = styled(Form)`
   padding: 10px;
 `
+
+const ButtonWapper = styled.div`
+  margin-top: 10px;
+`
+
 // component에 props를 넘겨주는 함수는 useCallback을 사용할 것
 const LoginForm = () => {
-  // custom hooks를 이용한 중복 제거
+  const dispatch = useDispatch()
+  const { isLoggingIn } = useSelector((state) => state.user)
   const [id, onChangeId] = useInput('')
   const [password, onChangePassword] = useInput('')
-
-  const dispatch = useDispatch()
-  // * styles
-  const ButtonWapper = styled.div`
-    margin-top: 10px;
-  `
 
   const onSubmitForm = useCallback(() => {
     // ant design에서 onFinish는 이미 preventDefault가 적용되어있음 작성 x
     // e.preventDefault()
-    dispatch(loginAction({ id, password }))
+    dispatch(loginRequestAction({ id, password }))
   }, [id, password])
 
   return (
@@ -49,7 +49,7 @@ const LoginForm = () => {
       </div>
       <div>
         <ButtonWapper>
-          <Button type="primary" htmlType="submit" loading={false}>
+          <Button type="primary" htmlType="submit" loading={isLoggingIn}>
             로그인
           </Button>
           <Link href="/signup">

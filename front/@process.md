@@ -333,4 +333,32 @@ export const loginAction = (data) => {
 1. client가 로그인 시 -> state.user.isLogged = true로 변경
 2. 비동기 요청으로 user data, cookie를 얻음 
 `axios.post("api/login", options).then((res) => ( setUserState(res.data) ))`
-3. ...? 
+
+# redux-saga
+
+### take, takeEvery, takeLatest, takeLeading, throttle
+
+- take는 동기
+- takeEvery는 비동기
+
+
+- takeLatest는 throttle(마지막 요청만 실행, 응답을 취소, 요청을 두 번 받았는지 체크 필요, ddos) 
+- takeLeading은 처음 요청만 실행
+- throttle로 요청 제한을 둘 수 있음
+
+```js
+import {take, takeEvery} from "redux-saga"
+
+export function* watchAddPost(){
+  // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
+  yield take("ADD_POST_REQUEST", addPost)
+
+  // 이를 해결하기 위해 여러 방법이 있음
+  while(true){
+    yield take("ADD_POST_REQUEST", addPost)
+  }
+  //
+  yield takeEvery("ADD_POST_REQUEST", addPost)
+
+}
+```

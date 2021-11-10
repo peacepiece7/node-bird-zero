@@ -1,75 +1,102 @@
-// reducer spliting을 하면 state의 deeps가 한 단계 낮아지니까 주의!
-const dummyUser = {
-  id: 1,
-  nickname: '제로초',
-  Posts: [],
-  Followings: [],
-  Followers: [],
-}
-
 export const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: false, // 로그인 시도 중
+  isLoggingIn: false,
+  isLoggingOut: false, // 로그아웃 시도 중
   me: null,
   signUpData: {},
   loginData: {},
 }
 
-export const SIGN_UP = 'SIGN_UP'
-export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
-export const LOG_IN = 'LOG_IN' // 액션의 이름
-export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS' // 액션의 이름
-export const LOG_IN_FAILURE = 'LOG_IN_FAILURE' // 액션의 이름
-export const LOG_OUT = 'LOG_OUT'
-
-export const signUpAction = (data) => {
+export const loginRequestAction = (data) => {
   return {
-    type: SIGN_UP,
+    type: 'LOG_IN_REQUEST',
+    data,
+  }
+}
+export const loginSuccessAction = (data) => {
+  return {
+    type: 'LOG_IN_SUCCESS',
+    data,
+  }
+}
+export const loginFailureAction = (data) => {
+  return {
+    type: 'LOG_IN_FAILURE',
     data,
   }
 }
 
-export const loginAction = (data) => {
+export const logoutRequestAction = (data) => {
   return {
-    type: LOG_IN,
+    type: 'LOG_OUT_REQUEST',
     data,
   }
 }
-export const logoutAction = (data) => {
+export const logoutSuccessAction = (data) => {
   return {
-    type: LOG_OUT,
-    data,
-  }
-}
-export const signUp = (data) => {
-  return {
-    type: SIGN_UP,
+    type: 'LOG_OUT_SUCCESS',
     data,
   }
 }
 
-const user = (state = initialState, action) => {
+export const logoutFailureAction = (data) => {
+  return {
+    type: 'LOG_OUT_FAILURE',
+    data,
+  }
+}
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOG_IN: {
+    // LOG IN CASE
+    case 'LOG_IN_REQUEST': {
       return {
         ...state,
-        isLoggedIn: true,
-        me: dummyUser,
-        loginData: action.data,
+        isLoggingIn: true,
       }
     }
-    case LOG_OUT: {
+    case 'LOG_IN_SUCCESS': {
       return {
         ...state,
+        isLoggingIn: false,
+        isLoggedIn: true,
+        me: { ...action.data, nickname: 'zerocho' },
+      }
+    }
+    case 'LOG_IN_FAILURE': {
+      return {
+        ...state,
+        isLoggedIn: false,
+        isLoggingIn: false,
+      }
+    }
+
+    // LOG OUT CASE
+    case 'LOG_OUT_REQUEST': {
+      return {
+        ...state,
+        isLoggingOut: true,
+        me: null,
+      }
+    }
+    case 'LOG_OUT_SUCCESS': {
+      return {
+        ...state,
+        isLoggingOut: false,
         isLoggedIn: false,
         me: null,
       }
     }
-    case SIGN_UP: {
+    case 'LOG_OUT_FAILURE': {
       return {
         ...state,
-        signUpData: action.data,
+        isLoggingOut: false,
+        isLoggedIn: false,
+        me: null,
       }
     }
+
+    // DEFAULT
     default: {
       return {
         ...state,
@@ -78,4 +105,4 @@ const user = (state = initialState, action) => {
   }
 }
 
-export default user
+export default reducer
