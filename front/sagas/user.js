@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { all, delay, fork, put } from 'redux-saga/effects'
+import { all, delay, fork, put, takeLatest } from 'redux-saga/effects'
 
 function logInAPI() {
   return axios.post('/api/login')
 }
 function* logIn(action) {
   try {
+    console.log('action has a', action.data)
     yield delay(1000)
     yield put({
       type: 'LOG_IN_SUCCESS',

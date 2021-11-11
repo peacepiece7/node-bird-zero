@@ -25,7 +25,9 @@ const ButtonWapper = styled.div`
 // component에 props를 넘겨주는 함수는 useCallback을 사용할 것
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const { isLoggingIn } = useSelector((state) => state.user)
+  const { isLoggingIn } = useSelector((state) => {
+    return state.user
+  })
   const [id, onChangeId] = useInput('')
   const [password, onChangePassword] = useInput('')
 

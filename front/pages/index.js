@@ -9,7 +9,6 @@ import PostCard from '../components/PostCard'
 
 const Home = () => {
   const { isLoggedIn } = useSelector((state) => {
-    console.log(state)
     return state.user
   })
   const { mainPosts } = useSelector((state) => state.post)
