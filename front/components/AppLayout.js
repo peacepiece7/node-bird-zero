@@ -1,13 +1,12 @@
-import React from "react";
-import propTypes from "prop-types";
-import Link from "next/link";
-import { Menu, Input, Col, Row } from "antd";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
-const text;
+import React from 'react';
+import propTypes from 'prop-types';
+import Link from 'next/link';
+import { Menu, Input, Col, Row } from 'antd';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import LoginForm from "./LoginForm";
-import UserProfile from "./UserProfile";
+import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
 
 // 함수를 캐싱 = useCallback
 // 값을 캐싱 = useMemo
@@ -31,18 +30,18 @@ const AppLayout = ({ children }) => {
 
   return (
     <div>
-      <Menu key="node-bird" mode="horizontal">
-        <Menu.Item key="main">
-          <Link href="/">node bird</Link>
+      <Menu key='node-bird' mode='horizontal'>
+        <Menu.Item key='main'>
+          <Link href='/'>node bird</Link>
         </Menu.Item>
-        <Menu.Item key="profile">
-          <Link href="/profile">profile</Link>
+        <Menu.Item key='profile'>
+          <Link href='/profile'>profile</Link>
         </Menu.Item>
-        <Menu.Item key="enter-button">
+        <Menu.Item key='enter-button'>
           <SearchInput enterButton></SearchInput>
         </Menu.Item>
-        <Menu.Item key="signup">
-          <Link href="/signup">sign up</Link>
+        <Menu.Item key='signup'>
+          <Link href='/signup'>sign up</Link>
         </Menu.Item>
       </Menu>
       <Row gutter={8}>
@@ -54,9 +53,9 @@ const AppLayout = ({ children }) => {
         </Col>
         <Col xs={42} md={6}>
           <a
-            href="https://www.zerocho.com"
-            target="_blank"
-            rel="noreferrer noopener">
+            href='https://www.zerocho.com'
+            target='_blank'
+            rel='noreferrer noopener'>
             made by taetae
           </a>
         </Col>

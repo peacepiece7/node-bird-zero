@@ -1,5 +1,5 @@
-import styled, { createGlobalStyle } from 'styled-components'
-import { CloseOutlined } from '@ant-design/icons'
+import styled, { createGlobalStyle } from "styled-components";
+import { CloseOutlined } from "@ant-design/icons";
 
 // ? css transform안에서 position :fixed를 못잡는 브라우저 버그.
 
@@ -11,7 +11,7 @@ export const Global = createGlobalStyle`
   .ant-card-cover {
     transform: none !important;
   }
-`
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -20,7 +20,7 @@ export const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-`
+`;
 
 export const Header = styled.header`
   height: 44px;
@@ -35,12 +35,12 @@ export const Header = styled.header`
     color: #333;
     line-height: 44px;
   }
-`
+`;
 
 export const SlickWrapper = styled.div`
   height: calc(100% - 44px);
   background: #090909;
-`
+`;
 
 export const CloseBtn = styled(CloseOutlined)`
   position: absolute;
@@ -49,7 +49,7 @@ export const CloseBtn = styled(CloseOutlined)`
   padding: 15px;
   line-height: 14px;
   cursor: pointer;
-`
+`;
 
 export const Indicator = styled.div`
   text-align: center;
@@ -65,7 +65,7 @@ export const Indicator = styled.div`
     color: white;
     font-size: 15px;
   }
-`
+`;
 
 export const ImgWrapper = styled.div`
   padding: 32px;
@@ -75,4 +75,4 @@ export const ImgWrapper = styled.div`
     margin: 0 auto;
     max-height: 750px;
   }
-`
+`;

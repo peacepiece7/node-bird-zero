@@ -386,4 +386,12 @@ eslint terminal에서 나오는 에러에 따라서 진행할 것 (예를 들어
 
 a11y = accessablity
 
-// https://velog.io/@\_jouz_ryul/ESLint-Prettier-Airbnb-Style-Guide%EB%A1%9C-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+https://velog.io/@\_jouz_ryul/ESLint-Prettier-Airbnb-Style-Guide%EB%A1%9C-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+
+### eslint
+
+settings -> defaultFomater, on save fomater 확인
+
+## why airbnb styles perfer to function expression
+
+https://stackoverflow.com/questions/37288950/why-does-the-airbnb-style-guide-say-that-relying-on-function-name-inference-is-d

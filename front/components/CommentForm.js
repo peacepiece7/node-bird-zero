@@ -31,7 +31,7 @@ const CommentForm = ({ post }) => {
           value={commentText}
           onChange={onChangeCommentText}
           rows={4}></Input.TextArea>
-        <Button type="primary" htmlType="submit">
+        <Button type='primary' htmlType='submit'>
           QQ삐약
         </Button>
       </Form.Item>

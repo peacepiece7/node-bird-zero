@@ -1,0 +1,38 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": ["airbnb", "eslint:recommended", "plugin:prettier/recommended"],
+  // 꼭 배열의 마지막이 prettier여야 중복 규칙을 비활성화 할 수 있습니다.
+  "plugins": ["prettier"],
+  // plugins : ["import", "react-hooks", "jsx-a11y", "prettier"]
+  "rules": {
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-console": "off",
+    "no-underscore-dangle": "off",
+    "react/forbid-prop-types": "off",
+    "react/jsx-filename-extension": "off",
+    // "react/jsx-filename-extension":
+    // ["error",
+    //  { "extensions": [".js", ".jsx"] }
+    // ]
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreading": "off",
+    "object-curly-newline": "off",
+    "linebreak-style": "off",
+    "no-param-reassign": "off",
+    "prettier/prettier": "error"
+
+  }
+}
