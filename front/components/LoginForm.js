@@ -25,24 +25,24 @@ const ButtonWapper = styled.div`
 // component에 props를 넘겨주는 함수는 useCallback을 사용할 것
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const { isLoggingIn } = useSelector((state) => {
+  const { logInLoading } = useSelector((state) => {
     return state.user
   })
-  const [id, onChangeId] = useInput('')
+  const [email, onChangeEmail] = useInput('')
   const [password, onChangePassword] = useInput('')
 
   const onSubmitForm = useCallback(() => {
     // ant design에서 onFinish는 이미 preventDefault가 적용되어있음 작성 x
     // e.preventDefault()
-    dispatch(loginRequestAction({ id, password }))
-  }, [id, password])
+    dispatch(loginRequestAction({ email, password }))
+  }, [email, password])
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
-        <input name="user-id" type="email" value={id} onChange={onChangeId}></input>
+        <input name="user-email" type="email" value={email} onChange={onChangeEmail}></input>
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
@@ -51,7 +51,7 @@ const LoginForm = () => {
       </div>
       <div>
         <ButtonWapper>
-          <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+          <Button type="primary" htmlType="submit" loading={logInLoading}>
             로그인
           </Button>
           <Link href="/signup">

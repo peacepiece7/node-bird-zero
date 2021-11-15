@@ -26,7 +26,7 @@ front/component에 component (폴더 이름 변경 가능)
 ### \_app.js , \_document,js의 차이 https://merrily-code.tistory.com/154 (\_app.js = reactDom.render(), \_docuemnt,js = common <head>)
 
 ```js
-import Link from 'next/link'
+import Link from "next/link";
 ```
 
 # Eslint setting
@@ -61,8 +61,8 @@ ant design에서 제공해주는 colum, row로 화면을 분할하거나, offset
 
 ```js
 const LoginForm = () => {
-  const buttonStyle = useMemo(() => ({ marginLeft: 10 }), [])
-}
+  const buttonStyle = useMemo(() => ({ marginLeft: 10 }), []);
+};
 ```
 
 추가) useMemo = 값을 캐싱, useCallback = 함수를 캐싱
@@ -93,7 +93,7 @@ const ButtonWrapper = styled.div`
 ``는 ()랑 같음 내부 구현이 조금 다르다고 함 (div가 method)
 
 ```js
-styled.div``
+styled.div``;
 ```
 
 # Custom hook
@@ -187,15 +187,16 @@ redux devtools extention을 다운 받고 state변경 기록을 확인
 ### loginAction
 
 action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않을 경우 객체로 표현할 수 있다 (addpost참고)
+
 ```js
 export const loginAction = (data) => {
   return {
-    type : "LOG_IN",
-    data
-  }
-}
-const dispatch = Dispatch()
-dispatch(loginAction([id, password]))
+    type: "LOG_IN",
+    data,
+  };
+};
+const dispatch = Dispatch();
+dispatch(loginAction([id, password]));
 ```
 
 state의 immutablity가 지켜지지 않으면 redex devtool은 history를 남길 수 없음
@@ -209,7 +210,7 @@ return {
     ...state.user,
     isLoggedIn: true,
   },
-}
+};
 ```
 
 # 간단하게 작성해본 redux 내부 기능 구조 (실제와 다름)
@@ -218,70 +219,70 @@ return {
 // init state
 // 실제로는 combinReducers method로 구조화 시킴
 const initiationState = {
-  id : 1,
-  name : "foo",
-  age : "27",
-  location : "Busan",
-  isLoggedIn : false
-}
+  id: 1,
+  name: "foo",
+  age: "27",
+  location: "Busan",
+  isLoggedIn: false,
+};
 
 // Action function, type를 추가해 주는 역할을 함
 const loginAction = (data) => {
   return {
-    type : "LOG_IN",
-    data
-  }
-}
+    type: "LOG_IN",
+    data,
+  };
+};
 const logoutAction = (data) => {
   return {
-    type : "LOG_OUT",
-    data
-  }
-}
+    type: "LOG_OUT",
+    data,
+  };
+};
 
-// Reducer, 실질적으로 state를 변경하는 코드 
+// Reducer, 실질적으로 state를 변경하는 코드
 const reducer = (state, action) => {
-  switch(action.type){
+  switch (action.type) {
     case "LOG_IN":
-    return {
-      ...state,
-      isLoggedIn : true
-    }
+      return {
+        ...state,
+        isLoggedIn: true,
+      };
     case "LOG_OUT":
-    return {
-      ...state,
-      isLoggedIn : false
-    }
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
   }
-}
+};
 
 // Store
 const store = (state = initiationState) => {
   // 실제로는 모든 state를 저장할 수 있도록
   // 많은 기능을 지원함
-  return state
-}
+  return state;
+};
 
-// COMPONENET METHODS ... 
+// COMPONENET METHODS ...
 // 1. useSelector
 const useSelector = (cbState) => {
   // initiation state
-  const cur = store()
-  return cbState(cur)
-}
-const b = useSelector((state) => state.isLoggedIn)
+  const cur = store();
+  return cbState(cur);
+};
+const b = useSelector((state) => state.isLoggedIn);
 // <div>b</div>
-console.log(b)
+console.log(b);
 
 // 2. dispatch, Dispatch는 생성자 함수임, 간단하게 함수로 변경
 const dispatch = (action) => {
   // action.type을 제외한 action 객체와 cur를 비교, 변경하는 코드
-  const cur = store()
-  const fetched = reducer(cur, action)
-  console.log(fetched)
-}
+  const cur = store();
+  const fetched = reducer(cur, action);
+  console.log(fetched);
+};
 // const onSubmit(() => { dispatch(...)})
-dispatch(loginAction([{name : "bar"},{ age : "29"}]))
+dispatch(loginAction([{ name: "bar" }, { age: "29" }]));
 ```
 
 ### antd Form
@@ -304,7 +305,6 @@ styled-componenet의 createGlobalStyle를 사용해서 스타일링
 
 ### redux-thunk
 
-
 1. dispatch를 async로 사용할 수 있도록 지원해주는 middleware
 2. 하나의 action에 여러개의 dispatch를 사용할 수 있음
 3. 비동기는 보통 세 가지 요청을 기본으로 작성(Request, Success, Failure)
@@ -315,24 +315,27 @@ Self DDOS를 막기위해 lodash or saga의 Throttle, debounce
 export const loginAction = (data) => {
   return (dispatch, getState) => {
     // initialState (rootReducer)부분이 나옴
-    const state = getState()
+    const state = getState();
 
     // 한 번에 여러개의 dispatch
-    dispatch(loginRequestAction())
-    axios.post('/api/login')
+    dispatch(loginRequestAction());
+    axios
+      .post("/api/login")
       .then((res) => {
-        dispatch(loginSuccessAction(res.data))
-      }).catch((err) => {
-        dispatch(loginFailureAction(res.data))
+        dispatch(loginSuccessAction(res.data));
       })
-  }
-}
-
+      .catch((err) => {
+        dispatch(loginFailureAction(res.data));
+      });
+  };
+};
 ```
+
 - redux가 없으면
+
 1. client가 로그인 시 -> state.user.isLogged = true로 변경
-2. 비동기 요청으로 user data, cookie를 얻음 
-`axios.post("api/login", options).then((res) => ( setUserState(res.data) ))`
+2. 비동기 요청으로 user data, cookie를 얻음
+   `axios.post("api/login", options).then((res) => ( setUserState(res.data) ))`
 
 # redux-saga
 
@@ -341,24 +344,46 @@ export const loginAction = (data) => {
 - take는 동기
 - takeEvery는 비동기
 
-
-- takeLatest는 throttle(마지막 요청만 실행, 응답을 취소, 요청을 두 번 받았는지 체크 필요, ddos) 
+- takeLatest는 throttle(마지막 요청만 실행, 응답을 취소, 요청을 두 번 받았는지 체크 필요, ddos)
 - takeLeading은 처음 요청만 실행
 - throttle로 요청 제한을 둘 수 있음
 
 ```js
-import {take, takeEvery} from "redux-saga"
+import { take, takeEvery } from "redux-saga";
 
-export function* watchAddPost(){
+export function* watchAddPost() {
   // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
-  yield take("ADD_POST_REQUEST", addPost)
+  yield take("ADD_POST_REQUEST", addPost);
 
   // 이를 해결하기 위해 여러 방법이 있음
-  while(true){
-    yield take("ADD_POST_REQUEST", addPost)
+  while (true) {
+    yield take("ADD_POST_REQUEST", addPost);
   }
-  //
-  yield takeEvery("ADD_POST_REQUEST", addPost)
 
+  yield takeEvery("ADD_POST_REQUEST", addPost);
 }
 ```
+
+### Reducer Flow
+
+1. Componenet에서 requestAction함수가 실행됨
+
+2. requestAction함수의 action.type, action의 argument가 saga middleware, reducer로 전달됨
+
+3-1. saga에서 비동기로 action을 처리
+
+3-2. saga에서 action.type이 일치할 경우 yield하고 해당 결과(action.type === "SUCCESS")를 reducer로 보냄
+
+4-1. 3-1이 실행될 때 동기적으로 request action을 처리 로딩창을 띄워줌
+
+4-2. 3-2의 결과를 reducer가 받고 action.type === "SUCCESS"인 action을 수행함
+
+### Reapaire eslint
+
+eslint terminal에서 나오는 에러에 따라서 진행할 것 (예를 들어 eslint-plugin-jsx-a11y)
+
+`npm i -D babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react-hooks eslint-plugin-jsx-a11y`
+
+a11y = accessablity
+
+// https://velog.io/@\_jouz_ryul/ESLint-Prettier-Airbnb-Style-Guide%EB%A1%9C-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0

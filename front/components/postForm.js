@@ -1,42 +1,33 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Form, Input, Button } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { addPost } from '../reducers/post'
+import useInput from '../hooks/useInput'
 
 const PostForm = () => {
   const dispatch = useDispatch()
-  const { imagePaths, postAdded } = useSelector((state) => state.post)
+  const { imagePaths, addPostDone } = useSelector((state) => state.post)
   const imageInput = useRef()
-  const [text, setText] = useState('')
+  const [text, onChangeText, setText] = useInput('')
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click()
   }, [imageInput.current])
 
+  const onSubmit = useCallback(() => {
+    dispatch(addPost(text))
+  }, [text])
+
   useEffect(() => {
-    if (postAdded) {
+    if (addPostDone) {
       setText('')
     }
-  }, [postAdded])
-
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value)
-  }, [])
-
-  const onSubmit = useCallback(() => {
-    dispatch(addPost)
-    setText('')
-  }, [])
+  })
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
-      <Input.TextArea
-        value={text}
-        onChange={onChangeText}
-        maxLength={140}
-        placeholder="어떤 신기한 일이 있었나요?"
-      />
+      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
       <div>
         <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
