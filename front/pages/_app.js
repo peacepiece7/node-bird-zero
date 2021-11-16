@@ -12,10 +12,10 @@ const NodeBird = ({ Component }) => {
   return (
     <>
       <Head>
-        <meta charSet="utf-8"></meta>
+        <meta charSet="utf-8" />
         <title>Node Bird</title>
       </Head>
-      <Component></Component>
+      <Component />
     </>
   );
 };

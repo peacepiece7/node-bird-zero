@@ -77,7 +77,8 @@ const dummyUser = (data) => {
 };
 
 // REDUCER
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
+  state = initialState;
   switch (action.type) {
     // LOG IN CASE
     case LOG_IN_REQUEST: {

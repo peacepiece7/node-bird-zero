@@ -13,9 +13,8 @@ const PostCardContent = ({ postData }) => {
               <a>{v}</a>
             </Link>
           );
-        } else {
-          return <span>{v}</span>;
         }
+        return <span>{v}</span>;
       })}
     </div>
   );

@@ -11,6 +11,7 @@ import post from "./post";
 
 const rootReducer = combineReducers({
   index: (state, action) => {
+    state = {};
     switch (action.type) {
       case HYDRATE:
         console.log("HYDRATE", action);

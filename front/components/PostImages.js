@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/aria-role */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { PlusOutlined } from "@ant-design/icons";
@@ -19,11 +22,12 @@ const PostImages = ({ images }) => {
     return (
       <div>
         <img
-          role='presentaion'
+          role="presentaion"
           style={{ width: "50%" }}
           src={images[0].src}
           alt={images[0].src}
-          onClick={onZoom}></img>
+          onClick={onZoom}
+        />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </div>
     );
@@ -32,17 +36,19 @@ const PostImages = ({ images }) => {
     return (
       <div>
         <img
-          role='presentaion'
+          role="presentaion"
           style={{ width: "50%" }}
           src={images[0].src}
           alt={images[0].src}
-          onClick={onZoom}></img>
+          onClick={onZoom}
+        />
         <img
-          role='presentaion'
+          role="presentaion"
           style={{ width: "50%" }}
           src={images[1].src}
           alt={images[1].src}
-          onClick={onZoom}></img>
+          onClick={onZoom}
+        />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </div>
     );
@@ -50,21 +56,23 @@ const PostImages = ({ images }) => {
   return (
     <div>
       <img
-        role='presentaion'
+        role="presentaion"
         style={{ width: "50%" }}
         src={images[0].src}
         alt={images[0].src}
-        onClick={onZoom}></img>
+        onClick={onZoom}
+      />
       <div
-        role='presentation'
+        role="presentation"
         style={{
           display: "inline-block",
           width: "50%",
           textAlign: "center",
           verticalAlign: "middle",
         }}
-        onClick={onZoom}>
-        <PlusOutlined></PlusOutlined>
+        onClick={onZoom}
+      >
+        <PlusOutlined />
         {images.length - 1}
         개의 사진 더보기
       </div>

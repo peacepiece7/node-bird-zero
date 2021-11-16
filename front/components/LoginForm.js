@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import { Form, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
-import propTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
 import useInput from "../hooks/useInput";
@@ -40,29 +39,31 @@ const LoginForm = () => {
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor='user-email'>이메일</label>
+        <label htmlFor="user-email">이메일</label>
         <br />
         <input
-          name='user-email'
-          type='email'
+          name="user-email"
+          type="email"
           value={email}
-          onChange={onChangeEmail}></input>
+          onChange={onChangeEmail}
+        />
       </div>
       <div>
-        <label htmlFor='user-password'>비밀번호</label>
+        <label htmlFor="user-password">비밀번호</label>
         <br />
         <input
-          name='user-password'
-          type='password'
+          name="user-password"
+          type="password"
           value={password}
-          onChange={onChangePassword}></input>
+          onChange={onChangePassword}
+        />
       </div>
       <div>
         <ButtonWapper>
-          <Button type='primary' htmlType='submit' loading={logInLoading}>
+          <Button type="primary" htmlType="submit" loading={logInLoading}>
             로그인
           </Button>
-          <Link href='/signup'>
+          <Link href="/signup">
             <a>
               <Button>회원가입</Button>
             </a>
@@ -71,10 +72,6 @@ const LoginForm = () => {
       </div>
     </FormWrapper>
   );
-};
-
-LoginForm.propTypes = {
-  setIsLoggedIn: propTypes.func,
 };
 
 export default LoginForm;

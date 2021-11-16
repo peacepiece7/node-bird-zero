@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import { Form, Input, Button } from "antd";
-import useInput from "../hooks/useInput";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+
 import { ADD_COMMENT_REQUEST } from "../reducers/post";
+import useInput from "../hooks/useInput";
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
@@ -30,8 +31,9 @@ const CommentForm = ({ post }) => {
         <Input.TextArea
           value={commentText}
           onChange={onChangeCommentText}
-          rows={4}></Input.TextArea>
-        <Button type='primary' htmlType='submit'>
+          rows={4}
+        />
+        <Button type="primary" htmlType="submit">
           QQ삐약
         </Button>
       </Form.Item>

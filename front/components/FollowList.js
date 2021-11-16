@@ -7,7 +7,7 @@ const FollowList = ({ header, data }) => (
   <List
     style={{ marginBottom: "20px" }}
     grid={{ gutter: 4 }}
-    size='small'
+    size="small"
     header={<div>{header}</div>}
     loadMore={
       <div style={{ textAlign: "center", margin: "10px 0" }}>
@@ -18,7 +18,7 @@ const FollowList = ({ header, data }) => (
     dataSource={data}
     renderItem={(item) => (
       <List.Item style={{ marginTop: "20px" }}>
-        <Card actions={[<StopOutlined key='stop' />]}>
+        <Card actions={[<StopOutlined key="stop" />]}>
           <Card.Meta description={item.nickname} />
         </Card>
       </List.Item>

@@ -33,57 +33,58 @@ const PostCard = ({ post }) => {
   return (
     <div>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images}></PostImages>}
+        cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key='retweet'></RetweetOutlined>,
+          <RetweetOutlined key="retweet" />,
           liked ? (
             <HeartTwoTone
-              twoToneColor='#eb2f96'
-              key='toToneHeart'
-              onClick={onToggleLike}></HeartTwoTone>
+              twoToneColor="#eb2f96"
+              key="toToneHeart"
+              onClick={onToggleLike}
+            />
           ) : (
-            <HeartOutlined key='heart' onClick={onToggleLike}></HeartOutlined>
+            <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
-          <MessageOutlined
-            key='comment'
-            onClick={onToggleComment}></MessageOutlined>,
+          <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
-            key='more'
+            key="more"
             content={
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type='danger'>삭제</Button>
+                    <Button type="danger">삭제</Button>
                   </>
                 ) : (
                   <Button>신고</Button>
                 )}
               </Button.Group>
-            }>
-            <EllipsisOutlined></EllipsisOutlined>
+            }
+          >
+            <EllipsisOutlined />
           </Popover>,
-        ]}>
+        ]}
+      >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          description={
-            <PostCardContent postData={post.content}></PostCardContent>
-          }
-          title={post.User.nickname}></Card.Meta>
+          description={<PostCardContent postData={post.content} />}
+          title={post.User.nickname}
+        />
       </Card>
       {commentFormOpened && (
         <div>
           <CommentForm />
           <List
             header={`${post.Comments.length}개의 댓글`}
-            itemLayout='horizontal'
+            itemLayout="horizontal"
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
                 <Comment
                   author={item.nickname}
                   avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
-                  content={item.content}></Comment>
+                  content={item.content}
+                />
               </li>
             )}
           />
