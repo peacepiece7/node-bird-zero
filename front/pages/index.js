@@ -15,7 +15,7 @@ const Home = () => {
   console.log("isLoggedIn", me, "mainPosts", mainPosts);
 
   return (
-    <>
+    <div>
       <Head>
         <title>index | Node Bird</title>
       </Head>
@@ -25,7 +25,7 @@ const Home = () => {
           <PostCard key={post.id} post={post} />
         ))}
       </AppLayout>
-    </>
+    </div>
   );
 };
 

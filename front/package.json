@@ -39,7 +39,7 @@
     "prettier": "^2.4.1"
   },
   "scripts": {
-    "dev": "next -p 3060",
+    "dev": "next",
     "build": "build next"
   },
   "author": "",

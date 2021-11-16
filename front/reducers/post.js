@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { bindActionCreators } from "redux";
 
 export const initialState = {
   mainPosts: [
@@ -113,7 +114,7 @@ const dummyComment = (data) => {
   };
 };
 // REDUCER
-const post = (state = initialState, { type, error, data } = {}) => {
+const postReducer = (state = initialState, { type, error, data } = {}) => {
   switch (type) {
     // ADD POST CASES
     case ADD_POST_REQUEST: {
@@ -148,7 +149,23 @@ const post = (state = initialState, { type, error, data } = {}) => {
         addCommentError: null,
       };
     }
+    // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+    // const post = { ...state.mainPosts[postIndex] };
+    // post.Comments = [dummyComment(action.data.content), ...post.Comments];
+    // const mainPosts = [...state.mainPosts];
+    // mainPosts[postIndex] = post;
+    // return {
+    //   ...state,
+    //   mainPosts,
+    //   addCommentLoading: false,
+    //   addCommentDone: true,
+    // };
     case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
       return {
         ...state,
         mainPosts: [dummyComment(data), ...state.mainPosts],
@@ -171,4 +188,4 @@ const post = (state = initialState, { type, error, data } = {}) => {
   }
 };
 
-export default post;
+export default postReducer;
