@@ -3,16 +3,16 @@ import React from "react";
 import Head from "next/head";
 
 import { useSelector } from "react-redux";
-import PostForm from "../components/PostForm";
-import PostCard from "../components/PostCard";
+import PostForm from "../components/postForm";
+import PostCard from "../components/postCard";
 import AppLayout from "../components/AppLayout";
 
 const Home = () => {
-  const { isLoggedIn } = useSelector((state) => {
+  const { me } = useSelector((state) => {
     return state.user;
   });
   const { mainPosts } = useSelector((state) => state.post);
-  console.log("isLoggedIn", isLoggedIn, "mainPosts", mainPosts);
+  console.log("isLoggedIn", me, "mainPosts", mainPosts);
 
   return (
     <>
@@ -20,7 +20,7 @@ const Home = () => {
         <title>index | Node Bird</title>
       </Head>
       <AppLayout>
-        <PostForm />
+        {me && <PostForm />}
         {mainPosts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

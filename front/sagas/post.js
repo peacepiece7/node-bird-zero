@@ -14,6 +14,7 @@ import {
 // }
 
 function* addPost(action) {
+  console.log("ACTION.DATA", action.data);
   try {
     // const result = yield call(addPostAPI, action.data)
     yield delay(1000);

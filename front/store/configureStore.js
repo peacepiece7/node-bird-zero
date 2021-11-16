@@ -7,8 +7,7 @@ import createSagaMiddleware from "redux-saga";
 import reducer from "../reducers";
 import rootSaga from "../sagas";
 
-const configureStore = (context) => {
-  console.log("context", context);
+const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
 

@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 export const initialState = {
   mainPosts: [
     {
@@ -38,41 +40,82 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
-
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
 };
-
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
-
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
-
-export const addPost = {
-  type: ADD_POST_REQUEST,
+// ADD POST ACTIONS
+export const addPostRequest = (data) => {
+  return {
+    type: ADD_POST_REQUEST,
+    data,
+  };
 };
-export const addComment = {
-  type: ADD_COMMENT_REQUEST,
+export const addPostSuccess = (data) => {
+  return {
+    type: ADD_POST_SUCCESS,
+    data,
+  };
 };
-
-const dummyPost = {
-  id: 2,
-  content: "더미데이터입니다.",
-  User: {
-    id: 1,
-    nickname: "제로초",
-  },
-  Images: [],
-  Comments: [],
+export const addPostFailure = (data) => {
+  return {
+    type: ADD_POST_FAILURE,
+    data,
+  };
 };
-
-const post = (state, action) => {
-  state = initialState;
-  switch (action.type) {
+// ADD COMMENT ACTIONS
+export const addCommentRequest = (data) => {
+  return {
+    type: ADD_COMMENT_REQUEST,
+    data,
+  };
+};
+export const addCommentSuccess = (data) => {
+  return {
+    type: ADD_COMMENT_SUCCESS,
+    data,
+  };
+};
+export const addCommentFailure = (data) => {
+  return {
+    type: ADD_COMMENT_FAILURE,
+    data,
+  };
+};
+// DUMMY DATA
+const dummyPost = (data) => {
+  console.log("DUMMY POST", data);
+  return {
+    id: nanoid(),
+    content: data,
+    User: {
+      id: 1,
+      nickname: "제로초",
+    },
+    Images: [],
+    Comments: [],
+  };
+};
+const dummyComment = (data) => {
+  return {
+    id: nanoid(),
+    content: data,
+    USer: {
+      id: nanoid(),
+      nickname: "taetae",
+    },
+  };
+};
+// REDUCER
+const post = (state = initialState, { type, error, data } = {}) => {
+  switch (type) {
+    // ADD POST CASES
     case ADD_POST_REQUEST: {
       return {
         ...state,
@@ -84,7 +127,7 @@ const post = (state, action) => {
     case ADD_POST_SUCCESS: {
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [dummyPost(data), ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
       };
@@ -93,9 +136,10 @@ const post = (state, action) => {
       return {
         ...state,
         addPostLoading: false,
-        addPostError: action.error,
+        addPostError: error,
       };
     }
+    // ADD COMMENT CASES
     case ADD_COMMENT_REQUEST: {
       return {
         ...state,
@@ -107,7 +151,7 @@ const post = (state, action) => {
     case ADD_COMMENT_SUCCESS: {
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [dummyComment(data), ...state.mainPosts],
         addCommentLoading: false,
         addCommentDone: true,
       };
@@ -116,7 +160,7 @@ const post = (state, action) => {
       return {
         ...state,
         addCommentLoading: false,
-        addCommentError: action.error,
+        addCommentError: error,
       };
     }
     default: {
