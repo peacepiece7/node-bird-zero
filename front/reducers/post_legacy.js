@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { produce } from "immer";
+
 export const initialState = {
   mainPosts: [
     {
@@ -138,108 +138,104 @@ const dummyComment = (data) => {
 };
 // REDUCER
 const postReducer = (state = initialState, { type, error, data } = {}) => {
-  produce(state, (draft) => {
-    switch (type) {
-      // ! draft안에서 state를 건들면 안 됨
-      // ADD POST CASES
-      case ADD_POST_REQUEST:
-        return {
-          ...state,
-          addPostLoading: true,
-          addPostDone: false,
-          addPostError: null,
-        };
+  switch (type) {
+    // ! draft안에서 state를 건들면 안 됨
+    // ADD POST CASES
+    case ADD_POST_REQUEST:
+      return {
+        ...state,
+        addPostLoading: true,
+        addPostDone: false,
+        addPostError: null,
+      };
 
-      case ADD_POST_SUCCESS:
-        return {
-          ...state,
-          mainPosts: [dummyPost(data), ...state.mainPosts],
-          addPostLoading: false,
-          addPostDone: true,
-        };
+    case ADD_POST_SUCCESS:
+      return {
+        ...state,
+        mainPosts: [dummyPost(data), ...state.mainPosts],
+        addPostLoading: false,
+        addPostDone: true,
+      };
 
-      case ADD_POST_FAILURE: {
-        return {
-          ...state,
-          addPostLoading: false,
-          addPostError: error,
-        };
-      }
-      // REMOVE POST CASES
-      case REMOVE_POST_REQUEST: {
-        return {
-          ...state,
-          addPostLoading: true,
-          addPostDone: false,
-          addPostError: null,
-        };
-      }
-      case REMOVE_POST_SUCCESS: {
-        console.log("REMOVE_POST_SUCESS", state.mainPosts);
-        console.log("DATA", data);
-        return {
-          ...state,
-          mainPosts: state.mainPosts.filter((v) => v.id !== data.data),
-          addPostLoading: false,
-          addPostDone: true,
-        };
-      }
-      case REMOVE_POST_FAILURE: {
-        return {
-          ...state,
-          addPostLoading: false,
-          addPostError: error,
-        };
-      }
-      // ADD COMMENT CASES
-      case ADD_COMMENT_REQUEST: {
-        return {
-          ...state,
-          addCommentLoading: true,
-          addCommentDone: false,
-          addCommentError: null,
-        };
-      }
-      // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
-      // const post = { ...state.mainPosts[postIndex] };
-      // post.Comments = [dummyComment(action.data.content), ...post.Comments];
-      // const mainPosts = [...state.mainPosts];
-      // mainPosts[postIndex] = post;
-      // return {
-      //   ...state,
-      //   mainPosts,
-      //   addCommentLoading: false,
-      //   addCommentDone: true,
-      // };
-      case ADD_COMMENT_SUCCESS: {
-        const postIndex = state.mainPosts.findIndex(
-          (v) => v.id === data.postId
-        );
-        const post = { ...state.mainPosts[postIndex] };
-        post.Comments = [dummyComment(data.content), ...post.Comments];
-        const mainPosts = [...state.mainPosts];
-        mainPosts[postIndex] = post;
-        return {
-          ...state,
-          mainPosts,
-          addCommentLoading: false,
-          addCommentDone: true,
-        };
-      }
-      case ADD_COMMENT_FAILURE: {
-        return {
-          ...state,
-          addCommentLoading: false,
-          addCommentError: error,
-        };
-      }
-      default: {
-        return {
-          ...state,
-        };
-      }
+    case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        addPostLoading: false,
+        addPostError: error,
+      };
     }
-  });
+    // REMOVE POST CASES
+    case REMOVE_POST_REQUEST: {
+      return {
+        ...state,
+        addPostLoading: true,
+        addPostDone: false,
+        addPostError: null,
+      };
+    }
+    case REMOVE_POST_SUCCESS: {
+      console.log("REMOVE_POST_SUCESS", state.mainPosts);
+      console.log("DATA", data);
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((v) => v.id !== data.data),
+        addPostLoading: false,
+        addPostDone: true,
+      };
+    }
+    case REMOVE_POST_FAILURE: {
+      return {
+        ...state,
+        addPostLoading: false,
+        addPostError: error,
+      };
+    }
+    // ADD COMMENT CASES
+    case ADD_COMMENT_REQUEST: {
+      return {
+        ...state,
+        addCommentLoading: true,
+        addCommentDone: false,
+        addCommentError: null,
+      };
+    }
+    // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+    // const post = { ...state.mainPosts[postIndex] };
+    // post.Comments = [dummyComment(action.data.content), ...post.Comments];
+    // const mainPosts = [...state.mainPosts];
+    // mainPosts[postIndex] = post;
+    // return {
+    //   ...state,
+    //   mainPosts,
+    //   addCommentLoading: false,
+    //   addCommentDone: true,
+    // };
+    case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
+      return {
+        ...state,
+        mainPosts,
+        addCommentLoading: false,
+        addCommentDone: true,
+      };
+    }
+    case ADD_COMMENT_FAILURE: {
+      return {
+        ...state,
+        addCommentLoading: false,
+        addCommentError: error,
+      };
+    }
+    default: {
+      return {
+        ...state,
+      };
+    }
+  }
 };
 
 export default postReducer;
