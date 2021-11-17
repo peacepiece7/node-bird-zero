@@ -10,12 +10,11 @@ import post from "./post";
 // index reducer에는 HYDRATE(SSR을 위한)을 추가
 
 const rootReducer = combineReducers({
-  index: (state, action) => {
-    state = {};
-    switch (action.type) {
+  index: (state = {}, { type, payload } = {}) => {
+    switch (type) {
       case HYDRATE:
-        console.log("HYDRATE", action);
-        return { ...state, ...action.payload };
+        console.log("HYDRATE", payload);
+        return { ...state, ...payload };
       default:
         // 여기에 spread operator를 쓰면 초기값은 새로운 객체(shallow copy)(변경됨), 그냥 보내면 reference가 같은 객체(변경되지 않음)
         return state;

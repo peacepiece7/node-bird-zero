@@ -128,7 +128,8 @@ const dummyUser = (data) => {
   };
 };
 // REDUCER
-const userReducer = (state, { type, error, data } = {}) =>
+const userReducer = (state = initialState, { type, error, data } = {}) =>
+  // eslint-disable-next-line consistent-return
   produce(state, (draft) => {
     switch (type) {
       // LOG IN CASE

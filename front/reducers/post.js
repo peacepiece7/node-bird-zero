@@ -1,8 +1,12 @@
 import { nanoid } from "nanoid";
 import { produce } from "immer";
+import faker from "faker";
 
+// * 성능 최적화 고려사항
 // Curried produce로 immer사용
 // https://immerjs.github.io/immer/curried-produce/
+// dummy image => placeholder.com, lorempixel.com
+// mainPosts 최소 1000개 이상으로 적용
 
 export const initialState = {
   mainPosts: [
@@ -51,6 +55,32 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(28)
+    .fill()
+    .map(() => {
+      return {
+        id: nanoid(),
+        User: {
+          id: nanoid(),
+          nickname: faker.name.findName(),
+        },
+        content: faker.lorem.paragraph(),
+        Images: [{ src: faker.image.image() }],
+        Comments: [
+          {
+            User: {
+              id: nanoid(),
+              nickname: faker.name.findName(),
+            },
+            content: faker.lorem.sentence(),
+          },
+        ],
+      };
+    })
+);
+
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
