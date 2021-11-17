@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Button, Card, Avatar, Popover, List, Comment } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   RetweetOutlined,
@@ -14,9 +14,11 @@ import PropTypes from "prop-types";
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
+import { REMOVE_POST_REQUEST } from "../reducers/post";
 
 // array안의 jsx는 반드시 key를 입력해줘야 함
 const PostCard = ({ post }) => {
+  const dispatch = useDispatch();
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   // Optional chaning 아니면 &&
   const id = useSelector((state) => state.user.me?.id);
@@ -29,6 +31,13 @@ const PostCard = ({ post }) => {
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   });
+
+  const onRemovePost = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
+  }, []);
 
   return (
     <div>
@@ -53,7 +62,9 @@ const PostCard = ({ post }) => {
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type="danger">삭제</Button>
+                    <Button type="danger" onClick={onRemovePost}>
+                      삭제
+                    </Button>
                   </>
                 ) : (
                   <Button>신고</Button>
@@ -73,7 +84,7 @@ const PostCard = ({ post }) => {
       </Card>
       {commentFormOpened && (
         <div>
-          <CommentForm />
+          <CommentForm post={post} />
           <List
             header={`${post.Comments.length}개의 댓글`}
             itemLayout="horizontal"

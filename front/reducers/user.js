@@ -1,3 +1,5 @@
+import { actionChannel } from "@redux-saga/core/effects";
+
 export const initialState = {
   logInLoading: false, // 로그인 시도 중
   logInDone: false,
@@ -27,6 +29,8 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 export const CHANGE_NICKNAME_REQUEST = "CHANGE_NICKNAME_REQUEST";
 export const CHANGE_NICKNAME_SUCCESS = "CHANGE_NICKNAME_SUCCESS";
 export const CHANGE_NICKNAME_FAILURE = "CHANGE_NICKNAME_FAILURE";
+export const ADD_POST_TO_ME = "ADD_POST_TO_ME";
+export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME";
 // LOG IN ACTIONS
 export const loginRequestAction = (data) => {
   return {
@@ -109,9 +113,17 @@ const dummyUser = (data) => {
     ...data,
     nickname: "zerocho",
     id: 1,
-    Posts: [],
-    Followings: [],
-    Followers: [],
+    Posts: [{ id: 1 }],
+    Followings: [
+      { nickanme: "aa", id: "bbdsdf" },
+      { nickanme: "aaa", id: "bbcx" },
+      { nickanme: "abbba", id: "zzxcz" },
+    ],
+    Followers: [
+      { nickanme: "aa", id: "bbdsdf" },
+      { nickanme: "aaa", id: "bbcx" },
+      { nickanme: "abbba", id: "zzxcz" },
+    ],
   };
 };
 // REDUCER
@@ -214,6 +226,24 @@ const userReducer = (state, { type, error, data } = {}) => {
         ...state,
         changeNicknameLoading: false,
         changeNicknameError: error,
+      };
+    }
+    case ADD_POST_TO_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: [{ id: data }, ...state.me.Posts],
+        },
+      };
+    }
+    case REMOVE_POST_OF_ME: {
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: state.me.Posts.filter((v) => v.id !== data),
+        },
       };
     }
     default: {

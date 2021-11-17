@@ -11,6 +11,7 @@ const UserProfile = function () {
   const onLogOut = useCallback(() => {
     dispatch(logoutRequestAction({}));
   }, []);
+
   return (
     <Card
       // prettier-ignore

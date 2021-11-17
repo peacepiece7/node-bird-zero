@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { bindActionCreators } from "redux";
 
 export const initialState = {
   mainPosts: [
@@ -41,6 +40,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  removePostLoading: false,
+  removePostDone: false,
+  removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
@@ -48,6 +50,9 @@ export const initialState = {
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
 export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
+export const REMOVE_POST_REQUEST = "REMOVE_POST_REQUEST";
+export const REMOVE_POST_SUCCESS = "REMOVE_POST_SUCCESS";
+export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
@@ -67,6 +72,25 @@ export const addPostSuccess = (data) => {
 export const addPostFailure = (data) => {
   return {
     type: ADD_POST_FAILURE,
+    data,
+  };
+};
+// REMOVE POST ACTIONS
+export const removePostRequest = (data) => {
+  return {
+    type: REMOVE_POST_REQUEST,
+    data,
+  };
+};
+export const removePostSuccess = (data) => {
+  return {
+    type: REMOVE_POST_SUCCESS,
+    data,
+  };
+};
+export const removePostFailure = (data) => {
+  return {
+    type: REMOVE_POST_FAILURE,
     data,
   };
 };
@@ -91,10 +115,9 @@ export const addCommentFailure = (data) => {
 };
 // DUMMY DATA
 const dummyPost = (data) => {
-  console.log("DUMMY POST", data);
   return {
-    id: nanoid(),
-    content: data,
+    id: data.id,
+    content: data.content,
     User: {
       id: 1,
       nickname: "제로초",
@@ -107,7 +130,7 @@ const dummyComment = (data) => {
   return {
     id: nanoid(),
     content: data,
-    USer: {
+    User: {
       id: nanoid(),
       nickname: "taetae",
     },
@@ -134,6 +157,32 @@ const postReducer = (state = initialState, { type, error, data } = {}) => {
       };
     }
     case ADD_POST_FAILURE: {
+      return {
+        ...state,
+        addPostLoading: false,
+        addPostError: error,
+      };
+    }
+    // REMOVE POST CASES
+    case REMOVE_POST_REQUEST: {
+      return {
+        ...state,
+        addPostLoading: true,
+        addPostDone: false,
+        addPostError: null,
+      };
+    }
+    case REMOVE_POST_SUCCESS: {
+      console.log("REMOVE_POST_SUCESS", state.mainPosts);
+      console.log("DATA", data);
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((v) => v.id !== data.data),
+        addPostLoading: false,
+        addPostDone: true,
+      };
+    }
+    case REMOVE_POST_FAILURE: {
       return {
         ...state,
         addPostLoading: false,
@@ -168,7 +217,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) => {
       mainPosts[postIndex] = post;
       return {
         ...state,
-        mainPosts: [dummyComment(data), ...state.mainPosts],
+        mainPosts,
         addCommentLoading: false,
         addCommentDone: true,
       };

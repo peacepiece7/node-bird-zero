@@ -3,8 +3,8 @@ import React from "react";
 import Head from "next/head";
 
 import { useSelector } from "react-redux";
-import PostForm from "../components/postForm";
-import PostCard from "../components/postCard";
+import PostForm from "../components/PostForm";
+import PostCard from "../components/PostCard";
 import AppLayout from "../components/AppLayout";
 
 const Home = () => {
@@ -12,7 +12,6 @@ const Home = () => {
     return state.user;
   });
   const { mainPosts } = useSelector((state) => state.post);
-  console.log("isLoggedIn", me, "mainPosts", mainPosts);
 
   return (
     <div>

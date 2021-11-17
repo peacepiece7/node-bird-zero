@@ -24,7 +24,6 @@ const CommentForm = ({ post }) => {
       data: { content: commentText, postId: post.id, userId: id },
     });
   }, [commentText, id]);
-  console.log(commentText, post, id);
   return (
     <Form onFinish={onSubmitComment}>
       <Form.Item>
