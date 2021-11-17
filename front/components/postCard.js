@@ -18,6 +18,7 @@ import { REMOVE_POST_REQUEST } from "../reducers/post";
 
 // array안의 jsx는 반드시 key를 입력해줘야 함
 const PostCard = ({ post }) => {
+  console.log("POSTCARD ", post);
   const dispatch = useDispatch();
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   // Optional chaning 아니면 &&
