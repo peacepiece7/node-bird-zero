@@ -399,3 +399,9 @@ https://stackoverflow.com/questions/37288950/why-does-the-airbnb-style-guide-say
 ### immer
 
 immer , useimmer (instace of useState)
+
+### react-virtualized
+
+--> 이거 적용해서 다시 만들어 보기
+
+Virtualized-List
