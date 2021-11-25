@@ -152,7 +152,6 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.logOutLoading = true;
         draft.logOutDone = false;
         draft.logOutError = null;
-        draft.me = null;
         break;
       case LOG_OUT_SUCCESS:
         draft.logOutLoading = false;
@@ -160,7 +159,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.me = null;
         break;
       case LOG_OUT_FAILURE:
-        draft.logOutLoading = false;
+        draft.logOutLoading = true;
         draft.logOutError = error;
         draft.me = null;
         break;
