@@ -9,7 +9,9 @@ import useInput from "../hooks/useInput";
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector(
+    (state) => state.post
+  );
   const [commentText, onChangeCommentText, setCommentText] = useInput(" ");
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const CommentForm = ({ post }) => {
   const onSubmitComment = useCallback(() => {
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: { content: commentText, postId: post.id, userId: id },
+      data: { content: commentText, userId: id, postId: post.id },
     });
   }, [commentText, id]);
   return (
@@ -32,7 +34,7 @@ const CommentForm = ({ post }) => {
           onChange={onChangeCommentText}
           rows={4}
         />
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={addCommentLoading}>
           QQ삐약
         </Button>
       </Form.Item>

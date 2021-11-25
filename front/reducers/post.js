@@ -75,8 +75,8 @@ export const generateDummyPost = (number) => {
         Comments: [
           {
             User: {
-              id: nanoid(),
-              nickname: faker.name.findName(),
+              id: 1,
+              nickname: "zerocho",
             },
             content: faker.lorem.sentence(),
           },
@@ -159,28 +159,26 @@ export const addCommentFailure = (data) => {
   };
 };
 // DUMMY DATA
-const dummyPost = (data) => {
-  return {
-    id: data.id,
-    content: data.content,
-    User: {
-      id: 1,
-      nickname: "foo",
-    },
-    Images: [],
-    Comments: [],
-  };
-};
-const dummyComment = (data) => {
-  return {
-    id: nanoid(),
-    content: data,
-    User: {
-      id: nanoid(),
-      nickname: "bar",
-    },
-  };
-};
+
+const dummyPost = (data) => ({
+  id: data.id,
+  content: data.content,
+  User: {
+    id: 1,
+    nickname: "제로초",
+  },
+  Images: [],
+  Comments: [],
+});
+
+const dummyComment = (data) => ({
+  id: nanoid(), // postId
+  content: data,
+  User: {
+    id: 1,
+    nickname: "zerocho",
+  },
+});
 
 // REDUCER
 const postReducer = (state = initialState, { type, error, data } = {}) =>

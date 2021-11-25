@@ -110,6 +110,7 @@ export const changeNicknameFailureAction = (data) => {
 };
 // DUMMY DATA
 const dummyUser = (data) => {
+  // login 정보가 저장되지만, dummy 데이터로 뒤덮음
   return {
     ...data,
     nickname: "zerocho",
