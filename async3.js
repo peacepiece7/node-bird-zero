@@ -85,6 +85,9 @@ poo().then((res) => {
   console.log(res);
 });
 
+// 함수는 Promise의 res를 반환해야 함
+// return new Promise((res,rej)) res를 callback함수로 사용, await, then을 사용 할 수 있게됨
+
 // async await
 // 1. 함수안에서 동작함
 // 2. 복잡한 로직에 사용하면 콜백 지옥을 피할 수 있음
