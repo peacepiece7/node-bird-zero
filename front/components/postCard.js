@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { Button, Card, Avatar, Popover, List, Comment } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import Link from "next/link";
 
 import {
   RetweetOutlined,
@@ -12,18 +14,24 @@ import {
 import PropTypes from "prop-types";
 
 import PostImages from "./PostImages";
+import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 import { REMOVE_POST_REQUEST } from "../reducers/post";
 
+const CardWrapper = styled.div`
+  margin-bottom: 20px;
+`;
+
 // array안의 jsx는 반드시 key를 입력해줘야 함
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
+  const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  // Optional chaning 아니면 &&
-  const id = useSelector((state) => state.user.me?.id);
-
   const [liked, setLiked] = useState(false);
+  // Optional chaning 아니면 &&
+  const { me } = useSelector((state) => state.user);
+  const id = me && me.id;
 
   const onToggleLike = useCallback(() => {
     setLiked((prev) => !prev);
@@ -40,7 +48,7 @@ const PostCard = ({ post }) => {
   }, []);
 
   return (
-    <div>
+    <CardWrapper key={post.id}>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
@@ -48,21 +56,25 @@ const PostCard = ({ post }) => {
           liked ? (
             <HeartTwoTone
               twoToneColor="#eb2f96"
-              key="toToneHeart"
+              key="heart"
               onClick={onToggleLike}
             />
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
-          <MessageOutlined key="comment" onClick={onToggleComment} />,
+          <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
-            key="more"
+            key="ellipsis"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {id && post.UserId === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type="danger" onClick={onRemovePost}>
+                    <Button
+                      type="danger"
+                      loading={removePostLoading}
+                      onClick={onRemovePost}
+                    >
                       삭제
                     </Button>
                   </>
@@ -75,6 +87,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        extra={<FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
@@ -92,8 +105,17 @@ const PostCard = ({ post }) => {
             renderItem={(item) => (
               <li>
                 <Comment
-                  author={item.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  author={item.User.nickname}
+                  avatar={
+                    <Link
+                      href={{ pathname: "/user", query: { id: item.User.id } }}
+                      as={`/user/${item.User.id}`}
+                    >
+                      <a>
+                        <Avatar>{item.User.nickname[0]}</Avatar>
+                      </a>
+                    </Link>
+                  }
                   content={item.content}
                 />
               </li>
@@ -103,7 +125,7 @@ const PostCard = ({ post }) => {
       )}
       {/* <CommentForm></CommentForm>
       <Comments></Comments> */}
-    </div>
+    </CardWrapper>
   );
 };
 PostCard.propTypes = {
@@ -111,6 +133,7 @@ PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
     User: PropTypes.object,
+    UserId: PropTypes.number,
     content: PropTypes.string,
     createdAt: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
