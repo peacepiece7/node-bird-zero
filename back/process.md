@@ -66,14 +66,6 @@ mysql archive에 들어가서 직접 dmg파일을 받자
 uname -p
 ```
 
-내 맥북은 i386 -> 32bit
-
-그외
-
-x86_64 => 64bit
-
-arm어쩌고 => ARM
-
 ### use lagecy password encryption
 
 설치할 떄 SHA256기반의 strong password encryption, 하위 버전의 legecy password envryption중 선택할 수 있는데 strong을 선택하면 하위버전도 8.x 이상으로 설치해줘야 함
@@ -105,4 +97,50 @@ but, 호환이슈로 접속시 팅김현상이 발생함 아카이브에서 8.0.
 
 - [MYSQL workbench archives](https://downloads.mysql.com/archives/workbench/)
 
-# mysql 사전 정보 (정리 필요)
+### MYSQL window installation
+
+thebook.io node책을 보고 설치 진행
+
+MYSQL Installer (MYSQL Community Server, MYSQL Workbench)를 설치
+
+# sequlize sequlize-cli
+
+```s
+npm i sequelize sequelize-cli
+```
+
+- sequlize, sequlize-cli
+
+js로 SQL를 조작할 수 있게 도와줌
+
+```s
+npm i mysql2
+```
+
+- mysql2
+
+node랑 mysql을 연결해주는 드라이버
+
+### sequelize initiation
+
+```s
+npx sequelize init
+```
+
+config/config.js
+
+migrations
+
+models/index.js
+
+seeders
+
+폴더, 파일 생성됨
+
+### sequelize 수정
+
+config/config.js 수정 (파일 확인)
+
+- "development" : 개발 할 때
+- "test" : 배포 후 테스트 할 때 (더미 데이터)
+- "production: 배포 할 떄
