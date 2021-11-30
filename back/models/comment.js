@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       charset: "utf8mb4",
-      collate: "utf8mb4_general_cli", // 한영, 이모티콘 저장
+      collate: "utf8mb4_general_ci", // 한영, 이모티콘 저장
     }
     // belongsTo의 역할
     // UserId : ..

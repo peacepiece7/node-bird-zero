@@ -144,3 +144,32 @@ config/config.js 수정 (파일 확인)
 - "development" : 개발 할 때
 - "test" : 배포 후 테스트 할 때 (더미 데이터)
 - "production: 배포 할 떄
+
+### model 작성
+
+1. sequelize로 model을 작성 (mysql의 table)
+
+2. 아래 커맨드로 batabase를 생성
+
+```s
+npx sequelize db:create
+```
+
+3. sequlize를 root파일에 연결 후 실행
+
+```js
+// app.js
+const db = require("./models");
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("db연결 성공");
+  })
+  .catch(console.log);
+```
+
+# jetBrains
+
+실무에서는 table이 수백개가 넘어가는 경우도 있어서 ERD로 도식호 함
+
+jetBrains가 있음

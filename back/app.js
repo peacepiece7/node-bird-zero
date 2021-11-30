@@ -3,9 +3,10 @@ const db = require("./models");
 db.sequelize
   .sync()
   .then(() => {
-    console.log("db연결 성공");
+    console.log("Model 작성 완료 🟢");
   })
   .catch(console.log);
+
 const app = express();
 
 app.get("/", (req, res) => {
