@@ -1,4 +1,5 @@
-import { all, delay, fork, put, takeLatest } from "redux-saga/effects";
+import { all, delay, fork, put, takeLatest, call } from "redux-saga/effects";
+import axios from "axios";
 import {
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
@@ -53,15 +54,17 @@ function* logOut() {
     });
   }
 }
-// function signUpAPI(){
-//   return axios.post("/api/signup")
-// }
+function signUpAPI(data) {
+  return axios.post("http://localhost:3065/user", data);
+}
 function* signUp(action) {
   try {
+    console.log("ACTION DATA", action.data);
+    const result = yield call(signUpAPI, action.data);
+    console.log("API RESULT ARE ", result);
     yield delay(1000);
     yield put({
       type: SIGN_UP_SUCCESS,
-      data: action.data,
     });
   } catch (err) {
     yield put({
@@ -155,6 +158,13 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
-    watchChangeNickname,
+    fork(watchChangeNickname),
   ]);
 }
+
+// access control allow origin
+
+// browser -> back-server (cors error)
+// front-server -> back-server (ok) proxy 방식
+
+// access controll allow origin

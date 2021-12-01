@@ -217,7 +217,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
       case SIGN_UP_SUCCESS:
         draft.signUpLoading = false;
         draft.signUpDone = true;
-        draft.me = null;
+        draft.me = data;
         break;
 
       case SIGN_UP_FAILURE:

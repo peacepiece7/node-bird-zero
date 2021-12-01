@@ -15,18 +15,20 @@ const Signup = function () {
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
 
-  const [email, onChangeEmail] = useInput(" ");
-  const [nickname, onChangeNickname] = useInput(" ");
-  const [password, onChangePassword] = useInput(" ");
+  const [email, onChangeEmail] = useInput("");
+  const [nickname, onChangeNickname] = useInput("");
+  const [password, onChangePassword] = useInput("");
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       setPasswordError(true);
+      return;
     }
     if (!term) {
       setTermError(true);
+      return;
     }
-    console.log(email, password, nickname);
+
     dispatch({
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname },
