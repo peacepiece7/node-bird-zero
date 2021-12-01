@@ -1,16 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const db = require("./models");
+const express = require('express');
+const cors = require('cors');
+const db = require('./models');
 
-const userRouter = require("./routes/user");
-const postRouter = require("./routes/post");
+const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 
 // ref 1
 db.sequelize
   .sync()
   .then(() => {
-    console.log("Model 작성 완료 🟢");
-    console.log("db 연결 성공 🟢");
+    console.log('connect to db 🟢');
   })
   .catch(console.log);
 
@@ -18,7 +17,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: '*',
   })
 );
 // ref 2
@@ -26,15 +25,15 @@ app.use(express.json());
 // ref 3
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Hello");
+app.get('/', (req, res) => {
+  res.send('Hello');
 });
 
-app.use("/user", userRouter);
-app.use("/post", postRouter);
+app.use('/user', userRouter);
+app.use('/post', postRouter);
 
 app.listen(3065, () => {
-  console.log("Listen : 3065 port");
+  console.log('Listen : 3065 port');
 });
 
 // 1. npx requelize db:create

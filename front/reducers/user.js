@@ -32,6 +32,7 @@ export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
+export const SIGN_UP_INIT = "SIGN_UP_INIT";
 export const CHANGE_NICKNAME_REQUEST = "CHANGE_NICKNAME_REQUEST";
 export const CHANGE_NICKNAME_SUCCESS = "CHANGE_NICKNAME_SUCCESS";
 export const CHANGE_NICKNAME_FAILURE = "CHANGE_NICKNAME_FAILURE";
@@ -102,6 +103,11 @@ export const signUpFailureAction = (data) => {
     data,
   };
 };
+export const signUpInitAction = () => {
+  return {
+    type: SIGN_UP_INIT,
+  };
+};
 // CHANGE NICKANME ACTIONS
 export const changeNicknameRequestAction = (data) => {
   return {
@@ -123,7 +129,6 @@ export const changeNicknameFailureAction = (data) => {
 };
 // DUMMY DATA
 const dummyUser = (data) => {
-  // login 정보가 저장되지만, dummy 데이터로 뒤덮음
   return {
     ...data,
     nickname: "zerocho",
@@ -212,18 +217,19 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.signUpLoading = true;
         draft.signUpDone = false;
         draft.signUpError = null;
-        draft.me = null;
         break;
       case SIGN_UP_SUCCESS:
         draft.signUpLoading = false;
         draft.signUpDone = true;
-        draft.me = data;
         break;
-
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false;
         draft.signUpError = error;
-        draft.me = null;
+        break;
+      case SIGN_UP_INIT:
+        draft.signUpLoading = false;
+        draft.signUpDone = false;
+        draft.signUpError = null;
         break;
       // CHANGE NICKNAME CASE
       case CHANGE_NICKNAME_REQUEST:

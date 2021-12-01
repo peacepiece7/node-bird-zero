@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-
 import Head from "next/head";
-
 import { useDispatch, useSelector } from "react-redux";
+
 import PostForm from "../components/PostForm";
 import PostCard from "../components/postCard";
 import AppLayout from "../components/AppLayout";

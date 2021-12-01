@@ -35,7 +35,7 @@ const CommentForm = ({ post }) => {
           rows={4}
         />
         <Button type="primary" htmlType="submit" loading={addCommentLoading}>
-          QQ삐약
+          QQ
         </Button>
       </Form.Item>
     </Form>

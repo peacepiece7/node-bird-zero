@@ -1,15 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import Router from "next/router";
 import { Form, Input, Checkbox, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
 import AppLayout from "../components/AppLayout";
 import TextInput from "../components/TextInput";
 import useInput from "../hooks/useInput";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import { SIGN_UP_REQUEST, SIGN_UP_INIT } from "../reducers/user";
 
 const Signup = function () {
   const dispatch = useDispatch();
-  const { signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector(
+    (state) => state.user
+  );
   const [passwordCheck, setPasswordCheck] = useState("");
   const [term, setTerm] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -18,6 +21,26 @@ const Signup = function () {
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
+
+  useEffect(() => {
+    console.log("SIGN UP ERROR :", signUpError);
+    console.log("SIGN UP DONE", signUpDone);
+    console.log("SIGN UP LOADING", signUpLoading);
+    if (signUpDone) {
+      Router.push("/");
+      dispatch({
+        type: SIGN_UP_INIT,
+      });
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      console.log("ALERT");
+      // eslint-disable-next-line no-alert
+      alert("email is already existed");
+    }
+  }, [signUpError]);
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
@@ -28,7 +51,6 @@ const Signup = function () {
       setTermError(true);
       return;
     }
-
     dispatch({
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname },
@@ -47,6 +69,7 @@ const Signup = function () {
     setTermError(false);
     setTerm(e.target.checked);
   }, []);
+
   return (
     <AppLayout>
       <Form onFinish={onSubmit} style={{ padding: 10 }}>

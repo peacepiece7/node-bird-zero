@@ -1,7 +1,5 @@
 import { all, fork } from "redux-saga/effects";
 
-// call = sync , fork = async(non-blocking)
-
 import postSaga from "./post";
 import userSaga from "./user";
 
@@ -10,3 +8,6 @@ function* rootSaga() {
 }
 
 export default rootSaga;
+
+// call = sync
+// fork = async(non-blocking)

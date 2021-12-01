@@ -1,7 +1,6 @@
 import { HYDRATE } from "next-redux-wrapper";
 import { combineReducers } from "redux";
 
-// 여기 이름이 userState면, useSelector((state) => state.userState)
 import user from "./user";
 import post from "./post";
 
@@ -20,8 +19,14 @@ const rootReducer = combineReducers({
         return state;
     }
   },
+  // ref 3
   user,
   post,
 });
 
 export default rootReducer;
+
+// ref 3
+// useSelector((state) => state.user)
+// import user as usetState from "../user"면
+// useSelector((state) => state.usetState)

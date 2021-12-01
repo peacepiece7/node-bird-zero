@@ -6,7 +6,7 @@ import faker from "faker";
 // Curried produce로 immer사용
 // https://immerjs.github.io/immer/curried-produce/
 // dummy image => placeholder.com, lorempixel.com
-// mainPosts 최소 1000개 이상으로 적용
+// mainPosts 최소 1000개 이상으로 적용해보기
 
 export const initialState = {
   mainPosts: [
@@ -44,7 +44,7 @@ export const initialState = {
     //   ],
     // },
   ],
-  hasMorePosts: true, // false일 경우 post를 가져오지 않음
+  hasMorePosts: true, // false일 경우 post를 가져오지 않음 (scroll event)
   imagePaths: [],
   loadPostLoading: false,
   loadPostDone: false,
@@ -238,17 +238,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.addCommentDone = false;
         draft.addCommentError = null;
         break;
-      // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
-      // const post = { ...state.mainPosts[postIndex] };
-      // post.Comments = [dummyComment(action.data.content), ...post.Comments];
-      // const mainPosts = [...state.mainPosts];
-      // mainPosts[postIndex] = post;
-      // return {
-      //   ...state,
-      //   mainPosts,
-      //   addCommentLoading: false,
-      //   addCommentDone: true,
-      // };
+      // ref 1
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === data.postId);
         post.Comments.unshift(dummyComment(data.content));
@@ -266,3 +256,16 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
   });
 
 export default postReducer;
+
+// 1. efore immer
+// const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+// const post = { ...state.mainPosts[postIndex] };
+// post.Comments = [dummyComment(action.data.content), ...post.Comments];
+// const mainPosts = [...state.mainPosts];
+// mainPosts[postIndex] = post;
+// return {
+//   ...state,
+//   mainPosts,
+//   addCommentLoading: false,
+//   addCommentDone: true,
+// };

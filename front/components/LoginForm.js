@@ -7,12 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useInput from "../hooks/useInput";
 import { loginRequestAction } from "../reducers/user";
 
-// * 이 부분은 고려하지 말자, garbage collection에서 함수를 제외 시켜서 메모리 남용이 큼
-//   const buttonStyle = useMemo(() => {
-//     marginTop: 50;
-//   }, []);
-
-// * 함수 안에 넣으면 onChange마다 re-rendering되니까 넣지말것
+// ref 1
 const FormWrapper = styled(Form)`
   padding: 10px;
 `;
@@ -21,7 +16,7 @@ const ButtonWapper = styled.div`
   margin-top: 10px;
 `;
 
-// component에 props를 넘겨주는 함수는 useCallback을 사용할 것
+// ref 2
 const LoginForm = () => {
   const dispatch = useDispatch();
   const { logInLoading } = useSelector((state) => {
@@ -31,8 +26,7 @@ const LoginForm = () => {
   const [password, onChangePassword] = useInput("");
 
   const onSubmitForm = useCallback(() => {
-    // ant design에서 onFinish는 이미 preventDefault가 적용되어있음 작성 x
-    // e.preventDefault()
+    // ref 3 e.preventDefault()
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
 
@@ -75,3 +69,13 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+// 1. styled-componenet
+// 함수 안에 넣으면 onChange마다 re-rendering되니까 넣지말것
+
+// 2. useCallback
+// component에 props를 넘겨주는 함수는 useCallback을 사용할 것
+
+// 3. antd conponenet e.preventDefault
+// ant design에서 onFinish는 이미 preventDefault가 적용되어있음 작성 x
+// e.preventDefault()

@@ -23,13 +23,12 @@ const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-// array안의 jsx는 반드시 key를 입력해줘야 함
+// ref 1
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const [liked, setLiked] = useState(false);
-  // Optional chaning 아니면 &&
   const { me } = useSelector((state) => state.user);
   const id = me && me.id;
 
@@ -123,13 +122,11 @@ const PostCard = ({ post }) => {
           />
         </div>
       )}
-      {/* <CommentForm></CommentForm>
-      <Comments></Comments> */}
     </CardWrapper>
   );
 };
 PostCard.propTypes = {
-  // post : ProTypes.object.isRequired 를 아래와 같이 자세히 정의
+  // ref 2 prop types method
   post: PropTypes.shape({
     id: PropTypes.number,
     User: PropTypes.object,
@@ -141,3 +138,8 @@ PostCard.propTypes = {
   }).isRequired,
 };
 export default PostCard;
+
+// 1. array안의 jsx는 반드시 key를 입력해줘야 함
+
+// 2. post : PropTypes.object.isRequired
+// 위와 같이 작성 시 그다지 타입을 명시하는 의미가 없음

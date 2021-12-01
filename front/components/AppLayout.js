@@ -8,26 +8,16 @@ import { useSelector } from "react-redux";
 import LoginForm from "./LoginForm";
 import UserProfile from "./UserProfile";
 
-// 함수를 캐싱 = useCallback
-// 값을 캐싱 = useMemo
-
-// 24 = width 100%
-// xs : mobile
-// sm : tablet
-// md : small desktop
-// gutter : 간격
-
 // * style
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
 
-// _black의 보안 이슈로 ref='noreferrer noopener'작성 referrer(참조 주소), opener(오픈한 사람)정보를 삭제함
-// https://ko.wikipedia.org/wiki/HTTP_%EB%A6%AC%ED%8D%BC%EB%9F%ACs
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
 
+  // ref 1
   return (
     <div>
       <Menu key="node-bird" mode="horizontal">
@@ -65,9 +55,26 @@ const AppLayout = ({ children }) => {
   );
 };
 
-// children은 type이 node임 (return안에 들어갈 수 있는 값)
+// ref 2
 AppLayout.propTypes = {
   children: propTypes.node.isRequired,
 };
 
 export default AppLayout;
+
+// 함수를 캐싱 = useCallback
+// 값을 캐싱 = useMemo
+
+// antd Col
+// 24 = width 100%
+// xs : mobile
+// sm : tablet
+// md : small desktop
+// gutter : 간격
+
+// 1. <a ref='noreferrer noopener'>
+// _black의 보안 이슈로 ref='noreferrer noopener'작성 referrer(참조 주소), opener(오픈한 사람)정보를 삭제함
+// https://ko.wikipedia.org/wiki/HTTP_%EB%A6%AC%ED%8D%BC%EB%9F%ACs
+
+// 2.
+// children은 type이 node임 (return안에 들어갈 수 있는 값)

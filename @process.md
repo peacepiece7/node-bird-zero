@@ -26,7 +26,7 @@ front/component에 component (폴더 이름 변경 가능)
 ### \_app.js , \_document,js의 차이 https://merrily-code.tistory.com/154 (\_app.js = reactDom.render(), \_docuemnt,js = common <head>)
 
 ```js
-import Link from "next/link";
+import Link from 'next/link';
 ```
 
 # Eslint setting
@@ -57,36 +57,7 @@ ant design에서 제공해주는 colum, row로 화면을 분할하거나, offset
 
 # styled-component
 
-1. useMemo로 styling
-
-```js
-const LoginForm = () => {
-  const buttonStyle = useMemo(() => ({ marginLeft: 10 }), []);
-};
-```
-
-추가) useMemo = 값을 캐싱, useCallback = 함수를 캐싱
-
-2. styles로 컴포넌트에 직접 추가
-
-```js
-<SearchButton style={{ marginLeft: 10 }} />
-```
-
-3. styles-component 사용
-
-> 아직 suppressHydrationWarning이슈를 해결하지 못함
-
-```js
-import styled = require("styled-component")
-const ButtonWrapper = styled.div`
-    margin-top : 10px
-`
-
-<ButtonWrapper>
-    <Button htmlType="submit" />
-</ButtonWrapper>
-```
+코드 문서 참고
 
 # tagged templete literal
 
@@ -191,7 +162,7 @@ action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않�
 ```js
 export const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
@@ -220,22 +191,22 @@ return {
 // 실제로는 combinReducers method로 구조화 시킴
 const initiationState = {
   id: 1,
-  name: "foo",
-  age: "27",
-  location: "Busan",
+  name: 'foo',
+  age: '27',
+  location: 'Busan',
   isLoggedIn: false,
 };
 
 // Action function, type를 추가해 주는 역할을 함
 const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
 const logoutAction = (data) => {
   return {
-    type: "LOG_OUT",
+    type: 'LOG_OUT',
     data,
   };
 };
@@ -243,12 +214,12 @@ const logoutAction = (data) => {
 // Reducer, 실질적으로 state를 변경하는 코드
 const reducer = (state, action) => {
   switch (action.type) {
-    case "LOG_IN":
+    case 'LOG_IN':
       return {
         ...state,
         isLoggedIn: true,
       };
-    case "LOG_OUT":
+    case 'LOG_OUT':
       return {
         ...state,
         isLoggedIn: false,
@@ -282,7 +253,7 @@ const dispatch = (action) => {
   console.log(fetched);
 };
 // const onSubmit(() => { dispatch(...)})
-dispatch(loginAction([{ name: "bar" }, { age: "29" }]));
+dispatch(loginAction([{ name: 'bar' }, { age: '29' }]));
 ```
 
 ### antd Form
@@ -320,7 +291,7 @@ export const loginAction = (data) => {
     // 한 번에 여러개의 dispatch
     dispatch(loginRequestAction());
     axios
-      .post("/api/login")
+      .post('/api/login')
       .then((res) => {
         dispatch(loginSuccessAction(res.data));
       })
@@ -349,18 +320,18 @@ export const loginAction = (data) => {
 - throttle로 요청 제한을 둘 수 있음
 
 ```js
-import { take, takeEvery } from "redux-saga";
+import { take, takeEvery } from 'redux-saga';
 
 export function* watchAddPost() {
   // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
-  yield take("ADD_POST_REQUEST", addPost);
+  yield take('ADD_POST_REQUEST', addPost);
 
   // 이를 해결하기 위해 여러 방법이 있음
   while (true) {
-    yield take("ADD_POST_REQUEST", addPost);
+    yield take('ADD_POST_REQUEST', addPost);
   }
 
-  yield takeEvery("ADD_POST_REQUEST", addPost);
+  yield takeEvery('ADD_POST_REQUEST', addPost);
 }
 ```
 
@@ -405,3 +376,43 @@ immer , useimmer (instace of useState)
 --> 이거 적용해서 다시 만들어 보기
 
 Virtualized-List
+
+# immer적용하기
+
+Curried produce [immer docs about Curried produce](https://immerjs.github.io/immer/curried-produce/) 참고하거나
+
+코드를 참고해서 produce로 reducer를 변경
+
+# back-end
+
+- nodejs : js runtime engin
+
+- 실제 통신은 http 모듈을 사용
+
+- babel을 사용하지 않는 컨밴션이 있음
+
+- express, nodemon, eslint등 기본 적인 설치 진행
+
+# back-end server router 생성
+
+'api/user', 'api/post' 등 api라우터 생성
+
+# CORS (Cross Origin Resource Sharing)
+
+![cors](test/cors%20error.png)
+
+위 사진처럼 직접 작성하거나 cors 관련 패키지를 사용 할 수 있음
+
+`npm i cors`
+
+```js
+// app.js
+app.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
+```
+
+# ㅁ
