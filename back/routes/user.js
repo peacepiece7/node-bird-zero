@@ -1,9 +1,35 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 // ref 1
 const { User } = require('../models/index');
 
 const userRouter = express.Router();
+
+// ref 2
+// userRouter.post('/login', passport.authenticate('local', (error, user, info) => {
+//   if(error){
+//     console.error(error)
+//   }
+// }));
+userRouter.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return console.error(err);
+    }
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async (loginErr) => {
+      // ref 3
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+});
 
 userRouter.post('/', async (req, res, next) => {
   try {
@@ -39,9 +65,12 @@ userRouter.post('/', async (req, res, next) => {
 module.exports = userRouter;
 
 // 1. db = require("../models/index"); db.User랑 같은 distructuring assignment
-// 2.
 // res는 html, buffer(bibary), code(state), header를 보낼 수 있음
 // catch의 콜백 인자로 send의 입력 값을 가져올 수 있음, catch(err => console.log(err.response.data))
+
+// 2. middleware extension
+// express 기법 중 하나로 미들웨어를 확장하는 방법
+
 // 3. async는 create이 끝나기 전에 res.json()이 실행되는 걸 방지
 // 4.
 // status 200 성공

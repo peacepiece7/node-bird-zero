@@ -21,11 +21,12 @@ import {
   FOLLOW_SUCCESS,
 } from "../reducers/user";
 
-// function logInAPI() {
-//   return axios.post('/api/login')
-// }
+function logInAPI(data) {
+  return axios.post("/api/login", data);
+}
 function* logIn(action) {
   try {
+    yield call(logInAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOG_IN_SUCCESS,
@@ -55,7 +56,7 @@ function* logOut() {
   }
 }
 function signUpAPI(data) {
-  return axios.post("http://localhost:3065/user", data);
+  return axios.post("/user", data);
 }
 function* signUp(action) {
   try {

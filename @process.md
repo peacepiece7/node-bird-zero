@@ -415,4 +415,11 @@ app.use(
 );
 ```
 
-# ㅁ
+# passport
+
+```
+npm i passport passport-local
+```
+
+passport는 각종 소셜 로그인 stretegy을 가지고 이를 제공함
+passport-local은 id, password || email, password로 로그인 하도록 도와주는 역할을 함

@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./models');
 
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+
+const db = require('./models');
+const passportConfig = require('./passport');
 
 // ref 1
 db.sequelize
@@ -12,6 +14,7 @@ db.sequelize
     console.log('connect to db 🟢');
   })
   .catch(console.log);
+passportConfig();
 
 const app = express();
 
@@ -20,6 +23,7 @@ app.use(
     origin: '*',
   })
 );
+
 // ref 2
 app.use(express.json());
 // ref 3
