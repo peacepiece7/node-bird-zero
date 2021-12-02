@@ -1,9 +1,8 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const passport = require('passport');
+const express = require("express");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
 // ref 1
-const { User } = require('../models/index');
-
+const { User, Post } = require("../models");
 const userRouter = express.Router();
 
 // ref 2
@@ -12,26 +11,57 @@ const userRouter = express.Router();
 //     console.error(error)
 //   }
 // }));
-userRouter.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+// ref 2-1
+userRouter.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
     if (err) {
       return console.error(err);
     }
     if (info) {
-      return res.status(401).send(info.reason);
+      return res.status(401).send(info.reason); // status 401, unauthorized
     }
+    // ref 3
     return req.login(user, async (loginErr) => {
-      // ref 3
-      if (loginErr) {
-        console.error(loginErr);
-        return next(loginErr);
+      console.log(user);
+      console.log(loginErr);
+      try {
+        if (!loginErr) {
+          console.error(loginErr);
+          return next(loginErr);
+        }
+
+        const fullUserWithoutPassword = await User.findOne({
+          where: { id: user.id },
+          // attributes : ['id', 'nickname', 'email'],
+          attributes: {
+            exclude: ["password"],
+          },
+          include: [
+            {
+              model: Post,
+            },
+            {
+              model: User,
+              as: "Followings",
+            },
+            {
+              model: User,
+              as: "Followers",
+            },
+          ],
+        });
+        console.log(fullUserWithoutPassword);
+        // result 사용자 정보를 front로 넘김
+        return res.status(200).json(fullUserWithoutPassword);
+        // res.setHeader("Cookie", "f43tr3rasd")도 passport.login에서 보내줌
+      } catch (error) {
+        console.log(error);
       }
-      return res.json(user);
     });
   })(req, res, next);
 });
 
-userRouter.post('/', async (req, res, next) => {
+userRouter.post("/", async (req, res, next) => {
   try {
     const exUser = await User.findOne({
       where: {
@@ -39,10 +69,9 @@ userRouter.post('/', async (req, res, next) => {
       },
     });
     if (exUser) {
-      // ref 2
-      return res.status(403).send('email already exists');
+      return res.status(403).send("email already exists");
     }
-    // ref 3
+    // ref 4
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     // .then((hashedPwd) => {
     //   console.log("Hashed Password is ", hashedPwd);
@@ -54,11 +83,10 @@ userRouter.post('/', async (req, res, next) => {
       nickname: req.body.nickname,
       password: hashedPassword,
     });
-    res.status(201).send('ok');
+    res.status(201).send("ok"); // status 201, Created
   } catch (err) {
-    // ref 4
     console.log(err);
-    next(err); // status 500
+    next(err); // status 500, interal server error(비동기 에러), next로 에러를 넘김
   }
 });
 
@@ -70,8 +98,14 @@ module.exports = userRouter;
 
 // 2. middleware extension
 // express 기법 중 하나로 미들웨어를 확장하는 방법
+// 주석처럼 작성하면 req,res,next를 쓸 수 없음
 
-// 3. async는 create이 끝나기 전에 res.json()이 실행되는 걸 방지
-// 4.
-// status 200 성공
-// status 201 잘 생성 됨
+// 2-1
+// passport.local.js에서 done(null, user)으로 보낸 user가 passport.authenticate의 두 번째 인자로 들어감
+// passport.authenticate("local", (err, user, info) => {})
+
+// 3
+// local login이 아니라 passport에 로그인하는 메서드
+// passport를 사용하면 local login, passport login 두 번 처리해줘야 함
+
+// 4. async는 User.create이 끝나기 전에 res.json()이 실행되는 걸 방지, hasing하고 user.create실행하고

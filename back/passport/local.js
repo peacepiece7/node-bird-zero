@@ -1,14 +1,14 @@
-const passport = require('passport');
-const { Strategy: LocalStrategy } = require('passport-local');
-const { User } = require('../models');
-const bcrypt = require('bcrypt');
+const passport = require("passport");
+const { Strategy: LocalStrategy } = require("passport-local");
+const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 module.exports = () => {
   passport.use(
     new LocalStrategy(
       {
-        usernameField: 'email',
-        passwordField: 'password',
+        usernameField: "email",
+        passwordField: "password",
       },
       async (email, password, done) => {
         try {
@@ -16,13 +16,13 @@ module.exports = () => {
             where: { email },
           });
           if (!user) {
-            return done(null, false, { reason: '존재하지 않는 이메일입니다.' });
+            return done(null, false, { reason: "존재하지 않는 이메일입니다." });
           }
-          const result = bcrypt.compare(password, user.password);
+          const result = await bcrypt.compare(password, user.password);
           if (result) {
-            return done(null, user);
+            return done(null, user, null);
           }
-          return done(null, false, { reason: '비밀번호가 틀렸습니다.' });
+          return done(null, false, { reason: "비밀번호가 틀렸습니다." });
         } catch (error) {
           console.log(error);
           return done(error);

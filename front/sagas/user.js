@@ -22,7 +22,7 @@ import {
 } from "../reducers/user";
 
 function logInAPI(data) {
-  return axios.post("/api/login", data);
+  return axios.post("/user/login", data);
 }
 function* logIn(action) {
   try {
@@ -40,7 +40,7 @@ function* logIn(action) {
   }
 }
 // function logOutAPI() {
-//   return axios.post('/api/logout')
+//   return axios.post('/user/logout')
 // }
 function* logOut() {
   try {
@@ -77,7 +77,7 @@ function* signUp(action) {
   }
 }
 // function changeNicknameAPI(){
-//   return axios.post("api/changeNickname")
+//   return axios.post("user/changeNickname")
 // }
 function* changeNickname(action) {
   try {
@@ -94,7 +94,7 @@ function* changeNickname(action) {
 }
 
 // function followAPI() {
-//   return axios.post('/api/follow');
+//   return axios.post('/user/follow');
 // }
 
 function* follow(action) {
@@ -115,7 +115,7 @@ function* follow(action) {
 }
 
 // function unfollowAPI() {
-//   return axios.post('/api/unfollow');
+//   return axios.post('/user/unfollow');
 // }
 
 function* unfollow(action) {

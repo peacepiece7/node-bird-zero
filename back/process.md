@@ -173,3 +173,14 @@ db.sequelize
 실무에서는 table이 수백개가 넘어가는 경우도 있어서 ERD로 도식호 함
 
 jetBrains가 있음
+
+# passport
+
+1. front에서 user/login으로 POST 로그인 요청
+2. back-end의 user/login router에서 요청을 받고 passport.authenticate 수행
+3. 로그인 성공시 json형태로 유저 정보를 front에 보냄
+
+back-end server => session(쿠키 상자),
+browser => cookie
+
+session 저장용 db => redis

@@ -1,17 +1,22 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
-const userRouter = require('./routes/user');
-const postRouter = require('./routes/post');
+const userRouter = require("./routes/user");
+const postRouter = require("./routes/post");
 
-const db = require('./models');
-const passportConfig = require('./passport');
+const db = require("./models");
+const passportConfig = require("./passport");
 
+dotenv.config();
 // ref 1
 db.sequelize
   .sync()
   .then(() => {
-    console.log('connect to db 🟢');
+    console.log("connect to db 🟢");
   })
   .catch(console.log);
 passportConfig();
@@ -20,7 +25,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
   })
 );
 
@@ -28,16 +33,26 @@ app.use(
 app.use(express.json());
 // ref 3
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get('/', (req, res) => {
-  res.send('Hello');
+app.get("/", (req, res) => {
+  res.send("Hello");
 });
 
-app.use('/user', userRouter);
-app.use('/post', postRouter);
+app.use("/user", userRouter);
+app.use("/post", postRouter);
 
 app.listen(3065, () => {
-  console.log('Listen : 3065 port');
+  console.log("Listen : 3065 port");
 });
 
 // 1. npx requelize db:create
