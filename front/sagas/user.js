@@ -26,11 +26,11 @@ function logInAPI(data) {
 }
 function* logIn(action) {
   try {
-    yield call(logInAPI, action.data);
+    const result = yield call(logInAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -39,12 +39,12 @@ function* logIn(action) {
     });
   }
 }
-// function logOutAPI() {
-//   return axios.post('/user/logout')
-// }
+function logOutAPI() {
+  return axios.post("/user/logout");
+}
 function* logOut() {
   try {
-    yield delay(1000);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });

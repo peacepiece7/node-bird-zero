@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import useInput from "../hooks/useInput";
-import { loginRequestAction } from "../reducers/user";
+import { LOG_IN_REQUEST } from "../reducers/user";
 
 // ref 1
 const FormWrapper = styled(Form)`
@@ -33,7 +33,10 @@ const LoginForm = () => {
 
   const onSubmitForm = useCallback(() => {
     // ref 3 e.preventDefault()
-    dispatch(loginRequestAction({ email, password }));
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: { email, password },
+    });
   }, [email, password]);
 
   return (

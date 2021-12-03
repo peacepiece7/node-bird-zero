@@ -13,7 +13,6 @@ import {
 
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  console.log("currentSlide is..", currentSlide);
 
   return (
     <Overlay>

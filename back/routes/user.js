@@ -22,8 +22,6 @@ userRouter.post("/login", (req, res, next) => {
     }
     // ref 3
     return req.login(user, async (loginErr) => {
-      console.log(user);
-      console.log(loginErr);
       try {
         if (!loginErr) {
           console.error(loginErr);
@@ -50,9 +48,9 @@ userRouter.post("/login", (req, res, next) => {
             },
           ],
         });
-        console.log(fullUserWithoutPassword);
         // result 사용자 정보를 front로 넘김
-        return res.status(200).json(fullUserWithoutPassword);
+        console.log("FULL USER WITHORUT PASSWORD", fullUserWithoutPassword.dataValues);
+        return res.status(200).json(fullUserWithoutPassword.dataValues);
         // res.setHeader("Cookie", "f43tr3rasd")도 passport.login에서 보내줌
       } catch (error) {
         console.log(error);

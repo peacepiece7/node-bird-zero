@@ -10,7 +10,7 @@ import { SIGN_UP_REQUEST, SIGN_UP_INIT } from "../reducers/user";
 
 const Signup = function () {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector(
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
     (state) => state.user
   );
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -21,13 +21,14 @@ const Signup = function () {
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
-
   useEffect(() => {
-    console.log("SIGN UP ERROR :", signUpError);
-    console.log("SIGN UP DONE", signUpDone);
-    console.log("SIGN UP LOADING", signUpLoading);
+    if (me && me.id) {
+      Router.replace("/");
+    }
+  }, [me && me.id]);
+  useEffect(() => {
     if (signUpDone) {
-      Router.push("/");
+      Router.replace("/");
       dispatch({
         type: SIGN_UP_INIT,
       });
@@ -36,7 +37,6 @@ const Signup = function () {
 
   useEffect(() => {
     if (signUpError) {
-      console.log("ALERT");
       // eslint-disable-next-line no-alert
       alert("email is already existed");
     }

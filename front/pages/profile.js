@@ -6,8 +6,7 @@ import AppLayout from "../components/AppLayout";
 import NicknameEditForm from "../components/NicknameEditForm";
 import FollowList from "../components/FollowList";
 
-const Profile = function (props) {
-  console.log(props);
+const Profile = function () {
   const { me } = useSelector((state) => state.user);
 
   return (
