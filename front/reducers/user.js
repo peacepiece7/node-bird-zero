@@ -66,22 +66,19 @@ export const loginFailureAction = (data) => {
   };
 };
 // LOG OUT ACTIONS
-export const logoutRequestAction = (data) => {
+export const logoutRequestAction = () => {
   return {
     type: LOG_OUT_REQUEST,
-    data,
   };
 };
-export const logoutSuccessAction = (data) => {
+export const logoutSuccessAction = () => {
   return {
     type: LOG_OUT_SUCCESS,
-    data,
   };
 };
-export const logoutFailureAction = (data) => {
+export const logoutFailureAction = () => {
   return {
     type: LOG_OUT_FAILURE,
-    data,
   };
 };
 // SIGN UP ACTIONS
