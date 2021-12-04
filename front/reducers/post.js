@@ -160,25 +160,25 @@ export const addCommentFailure = (data) => {
 };
 // DUMMY DATA
 
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: "제로초",
-  },
-  Images: [],
-  Comments: [],
-});
+// const dummyPost = (data) => ({
+//   id: data.id,
+//   content: data.content,
+//   User: {
+//     id: 1,
+//     nickname: "제로초",
+//   },
+//   Images: [],
+//   Comments: [],
+// });
 
-const dummyComment = (data) => ({
-  id: nanoid(), // postId
-  content: data,
-  User: {
-    id: 1,
-    nickname: "zerocho",
-  },
-});
+// const dummyComment = (data) => ({
+//   id: nanoid(), // postId
+//   content: data,
+//   User: {
+//     id: 1,
+//     nickname: "zerocho",
+//   },
+// });
 
 // REDUCER
 const postReducer = (state = initialState, { type, error, data } = {}) =>
@@ -241,8 +241,8 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         break;
       // ref 1
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.mainPosts.find((v) => v.id === data.postId);
-        post.Comments.unshift(dummyComment(data.content));
+        const post = draft.mainPosts.find((v) => v.id === data.PostId);
+        post.Comments.unshift(data.content);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

@@ -1,6 +1,9 @@
 import { produce } from "immer";
 
 export const initialState = {
+  loadUserLoading: false, // 유저 정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
   followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
@@ -23,6 +26,9 @@ export const initialState = {
   signUpData: {},
   loginData: {},
 };
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
@@ -100,11 +106,7 @@ export const signUpFailureAction = (data) => {
     data,
   };
 };
-export const signUpInitAction = () => {
-  return {
-    type: SIGN_UP_INIT,
-  };
-};
+
 // CHANGE NICKANME ACTIONS
 export const changeNicknameRequestAction = (data) => {
   return {
@@ -209,6 +211,21 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.logOutError = error;
         draft.me = error;
         break;
+      // LOAD USER CASE
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.me = data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = error;
+        break;
       // SIGN UP CASE
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
@@ -222,11 +239,6 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false;
         draft.signUpError = error;
-        break;
-      case SIGN_UP_INIT:
-        draft.signUpLoading = false;
-        draft.signUpDone = false;
-        draft.signUpError = null;
         break;
       // CHANGE NICKNAME CASE
       case CHANGE_NICKNAME_REQUEST:

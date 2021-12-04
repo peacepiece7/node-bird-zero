@@ -6,6 +6,67 @@ const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const userRouter = express.Router();
 
+// SIGN UP
+userRouter.post('/', async (req, res, next) => {
+  try {
+    const exUser = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+    if (exUser) {
+      return res.status(403).send('이미 사용중이 이메일 입니다.');
+    }
+    // ref 4
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+    await User.create({
+      email: req.body.email,
+      nickname: req.body.nickname,
+      password: hashedPassword,
+    });
+    res.status(201).send('ok'); // status 201, Created
+  } catch (err) {
+    console.log(err);
+    next(err); // status 500, interal server error(비동기 에러), next로 에러를 넘김
+  }
+});
+
+userRouter.get('/', async (req, res, next) => {
+  // GET /user
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password'],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+        ],
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // ref 2
 // userRouter.post('/login', passport.authenticate('local', (error, user, info) => {
 //   if(error){
@@ -13,11 +74,11 @@ const userRouter = express.Router();
 //   }
 // }));
 // ref 2-1
-userRouter.post('/login', (req, res, next) => {
-  console.log('유저 정보 비교 하는 중');
+userRouter.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      return console.error(err);
+      console.error(err);
+      return next(err);
     }
     if (info) {
       return res.status(401).send(info.reason); // status 401, unauthorized
@@ -30,7 +91,6 @@ userRouter.post('/login', (req, res, next) => {
           console.error(loginErr);
           return next(loginErr);
         }
-
         const fullUserWithoutPassword = await User.findOne({
           where: { id: user.id },
           // attributes : ['id', 'nickname', 'email'],
@@ -52,6 +112,7 @@ userRouter.post('/login', (req, res, next) => {
           ],
         });
         // result 사용자 정보를 front로 넘김
+        console.log('fullIserWithoutpassword,', fullUserWithoutPassword);
         return res.status(200).json(fullUserWithoutPassword);
         // res.setHeader("Cookie", "f43tr3rasd")도 passport.login에서 보내줌
       } catch (error) {
@@ -63,38 +124,10 @@ userRouter.post('/login', (req, res, next) => {
 });
 
 userRouter.post('/logout', (req, res) => {
+  console.log('LOGOUT 여기에 req.user가 나와야 함', req.user);
   req.logout();
   req.session.destroy();
   res.status(201).send('로그아웃 되었습니다.');
-});
-
-userRouter.post('/', async (req, res, next) => {
-  try {
-    const exUser = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-    if (exUser) {
-      return res.status(403).send('email already exists');
-    }
-    // ref 4
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    // .then((hashedPwd) => {
-    //   console.log("Hashed Password is ", hashedPwd);
-    //   return hashedPwd;
-    // });
-    // console.log(" sync Hashed Password is ", hashedPwd);
-    await User.create({
-      email: req.body.email,
-      nickname: req.body.nickname,
-      password: hashedPassword,
-    });
-    res.status(201).send('ok'); // status 201, Created
-  } catch (err) {
-    console.log(err);
-    next(err); // status 500, interal server error(비동기 에러), next로 에러를 넘김
-  }
 });
 
 module.exports = userRouter;

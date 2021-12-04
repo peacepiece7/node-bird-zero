@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import TextInput from "../components/TextInput";
 import useInput from "../hooks/useInput";
-import { SIGN_UP_REQUEST, SIGN_UP_INIT } from "../reducers/user";
+import { SIGN_UP_REQUEST } from "../reducers/user";
 
 const Signup = function () {
   const dispatch = useDispatch();
@@ -21,17 +21,16 @@ const Signup = function () {
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
+
   useEffect(() => {
     if (me && me.id) {
       Router.replace("/");
     }
   }, [me && me.id]);
+
   useEffect(() => {
     if (signUpDone) {
       Router.replace("/");
-      dispatch({
-        type: SIGN_UP_INIT,
-      });
     }
   }, [signUpDone]);
 

@@ -12,6 +12,8 @@ const db = require('./models');
 const passportConfig = require('./passport');
 
 dotenv.config();
+
+const app = express();
 // ref 1
 db.sequelize
   .sync()
@@ -21,12 +23,12 @@ db.sequelize
   .catch(console.error);
 passportConfig();
 
-const app = express();
-
 app.use(
   cors({
     // Access-Control-Allow-Origin
-    origin: '*',
+    origin: 'http://localhost:3060',
+    // origin: true,
+    // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
     // Access-Control-Allow-Credentials
     credentials: true,
   })
