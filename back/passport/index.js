@@ -1,19 +1,22 @@
-const passport = require("passport");
-const { User } = require("../models");
-const local = require("./local");
+const passport = require('passport');
+const local = require('./local');
+const { User } = require('../models');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
-    done(user.id);
+    // 서버쪽에 [{ id: 1, cookie: 'clhxy' }]
+    done(null, user.id);
   });
+
   passport.deserializeUser(async (id, done) => {
     try {
-      const user = await User.fineOne({ where: { id } });
-      done(null, user);
+      const user = await User.findOne({ where: { id } });
+      done(null, user); // req.user
     } catch (error) {
-      console.log(error);
+      console.error(error);
       done(error);
     }
   });
+
   local();
 };

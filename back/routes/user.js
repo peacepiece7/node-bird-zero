@@ -13,7 +13,8 @@ const userRouter = express.Router();
 //   }
 // }));
 // ref 2-1
-userRouter.post('/login', isNotLoggedIn, (req, res, next) => {
+userRouter.post('/login', (req, res, next) => {
+  console.log('유저 정보 비교 하는 중');
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       return console.error(err);
@@ -24,7 +25,8 @@ userRouter.post('/login', isNotLoggedIn, (req, res, next) => {
     // ref 3
     return req.login(user, async (loginErr) => {
       try {
-        if (!loginErr) {
+        if (loginErr) {
+          console.log('@ Fail to passport login @');
           console.error(loginErr);
           return next(loginErr);
         }
@@ -50,20 +52,20 @@ userRouter.post('/login', isNotLoggedIn, (req, res, next) => {
           ],
         });
         // result 사용자 정보를 front로 넘김
-        console.log('FULL USER WITHORUT PASSWORD', fullUserWithoutPassword.dataValues);
-        return res.status(200).json(fullUserWithoutPassword.dataValues);
+        return res.status(200).json(fullUserWithoutPassword);
         // res.setHeader("Cookie", "f43tr3rasd")도 passport.login에서 보내줌
       } catch (error) {
+        console.log('error : userRouter.post');
         console.log(error);
       }
     });
   })(req, res, next);
 });
 
-userRouter.post('/logout', isLoggedIn, (req, res) => {
+userRouter.post('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
-  res.send('ok');
+  res.status(201).send('로그아웃 되었습니다.');
 });
 
 userRouter.post('/', async (req, res, next) => {

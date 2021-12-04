@@ -16,21 +16,25 @@ dotenv.config();
 db.sequelize
   .sync()
   .then(() => {
-    console.log('connect to db 🟢');
+    console.log('db 연결 성공');
   })
-  .catch(console.log);
+  .catch(console.error);
 passportConfig();
 
 const app = express();
 
 app.use(
   cors({
+    // Access-Control-Allow-Origin
     origin: '*',
+    // Access-Control-Allow-Credentials
+    credentials: true,
   })
 );
 
 // ref 2
 app.use(express.json());
+
 // ref 3
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -39,6 +43,9 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      secure: false,
+    },
   })
 );
 app.use(passport.initialize());
@@ -47,7 +54,6 @@ app.use(passport.session());
 app.get('/', (req, res) => {
   res.send('Hello');
 });
-
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 

@@ -207,7 +207,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
       case LOG_OUT_FAILURE:
         draft.logOutLoading = true;
         draft.logOutError = error;
-        draft.me = null;
+        draft.me = error;
         break;
       // SIGN UP CASE
       case SIGN_UP_REQUEST:

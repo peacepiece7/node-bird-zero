@@ -40,7 +40,7 @@ function* loadPost() {
 
 // ADD POST
 function addPostAPI(data) {
-  return axios.post("/post", data);
+  return axios.post("/post", { content: data });
 }
 function* addPost(action) {
   try {

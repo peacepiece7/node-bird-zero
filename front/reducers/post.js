@@ -208,6 +208,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.addPostError = null;
         break;
       case ADD_POST_SUCCESS:
+        console.log("최종적으로 mainPosts에 추가되는 데이터 : ", data);
         draft.mainPosts.unshift(data);
         draft.addPostLoading = false;
         draft.addPostDone = true;

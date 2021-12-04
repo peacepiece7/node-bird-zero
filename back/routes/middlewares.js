@@ -1,18 +1,27 @@
 // ref 1
 exports.isLoggedIn = (req, res, next) => {
-  console.log('@@@isAuthrebticated', req.isAuthenticated());
+  console.log('isAuthenticated', req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(403).send('접근할 수 없습니다.');
+
+  console.log('로그인 상태여야 필요합니다!');
+  res.status(401).send('로그인이 필요합니다.');
 };
 
 exports.isNotLoggedIn = (req, res, next) => {
-  console.log('@@@isAuthrebticated', req.isAuthenticated());
+  console.log('isAuthenticated', req.isAuthenticated());
   if (!req.isAuthenticated()) {
     return next();
   }
-  res.status(403).send('접근할 수 없습니다.');
+
+  console.log('로그아웃 상태여야 합니다!');
+  res.status(401).send('로그인하지 않은 사용자만 접근 가능합니다.');
+};
+
+exports.loginMiddlewareTest = (req, res, next) => {
+  console.log('isAuthticated are', req.isAuthenticated());
+  next();
 };
 
 // 1. next(err)

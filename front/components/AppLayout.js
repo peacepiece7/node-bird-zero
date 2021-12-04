@@ -16,6 +16,7 @@ const SearchInput = styled(Input.Search)`
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
+  console.log(me);
 
   // ref 1
   return (
