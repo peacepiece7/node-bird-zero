@@ -95,7 +95,7 @@ function addCommentAPI(data) {
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
-    yield delay(1000);
+    console.log("add comment backend로 부터 받은 데이터, ", result.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: result.data,

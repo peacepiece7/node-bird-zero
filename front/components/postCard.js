@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Button, Card, Avatar, Popover, List, Comment } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Link from "next/link";
 
 import {
   RetweetOutlined,
@@ -32,21 +31,20 @@ const PostCard = ({ post }) => {
   const { me } = useSelector((state) => state.user);
   const id = me && me.id;
 
-  const onToggleLike = useCallback(() => {
+  const onToggleLike = () => {
     setLiked((prev) => !prev);
-  });
-  const onToggleComment = useCallback(() => {
+  };
+  const onToggleComment = () => {
     setCommentFormOpened((prev) => !prev);
-  });
+  };
 
-  const onRemovePost = useCallback(() => {
+  const onRemovePost = () => {
     dispatch({
       type: REMOVE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
+  };
 
-  console.log("post card : ", post);
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -101,6 +99,8 @@ const PostCard = ({ post }) => {
           <List
             header={`${post.Comments.length}개의 댓글`}
             itemLayout="horizontal"
+            // 1) post.Comments에 User.nickname을 추가
+            // 2) post를 받아와서 User.nicknamed을 추가 (poster의 nickname)
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>

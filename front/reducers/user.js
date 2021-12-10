@@ -127,24 +127,25 @@ export const changeNicknameFailureAction = (data) => {
   };
 };
 // DUMMY DATA
-const dummyUser = (data) => {
-  return {
-    ...data,
-    nickname: "zerocho",
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [
-      { nickanme: "aa", id: "bbdsdf" },
-      { nickanme: "aaa", id: "bbcx" },
-      { nickanme: "abbba", id: "zzxcz" },
-    ],
-    Followers: [
-      { nickanme: "aa", id: "bbdsdf" },
-      { nickanme: "aaa", id: "bbcx" },
-      { nickanme: "abbba", id: "zzxcz" },
-    ],
-  };
-};
+// const dummyUser = (data) => {
+//   return {
+//     ...data,
+//     nickname: "zerocho",
+//     id: 1,
+//     Posts: [{ id: 1 }],
+//     Followings: [
+//       { nickanme: "aa", id: "bbdsdf" },
+//       { nickanme: "aaa", id: "bbcx" },
+//       { nickanme: "abbba", id: "zzxcz" },
+//     ],
+//     Followers: [
+//       { nickanme: "aa", id: "bbdsdf" },
+//       { nickanme: "aaa", id: "bbcx" },
+//       { nickanme: "abbba", id: "zzxcz" },
+//     ],
+//   };
+// };
+
 // REDUCER
 const userReducer = (state = initialState, { type, error, data } = {}) =>
   // eslint-disable-next-line consistent-return

@@ -1,10 +1,10 @@
-const express = require("express");
-const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
-const { Post, Image, Comment, User } = require("../models");
+const express = require('express');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { Post, Image, Comment, User } = require('../models');
 
 const postRouter = express.Router();
 
-postRouter.post("/", async (req, res) => {
+postRouter.post('/', async (req, res) => {
   try {
     // save to db
     const post = await Post.create({
@@ -23,17 +23,17 @@ postRouter.post("/", async (req, res) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ['id', 'nickname'],
             },
           ],
         },
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ['id', 'nickname'],
         },
       ],
     });
-    console.log("포스트가 생성되었습니다.post josn객체와 ADD_POST_SUCCESS를 반환합다");
+    console.log('포스트가 생성되었습니다.post josn객체와 ADD_POST_SUCCESS를 반환합다');
     res.status(201).json(fullPost);
   } catch (error) {
     console.log(error);
@@ -41,17 +41,17 @@ postRouter.post("/", async (req, res) => {
   }
 });
 
-postRouter.post("/:postId/comment", async (req, res) => {
+postRouter.post('/:postId/comment', async (req, res) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
     });
     if (!post) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
+      return res.status(403).send('존재하지 않는 게시글입니다.');
     }
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: parseInt(req.params.postId),
+      PostId: parseInt(req.params.postId, 10),
       UserId: req.user.id,
     });
     const fullComment = await Comment.findOne({
@@ -59,7 +59,7 @@ postRouter.post("/:postId/comment", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ['id', 'nickname'],
         },
       ],
     });

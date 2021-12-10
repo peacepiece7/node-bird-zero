@@ -207,7 +207,6 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.addPostError = null;
         break;
       case ADD_POST_SUCCESS:
-        console.log("최종적으로 mainPosts에 추가되는 데이터 : ", data);
         draft.mainPosts.unshift(data);
         draft.addPostLoading = false;
         draft.addPostDone = true;
@@ -241,7 +240,8 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
       // ref 1
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === data.PostId);
-        post.Comments.unshift(data.content);
+        post.Comments.unshift(data);
+
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
