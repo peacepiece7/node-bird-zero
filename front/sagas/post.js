@@ -14,21 +14,20 @@ import {
   REMOVE_POST_FAILURE,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
-  generateDummyPost,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
 // LOAD POST
-// function loadPostAPI(data) {
-//   return axios.post('/api/posts', data)
-// }
-function* loadPost() {
+function loadPostAPI(data) {
+  return axios.post("/posts", data);
+}
+function* loadPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data)
+    const result = yield call(loadPostAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOAD_POST_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     });
   } catch (err) {
     yield put({

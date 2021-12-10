@@ -1,6 +1,4 @@
-import { nanoid } from "nanoid";
 import { produce } from "immer";
-import faker from "faker";
 
 // * 성능 최적화 고려사항
 // Curried produce로 immer사용
@@ -60,30 +58,30 @@ export const initialState = {
   addCommentError: null,
 };
 
-export const generateDummyPost = (number) => {
-  return Array(number)
-    .fill()
-    .map(() => {
-      return {
-        id: nanoid(),
-        User: {
-          id: nanoid(),
-          nickname: faker.name.findName(),
-        },
-        content: faker.lorem.paragraph(),
-        Images: [{ src: faker.image.image() }],
-        Comments: [
-          {
-            User: {
-              id: 1,
-              nickname: "zerocho",
-            },
-            content: faker.lorem.sentence(),
-          },
-        ],
-      };
-    });
-};
+// export const generateDummyPost = (number) => {
+//   return Array(number)
+//     .fill()
+//     .map(() => {
+//       return {
+//         id: nanoid(),
+//         User: {
+//           id: nanoid(),
+//           nickname: faker.name.findName(),
+//         },
+//         content: faker.lorem.paragraph(),
+//         Images: [{ src: faker.image.image() }],
+//         Comments: [
+//           {
+//             User: {
+//               id: 1,
+//               nickname: "zerocho",
+//             },
+//             content: faker.lorem.sentence(),
+//           },
+//         ],
+//       };
+//     });
+// };
 
 export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
 export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";

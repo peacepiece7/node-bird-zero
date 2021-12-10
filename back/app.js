@@ -1,15 +1,17 @@
-const express = require('express');
-const cors = require('cors');
-const passport = require('passport');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const passport = require("passport");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
-const userRouter = require('./routes/user');
-const postRouter = require('./routes/post');
+const userRouter = require("./routes/user");
+const postsRouter = require("./routes/posts");
+const postRouter = require("./routes/post");
 
-const db = require('./models');
-const passportConfig = require('./passport');
+const db = require("./models");
+const passportConfig = require("./passport");
 
 dotenv.config();
 
@@ -18,15 +20,15 @@ const app = express();
 db.sequelize
   .sync()
   .then(() => {
-    console.log('db 연결 성공');
+    console.log("db 연결 성공");
   })
   .catch(console.error);
 passportConfig();
-
+app.use(morgan("dev"));
 app.use(
   cors({
     // Access-Control-Allow-Origin
-    origin: 'http://localhost:3060',
+    origin: "http://localhost:3060",
     // origin: true,
     // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
     // Access-Control-Allow-Credentials
@@ -53,17 +55,18 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => {
-  res.send('Hello');
+app.get("/", (req, res) => {
+  res.send("Hello");
 });
-app.use('/user', userRouter);
-app.use('/post', postRouter);
+app.use("/user", userRouter);
+app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 
 // error page (test middleware)
 // app.use((err, req, res, next) => { } });
 
 app.listen(3065, () => {
-  console.log('Listen : 3065 port');
+  console.log("Listen : 3065 port");
 });
 
 // 1. npx requelize db:create
