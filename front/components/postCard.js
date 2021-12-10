@@ -46,6 +46,7 @@ const PostCard = ({ post }) => {
     });
   }, []);
 
+  console.log("post card : ", post);
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -105,16 +106,7 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={
-                    <Link
-                      href={{ pathname: "/user", query: { id: item.User.id } }}
-                      as={`/user/${item.User.id}`}
-                    >
-                      <a>
-                        <Avatar>{item.User.nickname[0]}</Avatar>
-                      </a>
-                    </Link>
-                  }
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
                   content={item.content}
                 />
               </li>

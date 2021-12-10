@@ -5,8 +5,10 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
+    const where = {};
     // ref 1
     const posts = await Post.findAll({
+      where,
       limit: 10,
       order: [
         ["createdAt", "DESC"],
@@ -15,6 +17,7 @@ router.get("/", async (req, res, next) => {
       include: [
         {
           model: User,
+          attributes: ["id", "nickname"],
         },
         {
           model: Image,
@@ -30,7 +33,7 @@ router.get("/", async (req, res, next) => {
         },
       ],
     });
-
+    console.log("BACKEBND POSTS", posts);
     res.status(200).json(posts);
   } catch (error) {
     console.log(error);

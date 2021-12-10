@@ -22,7 +22,10 @@ const UserProfile = () => {
         <div key="followings">following<br />{me.Followings.length}</div>,
         <div key="follower">follower<br />{me.Followers.length}</div>,]}
     >
-      <Card.Meta avatar={<Avatar>{me?.nickname[0]}</Avatar>} title="ACTION" />
+      <Card.Meta
+        avatar={<Avatar>{me?.nickname[0]}</Avatar>}
+        title={me?.nickname}
+      />
       <Button htmlType="submit" onClick={onLogOut} loading={logOutLoading}>
         로그아웃
       </Button>

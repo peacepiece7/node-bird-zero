@@ -21,11 +21,11 @@ const Home = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_USER_REQUEST,
-  //   });
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+  }, []);
 
   function onScroll() {
     const scrolledY = window.scrollY;

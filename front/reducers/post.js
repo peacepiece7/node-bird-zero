@@ -190,6 +190,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.loadPostError = null;
         break;
       case LOAD_POST_SUCCESS:
+        console.log("LOAD_POST_SUCCESS,", data);
         draft.mainPosts = data.concat(draft.mainPosts);
         draft.loadPostLoading = false;
         draft.loadPostDone = true;
