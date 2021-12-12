@@ -1,6 +1,5 @@
 // ref 1
 exports.isLoggedIn = (req, res, next) => {
-  console.log('isAuthenticated', req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }
@@ -9,7 +8,6 @@ exports.isLoggedIn = (req, res, next) => {
 };
 
 exports.isNotLoggedIn = (req, res, next) => {
-  console.log('isAuthenticated', req.isAuthenticated());
   if (!req.isAuthenticated()) {
     return next();
   }
@@ -19,7 +17,6 @@ exports.isNotLoggedIn = (req, res, next) => {
 };
 
 exports.loginMiddlewareTest = (req, res, next) => {
-  console.log('isAuthticated are', req.isAuthenticated());
   next();
 };
 

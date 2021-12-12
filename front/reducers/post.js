@@ -56,6 +56,12 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 };
 
 // export const generateDummyPost = (number) => {
@@ -98,6 +104,14 @@ export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+
+export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
+export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
+export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
+
+export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST";
+export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS";
+export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 
 // ADD POST ACTIONS
 export const addPostRequest = (data) => {
@@ -183,6 +197,41 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
   // eslint-disable-next-line consistent-return
   produce(state, (draft) => {
     switch (type) {
+      // LIKE POST CASES
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === data.PostId);
+        post.Likers.push({ id: data.UserId });
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostError = error;
+        break;
+      // UNLIKE POST CASES
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = null;
+        break;
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === data.PostId);
+        // splice로 써야 의미상 맞다고 함
+        post.Likers = post.Likers.filter((v) => v.id !== data.UserId);
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = error;
+        break;
       // LOAD POST CASES
       case LOAD_POST_REQUEST:
         draft.loadPostLoading = true;
@@ -222,7 +271,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS: {
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== data.data);
+        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== data.postId);
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;

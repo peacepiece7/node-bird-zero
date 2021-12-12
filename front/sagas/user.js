@@ -24,10 +24,10 @@ import {
   LOAD_USER_SUCCESS,
 } from "../reducers/user";
 
+// LOAD USER
 function loadUserAPI() {
   return axios.get("/user");
 }
-
 function* loadUser(action) {
   console.log("LOAD USER ACTION DATA", action.data);
   try {
@@ -45,6 +45,7 @@ function* loadUser(action) {
   }
 }
 
+// LOGIN
 function logInAPI(data) {
   return axios.post("/user/login", data);
 }
@@ -63,6 +64,8 @@ function* logIn(action) {
     });
   }
 }
+
+// LOG OUT
 function logOutAPI() {
   return axios.post("/user/logout");
 }
@@ -81,6 +84,8 @@ function* logOut() {
     });
   }
 }
+
+// SIGN UP
 function signUpAPI(data) {
   return axios.post("/user", data);
 }
@@ -102,14 +107,17 @@ function* signUp(action) {
     });
   }
 }
-// function changeNicknameAPI(){
-//   return axios.post("user/changeNickname")
-// }
+
+// CHANGE NICKNAME
+function changeNicknameAPI(data) {
+  return axios.patch(`user/changeNickname`, { nickname: data });
+}
 function* changeNickname(action) {
   try {
+    const result = yield call(changeNicknameAPI, action.data);
     yield put({
       type: CHANGE_NICKNAME_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (error) {
     yield put({

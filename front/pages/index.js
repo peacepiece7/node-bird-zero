@@ -11,10 +11,8 @@ import { LOAD_USER_REQUEST } from "../reducers/user";
 const Home = () => {
   const { me } = useSelector((state) => state.user);
   const { mainPosts, hasMorePosts, loadPostLoading } = useSelector((state) => {
-    console.log("All post state are :", state.post);
     return state.post;
   });
-  console.log("Main Posts are ", mainPosts);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Card, Avatar, Popover, List, Comment } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -16,7 +16,11 @@ import PostImages from "./PostImages";
 import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
-import { REMOVE_POST_REQUEST } from "../reducers/post";
+import {
+  REMOVE_POST_REQUEST,
+  UNLIKE_POST_REQUEST,
+  LIKE_POST_REQUEST,
+} from "../reducers/post";
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -27,24 +31,32 @@ const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const { me } = useSelector((state) => state.user);
-  const id = me && me.id;
+  const id = useSelector((state) => state.user.me?.id);
+  const liked = post.Likers.find((v) => v.id === id);
+  // dispatch 해야함 ~
+  const onUnLike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, []);
 
-  const onToggleLike = () => {
-    setLiked((prev) => !prev);
-  };
-  const onToggleComment = () => {
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, []);
+  const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
-  };
+  }, []);
 
-  const onRemovePost = () => {
+  const onRemovePost = useCallback(() => {
     dispatch({
       type: REMOVE_POST_REQUEST,
       data: post.id,
     });
-  };
-
+  }, []);
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -55,10 +67,10 @@ const PostCard = ({ post }) => {
             <HeartTwoTone
               twoToneColor="#eb2f96"
               key="heart"
-              onClick={onToggleLike}
+              onClick={onUnLike}
             />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLike} />
           ),
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
@@ -120,6 +132,7 @@ const PostCard = ({ post }) => {
 PostCard.propTypes = {
   // ref 2 prop types method
   post: PropTypes.shape({
+    Likers: PropTypes.arrayOf(PropTypes.object),
     id: PropTypes.number,
     User: PropTypes.object,
     UserId: PropTypes.number,

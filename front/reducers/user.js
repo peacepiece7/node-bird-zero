@@ -248,6 +248,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.changeNicknameError = null;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = data.nickname;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;
@@ -259,7 +260,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.me.Posts.unshift({ id: data });
         break;
       case REMOVE_POST_OF_ME: {
-        draft.me.Posts = draft.me.Posts.find((v) => v.id !== data.id);
+        draft.me.Posts = draft.me.Posts.filter((v) => v.id !== data);
         break;
       }
       default:

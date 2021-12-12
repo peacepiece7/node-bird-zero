@@ -4,7 +4,8 @@ const { Post, Image, Comment, User } = require('../models');
 
 const postRouter = express.Router();
 
-postRouter.post('/', async (req, res) => {
+// Add Post
+postRouter.post('/', async (req, res, next) => {
   try {
     // save to db
     const post = await Post.create({
@@ -31,9 +32,14 @@ postRouter.post('/', async (req, res) => {
           model: User,
           attributes: ['id', 'nickname'],
         },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
       ],
     });
-    console.log('포스트가 생성되었습니다.post josn객체와 ADD_POST_SUCCESS를 반환합다');
+
     res.status(201).json(fullPost);
   } catch (error) {
     console.log(error);
@@ -41,10 +47,56 @@ postRouter.post('/', async (req, res) => {
   }
 });
 
-postRouter.post('/:postId/comment', async (req, res) => {
+// Delete post
+postRouter.delete('/:postId', async (req, res, next) => {
+  try {
+    Post.destroy({
+      where: {
+        id: parseInt(req.params.postId, 10),
+        userId: req.user.id,
+      },
+    });
+    res.json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Patch Like
+postRouter.patch('/:postId/like', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.addLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+// Delete Like
+postRouter.delete('/:postId/unlike', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+// Add comment
+postRouter.post('/:postId/comment', async (req, res, next) => {
   try {
     const post = await Post.findOne({
-      where: { id: req.params.postId },
+      where: { id: parseInt(req.params.postId, 10) },
     });
     if (!post) {
       return res.status(403).send('존재하지 않는 게시글입니다.');
