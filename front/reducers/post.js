@@ -271,7 +271,9 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS: {
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== data.postId);
+        draft.mainPosts = draft.mainPosts.filter((v) => {
+          return v.id !== parseInt(data.postId, 10);
+        });
         draft.removePostLoading = false;
         draft.removePostDone = true;
         break;

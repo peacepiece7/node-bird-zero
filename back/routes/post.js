@@ -1,11 +1,11 @@
-const express = require('express');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { Post, Image, Comment, User } = require('../models');
+const express = require("express");
+const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const { Post, Image, Comment, User } = require("../models");
 
 const postRouter = express.Router();
 
 // Add Post
-postRouter.post('/', async (req, res, next) => {
+postRouter.post("/", async (req, res, next) => {
   try {
     // save to db
     const post = await Post.create({
@@ -24,18 +24,18 @@ postRouter.post('/', async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ['id', 'nickname'],
+              attributes: ["id", "nickname"],
             },
           ],
         },
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ["id", "nickname"],
         },
         {
           model: User,
-          as: 'Likers',
-          attributes: ['id'],
+          as: "Likers",
+          attributes: ["id"],
         },
       ],
     });
@@ -48,7 +48,7 @@ postRouter.post('/', async (req, res, next) => {
 });
 
 // Delete post
-postRouter.delete('/:postId', async (req, res, next) => {
+postRouter.delete("/:postId", async (req, res, next) => {
   try {
     Post.destroy({
       where: {
@@ -56,7 +56,7 @@ postRouter.delete('/:postId', async (req, res, next) => {
         userId: req.user.id,
       },
     });
-    res.json({ PostId: parseInt(req.params.postId, 10) });
+    res.status(200).json({ postId: req.params.postId });
   } catch (error) {
     console.log(error);
     next(error);
@@ -64,11 +64,11 @@ postRouter.delete('/:postId', async (req, res, next) => {
 });
 
 // Patch Like
-postRouter.patch('/:postId/like', async (req, res, next) => {
+postRouter.patch("/:postId/like", async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
     if (!post) {
-      return res.status(403).send('게시글이 존재하지 않습니다.');
+      return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await post.addLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
@@ -78,11 +78,11 @@ postRouter.patch('/:postId/like', async (req, res, next) => {
   }
 });
 // Delete Like
-postRouter.delete('/:postId/unlike', async (req, res, next) => {
+postRouter.delete("/:postId/unlike", async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
     if (!post) {
-      return res.status(403).send('게시글이 존재하지 않습니다.');
+      return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await post.removeLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
@@ -93,13 +93,13 @@ postRouter.delete('/:postId/unlike', async (req, res, next) => {
 });
 
 // Add comment
-postRouter.post('/:postId/comment', async (req, res, next) => {
+postRouter.post("/:postId/comment", async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: parseInt(req.params.postId, 10) },
     });
     if (!post) {
-      return res.status(403).send('존재하지 않는 게시글입니다.');
+      return res.status(403).send("존재하지 않는 게시글입니다.");
     }
     const comment = await Comment.create({
       content: req.body.content,
@@ -111,7 +111,7 @@ postRouter.post('/:postId/comment', async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'nickname'],
+          attributes: ["id", "nickname"],
         },
       ],
     });

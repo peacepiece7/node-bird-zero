@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 
-import PostForm from "../components/PostForm";
+import PostForm from "../components/postForm";
 import PostCard from "../components/postCard";
 import AppLayout from "../components/AppLayout";
 import { LOAD_POST_REQUEST } from "../reducers/post";
