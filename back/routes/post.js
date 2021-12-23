@@ -1,6 +1,7 @@
 const express = require("express");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const { Post, Image, Comment, User } = require("../models");
+const { Router } = require("express");
 
 const postRouter = express.Router();
 
