@@ -7,6 +7,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Post, Image, Comment, User } = require('../models');
 
 const postRouter = express.Router();
+
 try {
   fs.accessSync('uploads');
 } catch (error) {
@@ -14,14 +15,43 @@ try {
   fs.mkdirSync('uploads');
 }
 
+const upload = multer({
+  // computer hardware
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.basename(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 제로초
+      done(null, basename + '_' + new Date().getTime() + ext); // 제로초12312414.png
+    },
+  }),
+  // front -> cloud로 바로하는게 좋음
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
 // Add Post
-postRouter.post('/', isLoggedIn, async (req, res, next) => {
+postRouter.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     // save to db
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id || 10,
     });
+
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        // images : [zerocho.png, boogicho.png]
+        // 보통 파일은 s3같은데 올려서 cdn으로 캐싱을 적용하고, db는 image의 주소만 가짐
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
+        await post.addImages(images);
+      } else {
+        // image : zerocho.png
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
     // get post data from db
     const fullPost = await Post.findOne({
       where: { id: post.id },
@@ -132,21 +162,6 @@ postRouter.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   }
 });
 
-const upload = multer({
-  // computer hardware
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    },
-    filename(req, file, done) {
-      const ext = path.basename(file.originalname); // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 제로초
-      done(null, basename + new Date().getTime() + ext); // 제로초12312414.png
-    },
-  }),
-  // front -> cloud로 바로하는게 좋음
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-});
 // upload.none(Text) , fills(input이 두 개 이상), array(여러개), single(하나)
 // Upload Image
 postRouter.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {

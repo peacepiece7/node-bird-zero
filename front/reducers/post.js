@@ -120,6 +120,8 @@ export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 
+export const REMOVE_IMAGE = "REMOVE_IMAGE";
+
 // ADD POST ACTIONS
 export const addPostRequest = (data) => {
   return {
@@ -204,6 +206,11 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
   // eslint-disable-next-line consistent-return
   produce(state, (draft) => {
     switch (type) {
+      // ref 2
+      // REMOVE IMAGE CASE
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== data);
+        break;
       // LIKE POST CASES
       case LIKE_POST_REQUEST:
         draft.likePostLoading = true;
@@ -266,6 +273,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.mainPosts.unshift(data);
         draft.addPostLoading = false;
         draft.addPostDone = true;
+        draft.imagePaths = [];
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
@@ -342,3 +350,7 @@ export default postReducer;
 //   addCommentLoading: false,
 //   addCommentDone: true,
 // };
+
+// 2. 동기 액션이라서 request, success, failture가 없음
+// 동기인 이유, 백엔드와 통신하지 않고 제거 백엔드와 통신하게 되면 req,suc,fail이 필요
+// back-end에 저장된 이미지는 삭제하지 않음 (image는 자산이기 떄문에)

@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST } from "../reducers/post";
+import {
+  ADD_POST_REQUEST,
+  UPLOAD_IMAGES_REQUEST,
+  REMOVE_IMAGE,
+} from "../reducers/post";
 import useInput from "../hooks/useInput";
 
 const PostForm = () => {
@@ -16,17 +20,34 @@ const PostForm = () => {
   }, [imageInput.current]);
 
   const onSubmit = useCallback(() => {
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: text,
+    if (!text || !text.trim()) {
+      // eslint-disable-next-line no-alert
+      return alert("게시글을 작성하세요");
+    }
+    // ref 1
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append("image", p);
     });
-  }, [text]);
+    formData.append("content", text);
+    return dispatch({
+      type: ADD_POST_REQUEST,
+      data: formData,
+    });
+  }, [text, imagePaths]);
 
   useEffect(() => {
     if (addPostDone) {
       setText("");
     }
   }, [addPostDone]);
+
+  const onRemoveImage = useCallback((index) => () => {
+    dispatch({
+      type: REMOVE_IMAGE,
+      data: index,
+    });
+  });
 
   const onChangeImages = useCallback((e) => {
     const imageFormData = new FormData();
@@ -38,7 +59,6 @@ const PostForm = () => {
       data: imageFormData,
     });
   });
-  console.log("imagePath : ", imagePaths);
 
   return (
     <div>
@@ -69,7 +89,7 @@ const PostForm = () => {
         </div>
       </Form>
       <div>
-        {imagePaths.map((v) => (
+        {imagePaths.map((v, i) => (
           <div key={v} style={{ display: "inline-block" }}>
             <img
               src={`http://localhost:3065/${v}`}
@@ -77,7 +97,7 @@ const PostForm = () => {
               alt={v}
             />
             <div>
-              <Button>제거</Button>
+              <Button onClick={onRemoveImage(i)}>제거</Button>
             </div>
           </div>
         ))}
@@ -87,3 +107,6 @@ const PostForm = () => {
 };
 
 export default PostForm;
+
+// 1. image가 없다면 굳이 formData를 쓸 필요는 없지만 multer연습용으로 써봄
+//  data : { imagePaths, content : text} 이런식으로 작성하는게 더 효율적
