@@ -20,6 +20,9 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_FAILURE,
   UNLIKE_POST_SUCCESS,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
@@ -155,6 +158,26 @@ function* unlikePost(action) {
   }
 }
 
+// UPLOAD IMAGES
+function uploadImagesAPI(data) {
+  // data {name : data} 이런 식으로 감싸면 json됨 mulipart form으로 그대로 보내야함
+  return axios.post("/post/images", data);
+}
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 // WATHCS
 function* watchLoadPost() {
   yield takeLatest(LOAD_POST_REQUEST, loadPost);
@@ -176,6 +199,9 @@ function* watchLikePost() {
 function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
+}
 
 export default function* postSaga() {
   yield all([
@@ -185,5 +211,6 @@ export default function* postSaga() {
     fork(watchAddComment),
     fork(watchLikePost),
     fork(watchUnlikePost),
+    fork(watchUploadImages),
   ]);
 }

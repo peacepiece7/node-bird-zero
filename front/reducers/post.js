@@ -62,6 +62,9 @@ export const initialState = {
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
 
 // export const generateDummyPost = (number) => {
@@ -112,6 +115,10 @@ export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
 export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST";
 export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS";
 export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
+
+export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
+export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
+export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 
 // ADD POST ACTIONS
 export const addPostRequest = (data) => {
@@ -292,7 +299,6 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === data.PostId);
         post.Comments.unshift(data);
-
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
@@ -300,6 +306,22 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
         draft.addCommentError = error;
+        break;
+      // REMOVE POST CASES
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+      case UPLOAD_IMAGES_SUCCESS: {
+        draft.imagePaths = data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      }
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = error;
         break;
       default:
         return draft;

@@ -116,7 +116,7 @@ function* signUp(action) {
 
 // CHANGE NICKNAME
 function changeNicknameAPI(data) {
-  return axios.patch(`user/changeNickname`, { nickname: data });
+  return axios.patch(`user/nickname`, { nickname: data });
 }
 function* changeNickname(action) {
   try {

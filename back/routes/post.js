@@ -1,12 +1,21 @@
-const express = require("express");
-const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
-const { Post, Image, Comment, User } = require("../models");
-const { Router } = require("express");
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { Post, Image, Comment, User } = require('../models');
 
 const postRouter = express.Router();
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더가 없으므로 생성합니다.');
+  fs.mkdirSync('uploads');
+}
 
 // Add Post
-postRouter.post("/", async (req, res, next) => {
+postRouter.post('/', isLoggedIn, async (req, res, next) => {
   try {
     // save to db
     const post = await Post.create({
@@ -25,18 +34,18 @@ postRouter.post("/", async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ['id', 'nickname'],
             },
           ],
         },
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ['id', 'nickname'],
         },
         {
           model: User,
-          as: "Likers",
-          attributes: ["id"],
+          as: 'Likers',
+          attributes: ['id'],
         },
       ],
     });
@@ -49,7 +58,7 @@ postRouter.post("/", async (req, res, next) => {
 });
 
 // Delete post
-postRouter.delete("/:postId", async (req, res, next) => {
+postRouter.delete('/:postId', isLoggedIn, async (req, res, next) => {
   try {
     Post.destroy({
       where: {
@@ -65,11 +74,11 @@ postRouter.delete("/:postId", async (req, res, next) => {
 });
 
 // Patch Like
-postRouter.patch("/:postId/like", async (req, res, next) => {
+postRouter.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
     if (!post) {
-      return res.status(403).send("게시글이 존재하지 않습니다.");
+      return res.status(403).send('게시글이 존재하지 않습니다.');
     }
     await post.addLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
@@ -79,11 +88,11 @@ postRouter.patch("/:postId/like", async (req, res, next) => {
   }
 });
 // Delete Like
-postRouter.delete("/:postId/unlike", async (req, res, next) => {
+postRouter.delete('/:postId/unlike', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { id: parseInt(req.params.postId, 10) } });
     if (!post) {
-      return res.status(403).send("게시글이 존재하지 않습니다.");
+      return res.status(403).send('게시글이 존재하지 않습니다.');
     }
     await post.removeLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
@@ -94,13 +103,13 @@ postRouter.delete("/:postId/unlike", async (req, res, next) => {
 });
 
 // Add comment
-postRouter.post("/:postId/comment", async (req, res, next) => {
+postRouter.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: parseInt(req.params.postId, 10) },
     });
     if (!post) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
+      return res.status(403).send('존재하지 않는 게시글입니다.');
     }
     const comment = await Comment.create({
       content: req.body.content,
@@ -112,11 +121,38 @@ postRouter.post("/:postId/comment", async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ['id', 'nickname'],
         },
       ],
     });
     res.status(201).json(fullComment);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+const upload = multer({
+  // computer hardware
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.basename(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 제로초
+      done(null, basename + new Date().getTime() + ext); // 제로초12312414.png
+    },
+  }),
+  // front -> cloud로 바로하는게 좋음
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+// upload.none(Text) , fills(input이 두 개 이상), array(여러개), single(하나)
+// Upload Image
+postRouter.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
+  try {
+    console.log(req.files);
+    res.json(req.files.map((v) => v.filename));
   } catch (error) {
     console.log(error);
     next(error);
