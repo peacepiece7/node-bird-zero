@@ -10,10 +10,16 @@ import { LOAD_USER_REQUEST } from "../reducers/user";
 
 const Home = () => {
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostLoading } = useSelector((state) => {
+  const { mainPosts, hasMorePosts, loadPostLoading, retweetError } = useSelector((state) => {
     return state.post;
   });
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (retweetError) {
+      // eslint-disable-next-line no-alert
+      alert(retweetError);
+    }
+  }, [retweetError]);
   useEffect(() => {
     dispatch({
       type: LOAD_POST_REQUEST,
