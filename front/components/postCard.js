@@ -3,24 +3,14 @@ import { Button, Card, Avatar, Popover, List, Comment } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import {
-  RetweetOutlined,
-  HeartOutlined,
-  HeartTwoTone,
-  MessageOutlined,
-  EllipsisOutlined,
-} from "@ant-design/icons";
+import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
 import PostImages from "./PostImages";
 import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
-import {
-  REMOVE_POST_REQUEST,
-  UNLIKE_POST_REQUEST,
-  LIKE_POST_REQUEST,
-} from "../reducers/post";
+import { REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST } from "../reducers/post";
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -63,15 +53,7 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
-          liked ? (
-            <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="heart"
-              onClick={onUnLike}
-            />
-          ) : (
-            <HeartOutlined key="heart" onClick={onLike} />
-          ),
+          liked ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnLike} /> : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="ellipsis"
@@ -80,11 +62,7 @@ const PostCard = ({ post }) => {
                 {id && post.UserId === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button
-                      type="danger"
-                      loading={removePostLoading}
-                      onClick={onRemovePost}
-                    >
+                    <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>
                       삭제
                     </Button>
                   </>
@@ -116,11 +94,7 @@ const PostCard = ({ post }) => {
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
-                <Comment
-                  author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
-                  content={item.content}
-                />
+                <Comment author={item.User.nickname} avatar={<Avatar>{item.User.nickname[0]}</Avatar>} content={item.content} />
               </li>
             )}
           />

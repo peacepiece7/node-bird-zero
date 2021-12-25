@@ -9,9 +9,7 @@ import useInput from "../hooks/useInput";
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone, addCommentLoading } = useSelector(
-    (state) => state.post
-  );
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const [commentText, onChangeCommentText, setCommentText] = useInput(" ");
 
   useEffect(() => {
@@ -29,11 +27,7 @@ const CommentForm = ({ post }) => {
   return (
     <Form onFinish={onSubmitComment}>
       <Form.Item>
-        <Input.TextArea
-          value={commentText}
-          onChange={onChangeCommentText}
-          rows={4}
-        />
+        <Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
         <Button type="primary" htmlType="submit" loading={addCommentLoading}>
           QQ
         </Button>

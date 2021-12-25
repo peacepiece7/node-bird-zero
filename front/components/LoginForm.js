@@ -27,6 +27,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (logInError) {
+      // eslint-disable-next-line no-alert
       alert(logInError);
     }
   }, [logInError]);
@@ -44,22 +45,12 @@ const LoginForm = () => {
       <div>
         <label htmlFor="user-email">이메일</label>
         <br />
-        <input
-          name="user-email"
-          type="email"
-          value={email}
-          onChange={onChangeEmail}
-        />
+        <input name="user-email" type="email" value={email} onChange={onChangeEmail} />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
         <br />
-        <input
-          name="user-password"
-          type="password"
-          value={password}
-          onChange={onChangePassword}
-        />
+        <input name="user-password" type="password" value={password} onChange={onChangePassword} />
       </div>
       <div>
         <ButtonWapper>

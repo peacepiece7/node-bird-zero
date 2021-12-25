@@ -27,10 +27,7 @@ const Home = () => {
     const scrolledY = window.scrollY;
     const viewPortHeight = document.documentElement.clientHeight;
     const totalHeight = document.documentElement.scrollHeight;
-    if (
-      scrolledY + viewPortHeight >= totalHeight - 500 &&
-      hasMorePosts !== loadPostLoading
-    ) {
+    if (scrolledY + viewPortHeight >= totalHeight - 500 && hasMorePosts !== loadPostLoading) {
       dispatch({
         type: LOAD_POST_REQUEST,
       });

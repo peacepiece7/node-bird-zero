@@ -42,11 +42,7 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={42} md={6}>
-          <a
-            href="https://www.zerocho.com"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
+          <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">
             made by taetae
           </a>
         </Col>
