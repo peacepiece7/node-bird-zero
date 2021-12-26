@@ -37,10 +37,9 @@ import {
 function loadUserAPI() {
   return axios.get("/user");
 }
-function* loadUser(action) {
-  console.log("LOAD USER ACTION DATA", action.data);
+function* loadUser() {
   try {
-    const result = yield call(loadUserAPI, action.data);
+    const result = yield call(loadUserAPI);
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,

@@ -8,9 +8,9 @@ import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
-  LOAD_POST_FAILURE,
-  LOAD_POST_REQUEST,
-  LOAD_POST_SUCCESS,
+  LOAD_POSTS_FAILURE,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
@@ -30,20 +30,21 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
 // LOAD POST
-function loadPostAPI() {
-  return axios.get("/posts");
+function loadPostsAPI(lastId) {
+  // get은 주소에 데이터를 입력함(데이터 캐싱을 같이 할 수 있음)
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
-function* loadPost(action) {
+function* loadPosts(action) {
   try {
-    const result = yield call(loadPostAPI, action.data);
+    const result = yield call(loadPostsAPI, action.lastId);
     yield delay(1000);
     yield put({
-      type: LOAD_POST_SUCCESS,
+      type: LOAD_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (err) {
     yield put({
-      type: LOAD_POST_FAILURE,
+      type: LOAD_POSTS_FAILURE,
       error: err.response.data,
     });
   }
@@ -202,8 +203,8 @@ function* retweet(action) {
 }
 
 // WATHCS
-function* watchLoadPost() {
-  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+function* watchLoadPosts() {
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
@@ -231,7 +232,7 @@ function* watchRetweet() {
 
 export default function* postSaga() {
   yield all([
-    fork(watchLoadPost),
+    fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchAddComment),

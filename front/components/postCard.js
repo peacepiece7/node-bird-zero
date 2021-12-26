@@ -61,8 +61,6 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [id]);
-  console.log("postCard.js post :", post);
-  console.log("postCard.js post.Likers :", post.Likers);
 
   const liked = post.Likers.find((v) => v.id === id);
   return (

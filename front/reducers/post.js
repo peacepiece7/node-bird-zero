@@ -44,12 +44,12 @@ export const initialState = {
   ],
   hasMorePosts: true, // false일 경우 post를 가져오지 않음 (scroll event)
   imagePaths: [],
-  loadPostLoading: false,
-  loadPostDone: false,
-  loadPostError: null,
-  addPostLoading: false,
-  addPostDone: false,
-  addPostError: null,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
+  addPostsLoading: false,
+  addPostsDone: false,
+  addPostsError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
@@ -95,9 +95,9 @@ export const initialState = {
 //     });
 // };
 
-export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
-export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";
-export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE";
+export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
+export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
+export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -130,19 +130,19 @@ export const RETWEET_FAILURE = "RETWEET_FAILURE";
 export const REMOVE_IMAGE = "REMOVE_IMAGE";
 
 // ADD POST ACTIONS
-export const addPostRequest = (data) => {
+export const addPostsRequest = (data) => {
   return {
     type: ADD_POST_REQUEST,
     data,
   };
 };
-export const addPostSuccess = (data) => {
+export const addPostsSuccess = (data) => {
   return {
     type: ADD_POST_SUCCESS,
     data,
   };
 };
-export const addPostFailure = (data) => {
+export const addPostsFailure = (data) => {
   return {
     type: ADD_POST_FAILURE,
     data,
@@ -254,37 +254,37 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.unlikePostError = error;
         break;
       // LOAD POST CASES
-      case LOAD_POST_REQUEST:
-        draft.loadPostLoading = true;
-        draft.loadPostDone = false;
-        draft.loadPostError = null;
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
         break;
-      case LOAD_POST_SUCCESS:
-        console.log("LOAD_POST_SUCCESS,", data);
-        draft.mainPosts = data.concat(draft.mainPosts);
-        draft.loadPostLoading = false;
-        draft.loadPostDone = true;
-        draft.hasMorePosts = draft.mainPosts.length < 50;
+      case LOAD_POSTS_SUCCESS:
+        // draft.mainPosts = data.concat(draft.mainPosts);
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = draft.mainPosts.concat(data);
+        draft.hasMorePosts = data.length === 10;
         break;
-      case LOAD_POST_FAILURE:
-        draft.loadPostLoading = false;
-        draft.loadPostError = error;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = error;
         break;
       // ADD POST CASES
       case ADD_POST_REQUEST:
-        draft.addPostLoading = true;
-        draft.addPostDone = false;
-        draft.addPostError = null;
+        draft.addPostsLoading = true;
+        draft.addPostsDone = false;
+        draft.addPostsError = null;
         break;
       case ADD_POST_SUCCESS:
         draft.mainPosts.unshift(data);
-        draft.addPostLoading = false;
-        draft.addPostDone = true;
+        draft.addPostsLoading = false;
+        draft.addPostsDone = true;
         draft.imagePaths = [];
         break;
       case ADD_POST_FAILURE:
-        draft.addPostLoading = false;
-        draft.addPostError = error;
+        draft.addPostsLoading = false;
+        draft.addPostsError = error;
         break;
       // REMOVE POST CASES
       case REMOVE_POST_REQUEST:
