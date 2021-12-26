@@ -4,7 +4,6 @@ import propTypes from "prop-types";
 import "antd/dist/antd.css";
 // ref 2
 import Head from "next/head";
-
 import wrapper from "../store/configureStore";
 
 const NodeBird = ({ Component }) => {
@@ -22,6 +21,7 @@ const NodeBird = ({ Component }) => {
 NodeBird.propTypes = {
   Component: propTypes.elementType.isRequired,
 };
+
 export default wrapper.withRedux(NodeBird);
 
 // 1. 공통으로 적용해야하는 파일은 _app.js에 작성 (Dependency Injection)
