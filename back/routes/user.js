@@ -8,6 +8,7 @@ const userRouter = express.Router();
 
 // GET USER
 userRouter.get('/', async (req, res, next) => {
+  console.log('HEADER @@@@@@@:', req.headers);
   // GET /user
   try {
     if (req.user) {

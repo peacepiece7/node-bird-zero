@@ -1,9 +1,12 @@
 import { produce } from "immer";
 
 export const initialState = {
-  loadUserLoading: false, // 유저 정보 가져오기 시도중
+  loadUserLoading: false, // 다른 유저 정보 가져오기 시도중
   loadUserDone: false,
   loadUserError: null,
+  loadMyInfoLoading: false, // 유저 정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
@@ -32,12 +35,16 @@ export const initialState = {
   removeFollowerDone: false,
   removeFollowerError: null,
   me: null,
-  signUpData: {},
-  loginData: {},
+  // signUpData: {},
+  // loginData: {},
 };
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+
+export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
+export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
+export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE";
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -243,19 +250,19 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         draft.me = error;
         break;
       // LOAD USER CASE
-      case LOAD_USER_REQUEST:
-        draft.loadUserLoading = true;
-        draft.loadUserError = null;
-        draft.loadUserDone = false;
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoError = null;
+        draft.loadMyInfoDone = false;
         break;
-      case LOAD_USER_SUCCESS:
-        draft.loadUserLoading = false;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
         draft.me = data;
-        draft.loadUserDone = true;
+        draft.loadMyInfoDone = true;
         break;
-      case LOAD_USER_FAILURE:
-        draft.loadUserLoading = false;
-        draft.loadUserError = error;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = error;
         break;
       // SIGN UP CASE
       case SIGN_UP_REQUEST:
@@ -330,9 +337,7 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         break;
       case REMOVE_FOLLOWER_SUCCESS:
         draft.removeFollowerLoading = false;
-        draft.me.Followers = draft.me.Followers.filter(
-          (v) => v.id !== data.UserId
-        );
+        draft.me.Followers = draft.me.Followers.filter((v) => v.id !== data.UserId);
         draft.removeFollowerDone = true;
         break;
       case REMOVE_FOLLOWER_FAILURE:
