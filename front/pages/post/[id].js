@@ -17,7 +17,6 @@ const Post = () => {
   const router = useRouter();
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
-  console.log(singlePost);
 
   return (
     <AppLayout>
