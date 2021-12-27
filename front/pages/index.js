@@ -64,15 +64,25 @@ const Home = () => {
   );
 };
 
+// SSR
+
+// 1-1
 // getInitialProps; next 8ver
 // index.js를 먼저 그리기 전에 먼저 index.js를 감싸는 wrapper를 실행, 필요한 정보를 context에 저장하고, index.js를 화면에 그릴떄
 // context.store에 저장된 정보를 불러와서 화면을 그림
 
+// 1-2
 // 실행 결과를 HYDRATE로 보냄
 
+// 1-3
 // front server에서 실행되기 떄문에 브라우저가 개입하지 않는 부분임 (front (request) -> back, back (res) => front )
 // axios.get("back-end url") => 브라우저가 자동으로 header에 cookie를 넣어서 보냄
-// front -> back-end는 browse가 개입하지 않기떄문에 option : { set-cookie : ..} 이런식으로 작성해야 함
+// front -> back-end는 browser가 개입하지 않기떄문에 option : { set-cookie : ..} 이런식으로 작성해야 함
+
+// 1-4
+// getServerSideProps vs getStaticProps
+// 왠만하면 = serverSide, 수정이 잘 일어나지 않는 경우 = getStaticProps
+// getStaticProps는 build할 떄 미리 정적인 HTML을 만들어서 SSR로 뿌려줌 (블로그 게시글, 뉴스 정도 사용가능)
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   const cookie = context.req ? context.req.headers.cookie : "";
   // * 서버가 하나라서 쿠기가 공유되는 문제

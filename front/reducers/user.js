@@ -187,11 +187,26 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
   // eslint-disable-next-line consistent-return
   produce(state, (draft) => {
     switch (type) {
+      // LOAD USER CASE
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.userInfo = data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = error;
+        break;
       // FOLLOW CASE
       case FOLLOW_REQUEST:
-        draft.followLoading = true;
-        draft.followError = null;
-        draft.followDone = false;
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
         break;
       case FOLLOW_SUCCESS:
         draft.followLoading = false;
