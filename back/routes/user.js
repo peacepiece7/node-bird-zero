@@ -35,7 +35,7 @@ userRouter.get('/:userId', async (req, res, next) => {
     if (fullUserWithoutPassword) {
       const data = fullUserWithoutPassword.toJSON();
       data.Posts = data.Posts.length; // 개인 정보 침해 예방
-      data.Followers = data.FOllowers.length;
+      data.Followers = data.Followers.length;
       data.Followings = data.Followings.length;
       res.status(200).json(data);
     } else {

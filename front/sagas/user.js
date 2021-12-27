@@ -67,11 +67,11 @@ function* loadUser(action) {
       type: LOAD_USER_SUCCESS,
       data: result.data,
     });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     yield put({
       type: LOAD_USER_FAILURE,
-      error: err.response.data,
+      error: error.response.data,
     });
   }
 }

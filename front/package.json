@@ -11,6 +11,7 @@
     "D": "^1.0.0",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
+    "babel-plugin-styled-components": "^2.0.2",
     "faker": "^5.5.3",
     "immer": "^9.0.6",
     "nanoid": "^3.1.30",

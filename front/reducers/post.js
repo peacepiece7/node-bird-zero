@@ -42,11 +42,15 @@ export const initialState = {
     //   ],
     // },
   ],
+  singlePost: null,
   hasMorePosts: true, // false일 경우 post를 가져오지 않음 (scroll event)
   imagePaths: [],
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   addPostsLoading: false,
   addPostsDone: false,
   addPostsError: null,
@@ -98,6 +102,10 @@ export const initialState = {
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
 export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
+
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE";
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
 export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
@@ -213,6 +221,40 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
   // eslint-disable-next-line consistent-return
   produce(state, (draft) => {
     switch (type) {
+      // LOAD POST CASES (SINGLE POST)
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+        break;
+      case LOAD_POST_SUCCESS:
+        console.log(data);
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = data;
+        break;
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = error;
+        break;
+      // LOAD POSTS CASES (POSTS)
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        // draft.mainPosts = data.concat(draft.mainPosts);
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = draft.mainPosts.concat(data);
+        draft.hasMorePosts = data.length === 10;
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = error;
+        break;
+
       // ref 2
       // REMOVE IMAGE CASE
       case REMOVE_IMAGE:
@@ -253,23 +295,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.unlikePostLoading = false;
         draft.unlikePostError = error;
         break;
-      // LOAD POST CASES
-      case LOAD_POSTS_REQUEST:
-        draft.loadPostsLoading = true;
-        draft.loadPostsDone = false;
-        draft.loadPostsError = null;
-        break;
-      case LOAD_POSTS_SUCCESS:
-        // draft.mainPosts = data.concat(draft.mainPosts);
-        draft.loadPostsLoading = false;
-        draft.loadPostsDone = true;
-        draft.mainPosts = draft.mainPosts.concat(data);
-        draft.hasMorePosts = data.length === 10;
-        break;
-      case LOAD_POSTS_FAILURE:
-        draft.loadPostsLoading = false;
-        draft.loadPostsError = error;
-        break;
+
       // ADD POST CASES
       case ADD_POST_REQUEST:
         draft.addPostsLoading = true;
