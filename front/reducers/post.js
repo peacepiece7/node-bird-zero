@@ -256,6 +256,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
       case LOAD_USER_POSTS_SUCCESS:
       case LOAD_HASHTAG_POSTS_SUCCESS:
       case LOAD_POSTS_SUCCESS:
+        console.log("MAIN POSTS, REDUCER :", data);
         // draft.mainPosts = data.concat(draft.mainPosts);
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
@@ -265,6 +266,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
       case LOAD_USER_POSTS_FAILURE:
       case LOAD_HASHTAG_POSTS_FAILURE:
       case LOAD_POSTS_FAILURE:
+        console.log("MAIN POSTS, REDUCER :", error);
         draft.loadPostsLoading = false;
         draft.loadPostsError = error;
         break;
