@@ -1,11 +1,12 @@
 // dynamic routing next8부터
 // 그 전엔 express로 처리했음
 
-import React, { useRouter } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { END } from "redux-saga";
-import { Head } from "next/head";
+import Head from "next/head";
 import wrapper from "../../store/configureStore";
 
 import AppLayout from "../../components/AppLayout";
