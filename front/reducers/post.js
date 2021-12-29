@@ -236,7 +236,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.loadPostError = null;
         break;
       case LOAD_POST_SUCCESS:
-        console.log(data);
+        console.log("LOAD_POST_SUCCESS", data);
         draft.loadPostLoading = false;
         draft.loadPostDone = true;
         draft.singlePost = data;

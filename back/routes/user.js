@@ -7,46 +7,6 @@ const { User, Post, Comment, Image } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const userRouter = express.Router();
 
-//
-
-userRouter.get('/:userId', async (req, res, next) => {
-  try {
-    const fullUserWithoutPassword = await User.findOne({
-      where: { id: req.params.userId },
-      attributes: {
-        exclude: ['password'],
-      },
-      include: [
-        {
-          model: Post,
-          attributes: ['id'],
-        },
-        {
-          model: User,
-          as: 'Followings',
-          attributes: ['id'],
-        },
-        {
-          model: User,
-          as: 'Followers',
-          attributes: ['id'],
-        },
-      ],
-    });
-    if (fullUserWithoutPassword) {
-      const data = fullUserWithoutPassword.toJSON();
-      data.Posts = data.Posts.length; // 개인 정보 침해 예방
-      data.Followers = data.Followers.length;
-      data.Followings = data.Followings.length;
-      res.status(200).json(data);
-    } else {
-      res.status(404).json('존재하지 않는 사용자입니다.');
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 // GET USER
 userRouter.get('/', async (req, res, next) => {
   // GET /user
@@ -229,7 +189,9 @@ userRouter.get('/followers', isLoggedIn, async (req, res, next) => {
     if (!user) {
       return res.status(403).send('ㄴㄴㄴ');
     }
-    const followers = await user.getFollowers();
+    const followers = await user.getFollowers({
+      limit: 3,
+    });
     res.status(200).json(followers);
   } catch (error) {
     console.log(error);
@@ -238,17 +200,19 @@ userRouter.get('/followers', isLoggedIn, async (req, res, next) => {
 });
 
 // GET FOLLOWINGS
-userRouter.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
+userRouter.get('/followings', isLoggedIn, async (req, res, next) => {
+  // GET /user/followings
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
     if (!user) {
-      return res.status(403).send('ㄴㄴㄴ');
+      res.status(403).send('없는 사람을 찾으려고 하시네요?');
     }
-
-    const followings = getFollowings();
+    const followings = await user.getFollowings({
+      limit: 3,
+    });
     res.status(200).json(followings);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 });
@@ -308,6 +272,44 @@ userRouter.get('/:userId/posts', async (req, res, next) => {
       ],
     });
     res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+userRouter.get('/:userId', async (req, res, next) => {
+  try {
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [
+        {
+          model: Post,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        },
+      ],
+    });
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length; // 개인 정보 침해 예방
+      data.Followers = data.Followers.length;
+      data.Followings = data.Followings.length;
+      res.status(200).json(data);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
   } catch (error) {
     console.log(error);
   }

@@ -2,6 +2,8 @@
 import React, { useCallback, useState } from "react";
 import { Button, Card, Avatar, Popover, List, Comment } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import moment from "moment";
 
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
@@ -11,6 +13,10 @@ import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 import { REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST, RETWEET_REQUEST } from "../reducers/post";
+
+// moment써보고 dayjs도 써보기 (dayjs는 엄청 가벼움)
+// ref 3
+moment.locale("ko");
 
 // ref 1
 const PostCard = ({ post }) => {
@@ -100,18 +106,34 @@ const PostCard = ({ post }) => {
       >
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+            <div style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD")}</div>
             <Card.Meta
-              avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+              avatar={
+                <Link href={`/user/${post.Retweet.User.id}`}>
+                  <a>
+                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
               title={post.Retweet.User.nickname}
               description={<PostCardContent postData={post.Retweet.content} />}
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD")}</div>
+            <Card.Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <a>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (
@@ -125,7 +147,13 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={
+                    <Link href={`/user/${item.User.id}`}>
+                      <a>
+                        <Avatar>{item.User.nickname[0]}</Avatar>
+                      </a>
+                    </Link>
+                  }
                   content={item.content}
                 />
               </li>
@@ -157,3 +185,8 @@ export default PostCard;
 
 // 2. post : PropTypes.object.isRequired
 // 위와 같이 작성 시 그다지 타입을 명시하는 의미가 없음
+
+// 3.
+// <Card.Meta>위에 moment사용한 코드 있음
+// {new Date().getFullYear() + new Date.getMonth + new Date.getDate()} <-- 이런 거 자동으로 만들어주는 포멧이 있음
+// moment().subtract, add, calender, format ... 등등 다양함

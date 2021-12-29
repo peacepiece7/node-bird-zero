@@ -9,7 +9,7 @@ const PostCardContent = ({ postData }) => {
         if (v.match(/(#[^\s#]+)/)) {
           return (
             // eslint-disable-next-line react/no-array-index-key
-            <Link href={`/hastag/${v.slice(1)}`} key={i}>
+            <Link href={`/hashtag/${v.slice(1)}`} key={i}>
               <a>{v}</a>
             </Link>
           );

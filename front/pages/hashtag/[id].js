@@ -14,7 +14,6 @@ const Hashtag = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { tag } = router.query;
-  console.log("내가 입력한 테그", tag);
   const { mainPosts, hasMorePosts, loadHashtagPostsLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
@@ -35,7 +34,6 @@ const Hashtag = () => {
     };
   }, [mainPosts.length, hasMorePosts, tag]);
 
-  console.log("@@MAIN POSTS : ", mainPosts);
   return (
     <AppLayout>
       {mainPosts.map((c) => (

@@ -26,7 +26,7 @@ front/component에 component (폴더 이름 변경 가능)
 ### \_app.js , \_document,js의 차이 https://merrily-code.tistory.com/154 (\_app.js = reactDom.render(), \_docuemnt,js = common <head>)
 
 ```js
-import Link from "next/link";
+import Link from 'next/link';
 ```
 
 # Eslint setting
@@ -162,7 +162,7 @@ action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않�
 ```js
 export const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
@@ -191,22 +191,22 @@ return {
 // 실제로는 combinReducers method로 구조화 시킴
 const initiationState = {
   id: 1,
-  name: "foo",
-  age: "27",
-  location: "Busan",
+  name: 'foo',
+  age: '27',
+  location: 'Busan',
   isLoggedIn: false,
 };
 
 // Action function, type를 추가해 주는 역할을 함
 const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
 const logoutAction = (data) => {
   return {
-    type: "LOG_OUT",
+    type: 'LOG_OUT',
     data,
   };
 };
@@ -214,12 +214,12 @@ const logoutAction = (data) => {
 // Reducer, 실질적으로 state를 변경하는 코드
 const reducer = (state, action) => {
   switch (action.type) {
-    case "LOG_IN":
+    case 'LOG_IN':
       return {
         ...state,
         isLoggedIn: true,
       };
-    case "LOG_OUT":
+    case 'LOG_OUT':
       return {
         ...state,
         isLoggedIn: false,
@@ -253,7 +253,7 @@ const dispatch = (action) => {
   console.log(fetched);
 };
 // const onSubmit(() => { dispatch(...)})
-dispatch(loginAction([{ name: "bar" }, { age: "29" }]));
+dispatch(loginAction([{ name: 'bar' }, { age: '29' }]));
 ```
 
 ### antd Form
@@ -291,7 +291,7 @@ export const loginAction = (data) => {
     // 한 번에 여러개의 dispatch
     dispatch(loginRequestAction());
     axios
-      .post("/api/login")
+      .post('/api/login')
       .then((res) => {
         dispatch(loginSuccessAction(res.data));
       })
@@ -320,18 +320,18 @@ export const loginAction = (data) => {
 - throttle로 요청 제한을 둘 수 있음
 
 ```js
-import { take, takeEvery } from "redux-saga";
+import { take, takeEvery } from 'redux-saga';
 
 export function* watchAddPost() {
   // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
-  yield take("ADD_POST_REQUEST", addPost);
+  yield take('ADD_POST_REQUEST', addPost);
 
   // 이를 해결하기 위해 여러 방법이 있음
   while (true) {
-    yield take("ADD_POST_REQUEST", addPost);
+    yield take('ADD_POST_REQUEST', addPost);
   }
 
-  yield takeEvery("ADD_POST_REQUEST", addPost);
+  yield takeEvery('ADD_POST_REQUEST', addPost);
 }
 ```
 
@@ -409,7 +409,7 @@ Curried produce [immer docs about Curried produce](https://immerjs.github.io/imm
 // app.js
 app.use(
   cors({
-    origin: "*",
+    origin: '*',
     credentials: true,
   })
 );
@@ -423,3 +423,27 @@ npm i passport passport-local
 
 passport는 각종 소셜 로그인 stretegy을 가지고 이를 제공함
 passport-local은 id, password || email, password로 로그인 하도록 도와주는 역할을 함
+
+# build
+
+빌드 후 각 페이지가 1mb를 넘지 않으면 한국에서 무리없이 서비스 할 수 있음
+
+만약 1mb가 넘는다면 code spliting을 적용해서 react.lazy react suspense기능으로 용량을 잘게 나눠야한다.
+
+# 404 customizing
+
+pages/404.js (next docs참고)
+
+```js
+export default function Custom404() {
+  return <div>not found the page..</div>;
+}
+```
+
+# error message
+
+pages/\_error.js
+
+```js
+잠시후에 시도해주세요, 고객샌터에 문의해주세요
+```
