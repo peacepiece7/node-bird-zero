@@ -8,6 +8,7 @@ module.exports = withBundleAnalyzer({
   compress: true,
   webpack(config, { webpack }) {
     // ref2
+    console.log(webpack);
     const prod = process.env.NODE_ENV === "production";
     const plugins = [...config.plugins];
     return {
