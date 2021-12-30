@@ -25,7 +25,13 @@ const NicknameEditForm = () => {
         padding: "20px",
       }}
     >
-      <Input.Search addonBefore="닉네임" enterButton="수정" value={nickname} onChange={onChangeNickname} onSearch={onSubmit} />
+      <Input.Search
+        addonBefore="닉네임"
+        enterButton="수정"
+        value={nickname}
+        onChange={onChangeNickname}
+        onSearch={onSubmit}
+      />
     </Form>
   );
 };
