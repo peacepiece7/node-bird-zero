@@ -45,7 +45,8 @@
   },
   "scripts": {
     "dev": "next -p 3060",
-    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
+    "build": "cross-env NODE_ENV=production next build",
+    "start": "cross-env ANALIZE=true next -p 3060"
   },
   "author": "PeacePiece",
   "license": "ISC"
