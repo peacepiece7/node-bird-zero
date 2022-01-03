@@ -1,6 +1,8 @@
 // next.config.js
 // ref4
-const withBundleAnalyzer = require("@next/bundle-analyzer");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: (process.env.ANALYZE = "true"),
+});
 
 // ref3
 module.exports = withBundleAnalyzer({
@@ -8,7 +10,6 @@ module.exports = withBundleAnalyzer({
   compress: true,
   webpack(config, { webpack }) {
     // ref2
-    console.log(webpack);
     const prod = process.env.NODE_ENV === "production";
     const plugins = [...config.plugins];
     return {

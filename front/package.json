@@ -9,7 +9,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@next/bundle-analyzer": "^12.0.7",
-    "D": "^1.0.0",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
     "babel-plugin-styled-components": "^2.0.2",
@@ -46,8 +45,8 @@
   },
   "scripts": {
     "dev": "next -p 3060",
-    "build": "next build"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
-  "author": "peacepiece",
+  "author": "PeacePiece",
   "license": "ISC"
 }
