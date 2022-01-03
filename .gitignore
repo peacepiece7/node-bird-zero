@@ -1,6 +1,13 @@
 node_modules/
+
 .next/
+
 .next
+
 .env
+
 uploads
+
 react-nodebird.pem
+
+react-nodebird-aws.pem

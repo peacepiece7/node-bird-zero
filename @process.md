@@ -550,3 +550,19 @@ strong password입력
 `mysql_secure_installation`
 
 전부 y해주고 비밀번호는 그냥 low로하자..
+
+# ec2 back-end start
+
+mysql설치가 끝났다면 back-end에 scripts를 아래와 같이 추가
+
+`"start" : "node app"`
+
+ec2 back에서 다시 git pull origin master 한 뒤
+
+npm run start
+
+# ec2 back-end .env 추가하기
+
+.env는 git에 올라가 있지 않기 떄문에 따로 작성해야함
+
+안 적으면 sequlize가 작동못함..
