@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon --delay 1500ms app.js"
+    "dev": "nodemon --delay 1500ms app.js",
+    "start": "node app"
   },
   "author": "",
   "license": "ISC",

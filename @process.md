@@ -26,7 +26,7 @@ front/component에 component (폴더 이름 변경 가능)
 ### \_app.js , \_document,js의 차이 https://merrily-code.tistory.com/154 (\_app.js = reactDom.render(), \_docuemnt,js = common <head>)
 
 ```js
-import Link from "next/link";
+import Link from 'next/link';
 ```
 
 # Eslint setting
@@ -162,7 +162,7 @@ action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않�
 ```js
 export const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
@@ -191,22 +191,22 @@ return {
 // 실제로는 combinReducers method로 구조화 시킴
 const initiationState = {
   id: 1,
-  name: "foo",
-  age: "27",
-  location: "Busan",
+  name: 'foo',
+  age: '27',
+  location: 'Busan',
   isLoggedIn: false,
 };
 
 // Action function, type를 추가해 주는 역할을 함
 const loginAction = (data) => {
   return {
-    type: "LOG_IN",
+    type: 'LOG_IN',
     data,
   };
 };
 const logoutAction = (data) => {
   return {
-    type: "LOG_OUT",
+    type: 'LOG_OUT',
     data,
   };
 };
@@ -214,12 +214,12 @@ const logoutAction = (data) => {
 // Reducer, 실질적으로 state를 변경하는 코드
 const reducer = (state, action) => {
   switch (action.type) {
-    case "LOG_IN":
+    case 'LOG_IN':
       return {
         ...state,
         isLoggedIn: true,
       };
-    case "LOG_OUT":
+    case 'LOG_OUT':
       return {
         ...state,
         isLoggedIn: false,
@@ -253,7 +253,7 @@ const dispatch = (action) => {
   console.log(fetched);
 };
 // const onSubmit(() => { dispatch(...)})
-dispatch(loginAction([{ name: "bar" }, { age: "29" }]));
+dispatch(loginAction([{ name: 'bar' }, { age: '29' }]));
 ```
 
 ### antd Form
@@ -291,7 +291,7 @@ export const loginAction = (data) => {
     // 한 번에 여러개의 dispatch
     dispatch(loginRequestAction());
     axios
-      .post("/api/login")
+      .post('/api/login')
       .then((res) => {
         dispatch(loginSuccessAction(res.data));
       })
@@ -320,18 +320,18 @@ export const loginAction = (data) => {
 - throttle로 요청 제한을 둘 수 있음
 
 ```js
-import { take, takeEvery } from "redux-saga";
+import { take, takeEvery } from 'redux-saga';
 
 export function* watchAddPost() {
   // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
-  yield take("ADD_POST_REQUEST", addPost);
+  yield take('ADD_POST_REQUEST', addPost);
 
   // 이를 해결하기 위해 여러 방법이 있음
   while (true) {
-    yield take("ADD_POST_REQUEST", addPost);
+    yield take('ADD_POST_REQUEST', addPost);
   }
 
-  yield takeEvery("ADD_POST_REQUEST", addPost);
+  yield takeEvery('ADD_POST_REQUEST', addPost);
 }
 ```
 
@@ -409,7 +409,7 @@ Curried produce [immer docs about Curried produce](https://immerjs.github.io/imm
 // app.js
 app.use(
   cors({
-    origin: "*",
+    origin: '*',
     credentials: true,
   })
 );
@@ -452,3 +452,101 @@ pages/\_error.js
 
 - aws로그인 -> ec2 생성하기(front, back 두 개의 서버를 생성할 거임) -> 프로티어 버전 우분투 ver18 lts선택 -> 보안그룹 http :80, https:443추가, ssh는 집 ip로 변경(배포할 때)
 - 키패어 생성 -> 새로 만들어서 저장(.pem) => 프로잭트에 넣어둠(.gitignore추가)
+
+# 배포하기
+
+- 윈도우랑 합치세영
+
+# error
+
+WARNING: UNPROTECTED PRIVATE KEY FILE!
+
+ssh연결하던 중 위와 같은 애러가 뜬다면
+
+chmod 0400 ./react-nodebird-aws.pem으로 소유자의 읽기 권한만 부여
+
+ssh로 ubunto ec2실행
+
+# ssh로 ubunto접속
+
+```
+pwd 로경로확인
+
+git clone https://www.github.com/peacepiece7/node-bird-zero
+
+cd node-birod-zero
+```
+
+node 설치하기
+
+```ssh
+sudo apt-get update
+sudo apt-get install -y build-essential
+sudo apt-get install curl
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash --
+sudo apt-get install -y nodejs
+```
+
+- build-essential : bicypt(hasing)나 sharp(image resizing)설치할 떄 에러가 안나게 해줌
+
+# front, back (node는 16을 깔았습니다)
+
+- front ec2의 ssh/node-bird-zero/front에서 `npm i`
+
+next가 `found 1 high severity vulnerability`(심각한 취약점을 1개 발견)해서 npm audit fix 실행 그리고 node 16.x로 변경함
+
+- back ec2의 ssh/node-bird-zero/back에서 `npm i`
+
+## 원래는 front, back, db서버를 따로 둬야하지만 비용이 발생하고 복잡해지니까 back에 db를 설치함
+
+# ec2 ipv4
+
+# ci-cd
+
+node-bird-zero를 배포했는데 소스를 수정해서 다시 올리고 싶다면?
+
+ec2 front, back server에 다시 들어가서 git clone, npm i, npm build를 해줘야함, 만약 db도 있고 서버거 여러개거나, 서버 스케일링으로 재설치 해야한다면
+
+반복작업이 너무 많기 떄문에 귀찮음 이럴 때 ci-cd(continuous integration, continuous development)툴을 사용함
+
+jenkins, cercleci, travis, docker 중 docker가 유명함 docker에 반복 작성 해야 할 명령어 적어두고 실행 -> 기존 서버랑 같은 서버를 생성해줌
+
+# front build error
+
+getStaticProps를 썻는데 db가 연결되어 있지 않다면 에러가 남
+
+db연결 후 build or 임시로 getServerSideProps 변경 후 진행
+
+# 질문 : front back 서버를 따로 배포하는 이유?
+
+front, back instance를 따로 만드는 이유는 설정하기 간단하고 보통 하나의 서버에 하나의 인스턴스를 둔다고함
+
+만약 하나의 서버에 두 개의 instance를 만들려면 추가로 nginx같은 서버가 필요하다고 한다.
+
+# 질문 : ec2 front instance에서만 build가 안되요
+
+로컬에서 빌드한 뒤 ec2 front에서 가져와도 됨 아래와 같이 할 수 있음
+
+local에서 build후 .next를 git push origin master (.gitignore에서 뻄)
+
+ec2 front에서 git pull origin master
+
+# ec2 back-end server에 mysql 설치하기
+
+`sudo apt-get install -y mysql-server`
+
+`wget -c https://repo.mysql.com/mysql-apt-config_0.8.13-1_all.deb`
+
+`sudo dpkg -i mysql-apt-config_0.8.13-1_all.deb`
+
+`sudo apt-get update`
+
+strong password입력
+
+`sudo apt-get install mysql-server`
+
+`sudo su`
+
+`mysql_secure_installation`
+
+전부 y해주고 비밀번호는 그냥 low로하자..
