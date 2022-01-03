@@ -566,3 +566,43 @@ npm run start
 .env는 git에 올라가 있지 않기 떄문에 따로 작성해야함
 
 안 적으면 sequlize가 작동못함..
+
+`vim .env`
+
+a 누르고 작성
+
+`:wq`로 저장
+
+`ls -a`
+
+`cat .env`로 저장된 거 확인
+
+# access denited error
+
+비밀번호 다시 변경
+
+`sudo su`
+
+`mysql -uroot -p`
+
+`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your password';`
+
+`npx sequelize db:craete`
+
+# change password policy
+
+`mysql -uroot -p`
+
+`SHOW VARIABLES LIKE 'validate_password%';`
+
+`SET GLOBAL validate_password_policy=LOW;`
+
+`select password('xodnr7282!');`
+
+# 왜 access denined?
+
+mysql 설치할 떄 ubuntu로 하고 mysql_secure_installation은 root에서 해서 비밀번호가 서로 같다고 인식을 못함
+
+mysql에서 user검색 시 plugin이 unix_soket이면 비밀번호가 무용지물,
+
+mysql_native_password로 plugin을 변경해주는 작업이 필요

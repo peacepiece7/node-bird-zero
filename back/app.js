@@ -69,8 +69,8 @@ app.use('/hashtag', hashtagRouter);
 // error page (test middleware)
 // app.use((err, req, res, next) => { } });
 
-app.listen(3065, () => {
-  console.log('Listen : 3065 port');
+app.listen(80, () => {
+  console.log('Listen : 80 port');
 });
 
 // 1. npx requelize db:create
