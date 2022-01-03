@@ -606,3 +606,30 @@ mysql 설치할 떄 ubuntu로 하고 mysql_secure_installation은 root에서 해
 mysql에서 user검색 시 plugin이 unix_soket이면 비밀번호가 무용지물,
 
 mysql_native_password로 plugin을 변경해주는 작업이 필요
+
+# Error : listen EACCES : permission denied 0.0.0:80
+
+[stack-over-flow](https://stackoverflow.com/questions/60372618/nodejs-listen-eacces-permission-denied-0-0-0-080)답변
+
+`we do NOT want to run your applications as the root user`
+
+웹 사이트를 rootuser로 실행하는 것을 우리는 대부분 원하지 않음,
+
+1024번 이전 포트는 모두 안전한 사용자아게만 제공되는 것을 기본으로 함
+
+아래 코드로 1024이전 포트를 허용할 수 있음
+
+```
+> sudo apt-get install libcap2-bin
+> sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
+```
+
+or
+
+아래처럼 8080port로 접속 시 80번 포트로 redirection되도록 변경할 수 있음
+
+[꾸앵 블로그](https://juni-official.tistory.com/144)
+
+```
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+```
