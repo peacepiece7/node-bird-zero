@@ -472,7 +472,7 @@ ssh로 ubunto ec2실행
 ```
 pwd 로경로확인
 
-git clone https://www.github.com/peacepiece7/node-bird-zero
+git clone https://www.github.com/peacepiece7/node-bird-zero .git?
 
 cd node-birod-zero
 ```
@@ -491,11 +491,9 @@ sudo apt-get install -y nodejs
 
 - build-essential : bicypt(hasing)나 sharp(image resizing)설치할 떄 에러가 안나게 해줌
 
-# front, back (node는 16을 깔았습니다)
+# front, back (node는 14을 깔았습니다)
 
 - front ec2의 ssh/node-bird-zero/front에서 `npm i`
-
-next가 `found 1 high severity vulnerability`(심각한 취약점을 1개 발견)해서 npm audit fix 실행 그리고 node 16.x로 변경함
 
 - back ec2의 ssh/node-bird-zero/back에서 `npm i`
 
@@ -718,6 +716,6 @@ config/confg 만들어서 localhost:3065 -> <IPv4>주소로 전부 변경
 # front server ec2 ubuntu에서 실행
 
 ```s
-sudo npx npm run build
+sudo  npm run build
 sudo npx pm2 start npm -- start
 ```
