@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(
   cors({
     // Access-Control-Allow-Origin
-    origin: ['http://localhost:3060', 'nodebird.com', 'http://3.35.170.235'],
+    origin: ['http://localhost:3060', 'nodebird.com', 'http://13.125.100.181'],
     // origin: true,
     // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
     // Access-Control-Allow-Credentials
