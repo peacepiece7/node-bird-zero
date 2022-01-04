@@ -718,5 +718,6 @@ config/confg 만들어서 localhost:3065 -> <IPv4>주소로 전부 변경
 # front server ec2 ubuntu에서 실행
 
 ```s
-npx pm2 start npm -- start
+sudo npx npm run build
+sudo npx pm2 start npm -- start
 ```
