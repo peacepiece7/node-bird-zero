@@ -633,3 +633,31 @@ or
 ```
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
+
+# pm2사용하기
+
+### foreground process
+
+- 터미널을 끄면 서버가 같이 꺼짐(nodejs)
+
+### background process
+
+- 터미널을 꺼도 서버가 안 꺼짐(pm2)
+
+### shell 권한에 대해서
+
+- buntu@ip-17... : 1023이전 포트에대한 권한이 없음(관리자 권환x)
+
+- root@ip-17.. : sudo su로 접속, root는 1023이전 포트에대한 권한이 있음(sudo ...도 가능)
+
+## background로 node app 실행하기
+
+- $ ... 로 node app을 실행할 수 있음(권장하지 않음)
+
+```
+vim package.josn
+
+"start" : "pm2 start app.js"로 변경
+```
+
+`sudo npm start`
