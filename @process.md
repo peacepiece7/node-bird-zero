@@ -712,3 +712,11 @@ if (process.env.NODE_ENV === 'production') {
 `npm i pm2`
 
 # backend랑 연동 에러 미리잡기
+
+config/confg 만들어서 localhost:3065 -> <IPv4>주소로 전부 변경
+
+# front server ec2 ubuntu에서 실행
+
+```s
+npx pm2 start npm -- start
+```
