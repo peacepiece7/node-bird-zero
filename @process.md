@@ -704,3 +704,11 @@ if (process.env.NODE_ENV === 'production') {
   "start": "cross-env NODE_ENV-production pm2 start app.js"
 }
 ```
+
+<br>
+
+# 이제 front를 배포합시다 🙃🙃
+
+`npm i pm2`
+
+# backend랑 연동 에러 미리잡기

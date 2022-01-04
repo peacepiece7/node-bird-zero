@@ -12,6 +12,7 @@ import FollowList from "../components/FollowList";
 import wrapper from "../store/configureStore";
 
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import { backURL } from "../config/config";
 
 const fetcher = async (url) => {
   try {
@@ -33,11 +34,11 @@ const Profile = function () {
   const [FollowingsLimit, setFollowingsLimit] = useState(3);
 
   const { data: followersData, error: followerError } = useSWR(
-    `http://localhost:3065/user/followers?limit=${followersLimit}`,
+    `${backURL}/user/followers?limit=${followersLimit}`,
     fetcher
   );
   const { data: followingsData, error: followingError } = useSWR(
-    `http://localhost:3065/user/followings?limit=${FollowingsLimit}`,
+    `${backURL}/user/followings?limit=${FollowingsLimit}`,
     fetcher
   );
 
