@@ -6,6 +6,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const dotenv = require('dotenv');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const userRouter = require('./routes/user');
 const postsRouter = require('./routes/posts');
@@ -26,11 +28,17 @@ db.sequelize
   })
   .catch(console.error);
 passportConfig();
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
 app.use(
   cors({
     // Access-Control-Allow-Origin
-    origin: 'http://localhost:3060',
+    origin: ['http://localhost:3060', 'nodebird.com'],
     // origin: true,
     // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
     // Access-Control-Allow-Credentials

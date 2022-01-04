@@ -477,13 +477,15 @@ git clone https://www.github.com/peacepiece7/node-bird-zero
 cd node-birod-zero
 ```
 
-node 설치하기
+# node 설치하기 (14버전이 아니면 pm2실행이 안됨, script에 추가하지 않고 쓴다면 LTS를 받으면 됨)
 
 ```ssh
+ubuntu/react-nodebird-zero
+
 sudo apt-get update
 sudo apt-get install -y build-essential
 sudo apt-get install curl
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash --
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash --
 sudo apt-get install -y nodejs
 ```
 
@@ -589,7 +591,7 @@ a 누르고 작성
 
 `npx sequelize db:craete`
 
-# change password policy
+# change password policy (정책 변경할 떄)
 
 `mysql -uroot -p`
 
@@ -654,10 +656,51 @@ sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-po
 
 - $ ... 로 node app을 실행할 수 있음(권장하지 않음)
 
+`npm i pm2`
+
 ```
-vim package.josn
+vim package.json
 
 "start" : "pm2 start app.js"로 변경
 ```
 
 `sudo npm start`
+
+error발생시 pm2 start app.js로 직접 실행
+
+[pm2](https://www.npmjs.com/package/pm2)
+
+```
+pm2 monit
+pm2 list
+pm2 restart
+pm2 stop app.js
+pm2 delete app.js
+pm2 kill
+```
+
+# 아이피 고정
+
+'탄력적 아이피 고정'전까지 public IPv4주소는 계속 변경됨(고정시 돈이 나감)
+
+# 보안 설정
+
+```js
+// back/app.js
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet());
+  app.use(hpp());
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
+```
+
+스크릅트 변경
+
+```json
+{
+  "start": "cross-env NODE_ENV-production pm2 start app.js"
+}
+```
