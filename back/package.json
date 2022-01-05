@@ -1,13 +1,13 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "description": "",
+  "description": "nodebird back-end server",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon --delay 1500ms app.js",
     "start": "cross-env NODE_ENV=production pm2 start app.js"
   },
-  "author": "",
+  "author": "peacepiece",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",

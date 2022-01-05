@@ -719,3 +719,43 @@ config/confg 만들어서 localhost:3065 -> <IPv4>주소로 전부 변경
 sudo  npm run build
 sudo npx pm2 start npm -- start
 ```
+
+# pm2 , mysql commands
+
+`mysql -uroot -p`
+`show databases;`
+`use react-node-bird;`
+`show tables;`
+
+`pm2 logs --err --lines 200`
+
+# 쿠키 유지하기
+
+로그인시 요청한 서버의 아피가 달라서 도매인의 요청이 유효하지 않다고 에러가 뜸 same-site=NONE으로 해야한다는데, 이걸로 해결이 안되는 거같음(나중에 바꿔보자..)
+
+다른 방법으로 front. back 서버에 도메인을 연결해서 같은사이트에 요청을 보내도록 할 수 있음
+
+gavia에서 일단 도매인을 구입함(greenbean.info)
+
+# 네임 서버 설정 (route 53)
+
+greenbrean.info레코드를 생성하고 유형 NS의 서브도메인 네개를 가비아 서브 도메인에 입력
+
+# 탄력적 ip
+
+ec2 왼쪽 메뉴에서 탄력적 ip 선택 -> 탄력적 ip 주소 할당 -> 각각의 주소를 front, back server에 연동
+
+> ec2 front, back instance를 삭제 할 떄, 탄력적 ip도 릴리즈해야 추가 요금이 발생하지 않음(탄력적 ip생성 후 instance에 연결하지 않아도 요금이 나온다)
+
+그 다음 routes 53에 해당 ip를 추가해준다
+
+```
+greenbean.info, 유형=A, ip=탄력적ip(front server)
+api.greenbean.info, 유형=A, ip=탄력적ip(back server)
+www.grenbean.info, 유형=CNAME, ip=greenbean.info
+```
+
+# hsts 정책
+
+- 한 번 https로 접속하면 일정 시간동안 반드리 https로 접속하는 정책 (http로 접속이 차단됨)
+- 도메인에 https를 적용시키지 않았다면 해당 에러가 발생할 수 있음, 끄는 방법은 구글에 검색 ㄲ
