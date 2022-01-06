@@ -371,7 +371,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         draft.uploadImagesError = null;
         break;
       case UPLOAD_IMAGES_SUCCESS: {
-        draft.imagePaths = data;
+        draft.imagePaths = draft.imagePaths.concat(data);
         draft.uploadImagesLoading = false;
         draft.uploadImagesDone = true;
         break;
