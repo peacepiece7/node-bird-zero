@@ -824,8 +824,90 @@ back/routes/post.js 의 /image router와 update변수 변경해주기
 - aws에서 제공, 작은 함수를 만들어서 호출할 수 있다
 - post에서 이미지를 받아옴 -> lambda로 이미지 리사이징 -> s3에 저장
 
-# 폴더 생성
+# lambda 함수 작성, aws에 압축 후 업로드
 
-aws-sdk sharp
+`npm i aws-sdk sharp`\*\*
 
-lanbda
+lambda/index.js에 함수 작성 (lamdba/index.js파일 확인)
+
+ec2 back-end ssh접속
+
+```
+cd node-bird-zero/lambda
+sudo su
+sudo npm i
+exit;
+```
+
+### zip으로 파일 묶어주기
+
+윈도우 에서 압축하면 압축 -> 묶기까지 자동이지만
+
+리눅스에서는 압축하기, 묶기가 따로있음
+
+```
+sudo apt install zip
+zip -r aws-upload.zip ./*
+
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+sudo unzip awscliv2.zip
+
+sudo cd ./aws/install
+
+aws configure
+-> access Key, access ID, region(ap-northeast-2), format(josn) 입력
+
+aws s3 cp "aws-upload.zip" s3://greenbean.info
+
+```
+
+### lamdba 함수 생성하기
+
+- 먼저 s3에 aws-upload.zip이 잘 들어갔는지 확인하기
+- lambda들어가서 함수생성 -> 새로 만들기
+- 함수 코드 -> ~에서 업로드 -> amazion S3 클릭 업로드 링크 = https://greenbean.info.s3.ap-northeast-2.amazonaws.com/aws-upload.zip
+
+- 함수 코드에 "너무커서 편집은 안되고, 함수를 호출할 수 있다"고 나옴
+
+### 기본 설정
+
+- 구성 - 일반구성 - 편집 에서 제한시간 30s, 메모리 250mb쯤 저장
+- s3새 권한 s3 읽기 권한 추가하기
+
+### 트리거 추가
+
+- s3선택
+- 접두사 -> original/ (이 부분을 안적으면 s3에 있는 aws-upload.zip이 계속해서 실행됨)
+- 버킷 선택하고 제출
+
+```js
+// back/routes/post.js
+v.location.replace(/\/original\//, '/thumb/');
+```
+
+```js
+// front/imageZoom/indexjs
+<img src={`${v.src.replace(/\/thumb\//, '/original/')}`} alt={v.src} />
+// front/postForm
+<img src={v.replace(/\/thumb\//, "/original/")} style={{ width: "200px" }} alt={v} />
+```
+
+### ec2 front, back에서 아래 코드 실행
+
+```
+// back
+sudo git pull origin master
+sudo npx pm2 reload all
+
+// front
+sudo git pull origin master
+sudi npm run build
+
+서버 재시작 해주기
+```
+
+lamdba -> monitoring에서 로그 확인
+
+- lamdba에서 aws-upload.zip 말고 다른 .zip , aws는 sudo rm 해주기
+- 이렇게 안 하고 zip하면 필요없는 코드가 중복으로 묶여서 용량이 엄청 커짐
