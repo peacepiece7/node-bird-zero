@@ -30,9 +30,9 @@ const Post = () => {
         <meta property="og:title" content={`${singlePost.User.nickanem}님의 게시글`} />
         <meta
           property="og:image"
-          content={singlePost.Images[0] ? singlePost.Images[0] : "https://nodebird.com/favicon.ico"}
+          content={singlePost.Images[0] ? singlePost.Images[0] : "https://greenbean.info/favicon.ico"}
         />
-        <meta property="og:url" content={`https://nodebird.com/post/${id}`} />
+        <meta property="og:url" content={`https://greenbean.info/post/${id}`} />
       </Head>
       <PostCard post={singlePost} />
     </AppLayout>
