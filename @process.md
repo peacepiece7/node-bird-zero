@@ -911,3 +911,89 @@ lamdba -> monitoring에서 로그 확인
 
 - lamdba에서 aws-upload.zip 말고 다른 .zip , aws는 sudo rm 해주기
 - 이렇게 안 하고 zip하면 필요없는 코드가 중복으로 묶여서 용량이 엄청 커짐
+
+# https 적용하기 (nginx)
+
+# 구성
+
+- 기존 front에 https를 도입할 경우
+
+  - next(80)으로 접속시 https(443)로 리다이렉팅하도록 만들 수 있음
+
+- nginx를 도입하면(정적파일, 캐싱, 리다이렉션, https를 담당)
+- nginx http(80),https(443)을 프록시 서버로 둔 뒤(리버스 프록시)
+- next(3060)로 연결시킴(프론트 관련 로직)
+
+```
+sudo apt-get install nignx
+```
+
+```
+(nignx 설정 파일)
+vim /etc/nginx/nginx.conf
+```
+
+nignx.conf를 아래와 같이 수정
+
+```
+/etc/nginx/nignx.conf
+
+...
+...
+
+### virtual server
+...
+include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sties-enable/*;
+server {
+  server_name greenbean.info;
+  listen 80;
+  location / {
+    proxy_set_header HOST $host;
+    proxy_pass http://127.0.0.1:3060;
+    proxy_redirect off;
+  }
+}
+}
+
+```
+
+### letsencrypt
+
+- 무료 3개월 https 인증서를 제공함 (무제한)
+- 구글 모질라 등 협업해서 let`s encrypt제단을 만들어 무료로 보금
+
+```
+sudo snap install certbot --classic
+```
+
+### serbot-auto 실행
+
+이메일 등 이것저것 동의하고 입력하면됨
+
+```
+sudo certbot --nginx
+```
+
+잘 변경됬나 한 번 보기
+
+```
+vim /etc/nginx/nginx.conf
+```
+
+설정을 변경했다면 아래코드로 nginx 재실행
+
+```
+sudo systemctl restart nginx
+```
+
+### next port 3060
+
+포트 번호 80 -> 3060으로 변경해주기
+`vim pakcage.json`
+
+```
+fornt/package.json
+
+"start" : "cross-env NODE_ENV=production next start -p 3060"
+```
