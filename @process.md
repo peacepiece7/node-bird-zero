@@ -902,7 +902,7 @@ sudo npx pm2 reload all
 
 // front
 sudo git pull origin master
-sudi npm run build
+sudo npm run build
 
 서버 재시작 해주기
 ```
@@ -997,3 +997,74 @@ fornt/package.json
 
 "start" : "cross-env NODE_ENV=production next start -p 3060"
 ```
+
+# 3개월마다 https인증서 renew
+
+[zeroCho cone renew](https://www.zerocho.com/category/NodeJS/post/5ef450a5701d8a001f84baeb)
+
+crontab serbot auto(자동화)로 검색해보거나 위 링크 참조
+
+# back-end https적용하기
+
+node-bird-zero/back 에서 진행
+
+nginx 설치
+`sudo apt-get nginx`
+
+cerbot 설치
+`sudo snap install certbot --classic`
+
+[zeroCho cone renew](https://www.zerocho.com/category/NodeJS/post/5ef450a5701d8a001f84baeb)
+
+`sudo su`
+
+`sudo vim /etc/nginx/nginx`에서 아래와 같이 편접
+
+```
+/etc/nginx/nignx.conf
+
+...
+...
+
+### virtual server
+...
+include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sties-enable/*;
+server {
+  server_name api.greenbean.info;
+  listen 80;
+  location / {
+    proxy_set_header HOST $host;
+    proxy_pass http://127.0.0.1:3065;
+    proxy_redirect off;
+  }
+}
+}
+
+```
+
+`sudo lsof -i tcp:80`여기 nginx가 실행 되고 있지 않다면 아래 코드로 nginx실행
+
+`sudo systemctl start nginx`
+
+# cerbot auto 실행
+
+`sudo certbot --nginx`
+
+### 와일드 카드 인증서
+
+```
+*.nodebird.com <- 이거 하나로 아래 도매인 전부 가능해짐
+
+www.nodebird.com
+api.nodebird.com
+...
+..
+
+
+```
+
+와일드 카드로 인증서받을 떈
+http로 못 받고 dns로 받아야 함
+
+route53에서 txt레코드 설정이 필요

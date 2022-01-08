@@ -82,7 +82,7 @@ app.use('/hashtag', hashtagRouter);
 // error page (test middleware)
 // app.use((err, req, res, next) => { } });
 
-const PORT = process.env.NODE_ENV === 'production' ? 80 : 3065;
+const PORT = 3065;
 app.listen(PORT, () => {
   console.log(`Listen port : ${PORT}`);
 });
