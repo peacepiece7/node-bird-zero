@@ -32,19 +32,30 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
+  app.use(
+    cors({
+      // Access-Control-Allow-Origin
+      origin: ['http://greenbean.info'],
+      // origin: true,
+      // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
+      // Access-Control-Allow-Credentials
+      credentials: true,
+    })
+  );
 } else {
   app.use(morgan('dev'));
+  app.use(
+    cors({
+      // Access-Control-Allow-Origin
+      origin: true,
+      // origin: true,
+      // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
+      // Access-Control-Allow-Credentials
+      credentials: true,
+    })
+  );
 }
-app.use(
-  cors({
-    // Access-Control-Allow-Origin
-    origin: ['http://localhost:3060', 'http://greenbean.info'],
-    // origin: true,
-    // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
-    // Access-Control-Allow-Credentials
-    credentials: true,
-  })
-);
+
 // ref 4
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 // ref 2
@@ -82,7 +93,7 @@ app.use('/hashtag', hashtagRouter);
 // error page (test middleware)
 // app.use((err, req, res, next) => { } });
 
-const PORT = 3065;
+const PORT = 80;
 app.listen(PORT, () => {
   console.log(`Listen port : ${PORT}`);
 });
