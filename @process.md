@@ -634,6 +634,15 @@ or
 sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
 ```
 
+or
+
+root 권한으로 80번 포트를 실행할 수 있음
+
+```
+> sudo su
+> sudo npm run start
+```
+
 # pm2사용하기
 
 ### foreground process
@@ -720,16 +729,31 @@ sudo  npm run build
 sudo npx pm2 start npm -- start
 ```
 
+# mysql table drop
+
+```
+mysql -uroot -p
+use node-bird-zero
+show tables
+테이블이 대문자로 생성되었으면 드랍해서 지워줌, 그러면 sequelize에서 알아서 소문자 테이블 생성
+DROP DATABASE `node-bird-zero` (백틱으로 감싸야함)
+exit
+sudo npx pm2 reload all
+```
+
 # pm2 , mysql commands
 
 `mysql -uroot -p`
+
 `show databases;`
+
 `use react-node-bird;`
+
 `show tables;`
 
 `pm2 logs --err --lines 200`
 
-# 쿠키 유지하기
+# 쿠키 유지하기, 새로고침 시 로그인이 유지되지 않음
 
 - 로그인시 요청한 서버의 아피가 달라서 도매인의 요청이 유효하지 않다고 에러가 뜸 same-site=NONE으로 해야한다는데, 이걸로 해결이 안되는 거같음(나중에 바꿔보자..)
 
