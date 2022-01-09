@@ -85,7 +85,6 @@ const PostForm = () => {
 };
 
 export default PostForm;
-ㄹ;
 
 // 1. image가 없다면 굳이 formData를 쓸 필요는 없지만 multer연습용으로 써봄
 //  data : { imagePaths, content : text} 이런식으로 작성하는게 더 효율적
