@@ -1,21 +1,21 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const passport = require('passport');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const dotenv = require('dotenv');
-const hpp = require('hpp');
-const helmet = require('helmet');
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const passport = require("passport");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const dotenv = require("dotenv");
+const hpp = require("hpp");
+const helmet = require("helmet");
 
-const userRouter = require('./routes/user');
-const postsRouter = require('./routes/posts');
-const postRouter = require('./routes/post');
-const hashtagRouter = require('./routes/hashtag');
+const userRouter = require("./routes/user");
+const postsRouter = require("./routes/posts");
+const postRouter = require("./routes/post");
+const hashtagRouter = require("./routes/hashtag");
 
-const db = require('./models');
-const passportConfig = require('./passport');
+const db = require("./models");
+const passportConfig = require("./passport");
 
 dotenv.config();
 
@@ -24,26 +24,27 @@ const app = express();
 db.sequelize
   .sync()
   .then(() => {
-    console.log('db 연결 성공');
+    console.log("db 연결 성공");
   })
   .catch(console.error);
 passportConfig();
-if (process.env.NODE_ENV === 'production') {
-  app.use(morgan('combined'));
+if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
   app.use(
     cors({
       // Access-Control-Allow-Origin
-      origin: ['http://greenbean.info', 'http://www.greenbean.info'],
+      origin: ["https://greenbean.info"],
       // origin: true,
       // 이걸 true로 해야 cookie가 전달이 됨 (front axios도 인자로 withCredentials : true )
       // Access-Control-Allow-Credentials
       credentials: true,
+      secure: true,
     })
   );
 } else {
-  app.use(morgan('dev'));
+  app.use(morgan("dev"));
   app.use(
     cors({
       // Access-Control-Allow-Origin
@@ -57,7 +58,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ref 4
-app.use('/', express.static(path.join(__dirname, 'uploads')));
+app.use("/", express.static(path.join(__dirname, "uploads")));
 // ref 2
 app.use(express.json());
 
@@ -75,25 +76,25 @@ app.use(
       // https가 적용되어 있지 않다면 false
       secure: false,
       // .을 안 붙이면 구형 브라우저에서 작동 안 될 수도 있음
-      domain: process.env.NODE_ENV === 'production' && '.greenbean.info',
+      domain: process.env.NODE_ENV === "production" && ".greenbean.info",
     },
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => {
-  res.send('Hello');
+app.get("/", (req, res) => {
+  res.send("Hello");
 });
-app.use('/user', userRouter);
-app.use('/post', postRouter);
-app.use('/posts', postsRouter);
-app.use('/hashtag', hashtagRouter);
+app.use("/user", userRouter);
+app.use("/post", postRouter);
+app.use("/posts", postsRouter);
+app.use("/hashtag", hashtagRouter);
 
 // error page (test middleware)
 // app.use((err, req, res, next) => { } });
 
-const PORT = 80;
+const PORT = 3065;
 app.listen(PORT, () => {
   console.log(`Listen port : ${PORT}`);
 });

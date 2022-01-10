@@ -30,7 +30,7 @@ nignx.conf를 아래와 같이 수정
 ### virtual server
 ...
 include /etc/nginx/conf.d/*.conf;
-include /etc/nginx/sties-enable/*;
+include /etc/nginx/sties-enabled/*;
 server {
   server_name greenbean.info;
   listen 80;
@@ -55,6 +55,10 @@ sudo snap install certbot --classic
 
 ### serbot-auto 실행
 
+먼저 nginx를 실행해주고 아래 certbot을 실행
+
+`sudo systemctl start nginx`
+
 이메일 등 이것저것 동의하고 입력하면됨
 
 ```
@@ -67,11 +71,17 @@ sudo certbot --nginx
 vim /etc/nginx/nginx.conf
 ```
 
+```
+sudo cat /etc/letsencrypt/live
+```
+
 설정을 변경했다면 아래코드로 nginx 재실행
 
 ```
-sudo systemctl restart nginx
+sudo ls /etc/letsencrypt/live/greenbean.info
 ```
+
+pullchain.pem, privkey.pem이 생성되면 ok!
 
 ### next port 3060
 
@@ -89,6 +99,8 @@ fornt/package.json
 [zeroCho cone renew](https://www.zerocho.com/category/NodeJS/post/5ef450a5701d8a001f84baeb)
 
 crontab serbot auto(자동화)로 검색해보거나 위 링크 참조
+
+# 여기서 멈추고 front 잘 실행되나 확인!!
 
 # back-end https적용하기
 
@@ -131,7 +143,14 @@ server {
 
 `sudo lsof -i tcp:80`여기 nginx가 실행 되고 있지 않다면 아래 코드로 nginx실행
 
-`sudo systemctl start nginx`
+```
+// 시작
+ubuntu@ip-172-31-43-121:~/node-bird-zero/back$ sudo systemctl start nginx
+//재시작
+ubuntu@ip-172-31-43-121:~/node-bird-zero/back$ sudo systemctl restart nginx
+// 에러 로그 확인
+ubuntu@ip-172-31-43-121:~/node-bird-zero/back$ sudo systemctl status nginx
+```
 
 # cerbot auto 실행
 
@@ -153,4 +172,4 @@ api.nodebird.com
 와일드 카드로 인증서받을 떈
 http로 못 받고 dns로 받아야 함
 
-route53에서 txt레코드 설정이 필요
+_route53에서 txt레코드 설정이 필요_

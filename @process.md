@@ -877,8 +877,8 @@ sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv
 
 sudo unzip awscliv2.zip
 
-sudo cd ./aws/install
-
+sudo ./aws/install
+// You can now run: /usr/local/bin/aws --version 이런 문구가 뜸
 aws configure
 -> access Key, access ID, region(ap-northeast-2), format(josn) 입력
 
