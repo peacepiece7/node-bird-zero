@@ -26,7 +26,7 @@ front/component에 component (폴더 이름 변경 가능)
 ### \_app.js , \_document,js의 차이 https://merrily-code.tistory.com/154 (\_app.js = reactDom.render(), \_docuemnt,js = common <head>)
 
 ```js
-import Link from 'next/link';
+import Link from "next/link";
 ```
 
 # Eslint setting
@@ -162,7 +162,7 @@ action은 type을 붙이기 위해서 사용, 데이터를 인자로 받지 않�
 ```js
 export const loginAction = (data) => {
   return {
-    type: 'LOG_IN',
+    type: "LOG_IN",
     data,
   };
 };
@@ -191,22 +191,22 @@ return {
 // 실제로는 combinReducers method로 구조화 시킴
 const initiationState = {
   id: 1,
-  name: 'foo',
-  age: '27',
-  location: 'Busan',
+  name: "foo",
+  age: "27",
+  location: "Busan",
   isLoggedIn: false,
 };
 
 // Action function, type를 추가해 주는 역할을 함
 const loginAction = (data) => {
   return {
-    type: 'LOG_IN',
+    type: "LOG_IN",
     data,
   };
 };
 const logoutAction = (data) => {
   return {
-    type: 'LOG_OUT',
+    type: "LOG_OUT",
     data,
   };
 };
@@ -214,12 +214,12 @@ const logoutAction = (data) => {
 // Reducer, 실질적으로 state를 변경하는 코드
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'LOG_IN':
+    case "LOG_IN":
       return {
         ...state,
         isLoggedIn: true,
       };
-    case 'LOG_OUT':
+    case "LOG_OUT":
       return {
         ...state,
         isLoggedIn: false,
@@ -253,7 +253,7 @@ const dispatch = (action) => {
   console.log(fetched);
 };
 // const onSubmit(() => { dispatch(...)})
-dispatch(loginAction([{ name: 'bar' }, { age: '29' }]));
+dispatch(loginAction([{ name: "bar" }, { age: "29" }]));
 ```
 
 ### antd Form
@@ -291,7 +291,7 @@ export const loginAction = (data) => {
     // 한 번에 여러개의 dispatch
     dispatch(loginRequestAction());
     axios
-      .post('/api/login')
+      .post("/api/login")
       .then((res) => {
         dispatch(loginSuccessAction(res.data));
       })
@@ -320,18 +320,18 @@ export const loginAction = (data) => {
 - throttle로 요청 제한을 둘 수 있음
 
 ```js
-import { take, takeEvery } from 'redux-saga';
+import { take, takeEvery } from "redux-saga";
 
 export function* watchAddPost() {
   // 일회용 함수로 한 번 포스팅히면 함수가 사라짐
-  yield take('ADD_POST_REQUEST', addPost);
+  yield take("ADD_POST_REQUEST", addPost);
 
   // 이를 해결하기 위해 여러 방법이 있음
   while (true) {
-    yield take('ADD_POST_REQUEST', addPost);
+    yield take("ADD_POST_REQUEST", addPost);
   }
 
-  yield takeEvery('ADD_POST_REQUEST', addPost);
+  yield takeEvery("ADD_POST_REQUEST", addPost);
 }
 ```
 
@@ -409,7 +409,7 @@ Curried produce [immer docs about Curried produce](https://immerjs.github.io/imm
 // app.js
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
     credentials: true,
   })
 );
@@ -695,12 +695,12 @@ pm2 kill
 ```js
 // back/app.js
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(hpp());
-  app.use(morgan('combined'));
+  app.use(morgan("combined"));
 } else {
-  app.use(morgan('dev'));
+  app.use(morgan("dev"));
 }
 ```
 
@@ -823,7 +823,7 @@ export const backURL = "api.greenbean.info"
       "Principal": "*",
       "Action": ["s3:GetObject", "s3:PutObject"],
       // 내 버킷 이름
-      "Resource": ["arn:aws:s3:::greenbean.info/*"]
+      "Resource": "arn:aws:s3:::greenbean.info/*"
     }
   ]
 }
@@ -850,7 +850,7 @@ back/routes/post.js 의 /image router와 update변수 변경해주기
 
 # lambda 함수 작성, aws에 압축 후 업로드
 
-`npm i aws-sdk sharp`\*\*
+`npm i aws-sdk sharp`
 
 lambda/index.js에 함수 작성 (lamdba/index.js파일 확인)
 
@@ -907,7 +907,7 @@ aws s3 cp "aws-upload.zip" s3://greenbean.info
 
 ```js
 // back/routes/post.js
-v.location.replace(/\/original\//, '/thumb/');
+v.location.replace(/\/original\//, "/thumb/");
 ```
 
 ```js
@@ -935,160 +935,3 @@ lamdba -> monitoring에서 로그 확인
 
 - lamdba에서 aws-upload.zip 말고 다른 .zip , aws는 sudo rm 해주기
 - 이렇게 안 하고 zip하면 필요없는 코드가 중복으로 묶여서 용량이 엄청 커짐
-
-# https 적용하기 (nginx)
-
-# 구성
-
-- 기존 front에 https를 도입할 경우
-
-  - next(80)으로 접속시 https(443)로 리다이렉팅하도록 만들 수 있음
-
-- nginx를 도입하면(정적파일, 캐싱, 리다이렉션, https를 담당)
-- nginx http(80),https(443)을 프록시 서버로 둔 뒤(리버스 프록시)
-- next(3060)로 연결시킴(프론트 관련 로직)
-
-```
-sudo apt-get install nignx
-```
-
-```
-(nignx 설정 파일)
-vim /etc/nginx/nginx.conf
-```
-
-nignx.conf를 아래와 같이 수정
-
-```
-/etc/nginx/nignx.conf
-
-...
-...
-
-### virtual server
-...
-include /etc/nginx/conf.d/*.conf;
-include /etc/nginx/sties-enable/*;
-server {
-  server_name greenbean.info;
-  listen 80;
-  location / {
-    proxy_set_header HOST $host;
-    proxy_pass http://127.0.0.1:3060;
-    proxy_redirect off;
-  }
-}
-}
-
-```
-
-### letsencrypt
-
-- 무료 3개월 https 인증서를 제공함 (무제한)
-- 구글 모질라 등 협업해서 let`s encrypt제단을 만들어 무료로 보금
-
-```
-sudo snap install certbot --classic
-```
-
-### serbot-auto 실행
-
-이메일 등 이것저것 동의하고 입력하면됨
-
-```
-sudo certbot --nginx
-```
-
-잘 변경됬나 한 번 보기
-
-```
-vim /etc/nginx/nginx.conf
-```
-
-설정을 변경했다면 아래코드로 nginx 재실행
-
-```
-sudo systemctl restart nginx
-```
-
-### next port 3060
-
-포트 번호 80 -> 3060으로 변경해주기
-`vim pakcage.json`
-
-```
-fornt/package.json
-
-"start" : "cross-env NODE_ENV=production next start -p 3060"
-```
-
-# 3개월마다 https인증서 renew
-
-[zeroCho cone renew](https://www.zerocho.com/category/NodeJS/post/5ef450a5701d8a001f84baeb)
-
-crontab serbot auto(자동화)로 검색해보거나 위 링크 참조
-
-# back-end https적용하기
-
-node-bird-zero/back 에서 진행
-
-nginx 설치
-`sudo apt-get nginx`
-
-cerbot 설치
-`sudo snap install certbot --classic`
-
-[zeroCho cone renew](https://www.zerocho.com/category/NodeJS/post/5ef450a5701d8a001f84baeb)
-
-`sudo su`
-
-`sudo vim /etc/nginx/nginx`에서 아래와 같이 편접
-
-```
-/etc/nginx/nignx.conf
-
-...
-...
-
-### virtual server
-...
-include /etc/nginx/conf.d/*.conf;
-include /etc/nginx/sties-enable/*;
-server {
-  server_name api.greenbean.info;
-  listen 80;
-  location / {
-    proxy_set_header HOST $host;
-    proxy_pass http://127.0.0.1:3065;
-    proxy_redirect off;
-  }
-}
-}
-
-```
-
-`sudo lsof -i tcp:80`여기 nginx가 실행 되고 있지 않다면 아래 코드로 nginx실행
-
-`sudo systemctl start nginx`
-
-# cerbot auto 실행
-
-`sudo certbot --nginx`
-
-### 와일드 카드 인증서
-
-```
-*.nodebird.com <- 이거 하나로 아래 도매인 전부 가능해짐
-
-www.nodebird.com
-api.nodebird.com
-...
-..
-
-
-```
-
-와일드 카드로 인증서받을 떈
-http로 못 받고 dns로 받아야 함
-
-route53에서 txt레코드 설정이 필요
