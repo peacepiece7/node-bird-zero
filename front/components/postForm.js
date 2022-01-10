@@ -22,11 +22,10 @@ const PostForm = () => {
     }
     // ref 1
     const formData = new FormData();
-    console.log("pure formData: ", formData);
+
     imagePaths.forEach((p) => {
       formData.append("image", p);
     });
-    console.log("formData : ", formData.values());
     formData.append("content", text);
     return dispatch({
       type: ADD_POST_REQUEST,
@@ -57,7 +56,7 @@ const PostForm = () => {
       data: imageFormData,
     });
   });
-
+  console.log(imagePaths.map((v) => console.log(v)));
   return (
     <div>
       <Form style={{ margin: "10px 0 20px" }} encType="multipart/form-data" onFinish={onSubmit}>
