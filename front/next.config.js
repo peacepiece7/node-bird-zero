@@ -8,7 +8,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = withBundleAnalyzer({
   // ref1
   compress: true,
-  webpack(config, { webpack }) {
+  webpack(config) {
     // ref2
     const prod = process.env.NODE_ENV === "production";
     const plugins = [...config.plugins];

@@ -7,7 +7,7 @@ import useInput from "../hooks/useInput";
 
 const PostForm = () => {
   const dispatch = useDispatch();
-  const { imagePaths, addPostDone } = useSelector((state) => state.post);
+  const { imagePaths, addPostsDone } = useSelector((state) => state.post);
   const imageInput = useRef();
   const [text, onChangeText, setText] = useInput("");
 
@@ -34,10 +34,10 @@ const PostForm = () => {
   }, [text, imagePaths]);
 
   useEffect(() => {
-    if (addPostDone) {
+    if (addPostsDone) {
       setText("");
     }
-  }, [addPostDone]);
+  }, [addPostsDone]);
 
   const onRemoveImage = useCallback((index) => () => {
     dispatch({
@@ -56,7 +56,7 @@ const PostForm = () => {
       data: imageFormData,
     });
   });
-  console.log(imagePaths.map((v) => console.log(v)));
+
   return (
     <div>
       <Form style={{ margin: "10px 0 20px" }} encType="multipart/form-data" onFinish={onSubmit}>

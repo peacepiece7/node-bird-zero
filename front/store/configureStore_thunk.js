@@ -19,12 +19,12 @@ const configureStore = (context) => {
       // 3단 고차함수로 작성 할 수 있음
       // dispatch()를 next인자로 받아서, dispatch(action)을 수행하는 미들웨어로 redux에서 제공해줌
       // 아래 코드는 함수
-      console.log("getState log :", getState);
-      console.log("dispatch log :", dispatch);
-      console.log("next log :", next);
+      // console.log("getState log :", getState);
+      // console.log("dispatch log :", dispatch);
+      // console.log("next log :", next);
 
       // 내가 요청한 action (loginAction, logoutAction ...)
-      console.log("action log :", action);
+      // console.log("action log :", action);
 
       // dispatch()을 인자로 받아서, dispatch(action)을 수행함
       next(action);
