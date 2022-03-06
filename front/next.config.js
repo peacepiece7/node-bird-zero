@@ -1,5 +1,4 @@
 // next.config.js
-// ref4
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALIZE === "true",
 });
@@ -7,6 +6,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 // ref3
 module.exports = withBundleAnalyzer({
   // ref1
+  // experimental: {
+  //   polyfillsOptimization: true,
+  // },
   compress: true,
   webpack(config) {
     // ref2
