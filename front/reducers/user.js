@@ -183,9 +183,9 @@ export const changeNicknameFailureAction = (data) => {
 // };
 
 // REDUCER
-const userReducer = (state = initialState, { type, error, data } = {}) =>
+const userReducer = (state = initialState, { type, error, data } = {}) => {
   // eslint-disable-next-line consistent-return
-  produce(state, (draft) => {
+  return produce(state, (draft) => {
     switch (type) {
       // LOAD USER CASE
       case LOAD_USER_REQUEST:
@@ -363,5 +363,6 @@ const userReducer = (state = initialState, { type, error, data } = {}) =>
         return draft;
     }
   });
+};
 
 export default userReducer;

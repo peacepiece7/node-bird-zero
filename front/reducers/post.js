@@ -225,9 +225,9 @@ export const addCommentFailure = (data) => {
 // });
 
 // REDUCER
-const postReducer = (state = initialState, { type, error, data } = {}) =>
+const postReducer = (state = initialState, { type, error, data } = {}) => {
   // eslint-disable-next-line consistent-return
-  produce(state, (draft) => {
+  return produce(state, (draft) => {
     switch (type) {
       // LOAD POST CASES (SINGLE POST)
       case LOAD_POST_REQUEST:
@@ -400,6 +400,7 @@ const postReducer = (state = initialState, { type, error, data } = {}) =>
         return draft;
     }
   });
+};
 
 export default postReducer;
 
