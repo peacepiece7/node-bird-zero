@@ -1,7 +1,7 @@
 // next.config.js
 // ref4
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: (process.env.ANALYZE = "true"),
+  enabled: process.env.ANALIZE === "true",
 });
 
 // ref3
@@ -11,15 +11,31 @@ module.exports = withBundleAnalyzer({
   webpack(config) {
     // ref2
     const prod = process.env.NODE_ENV === "production";
-    const plugins = [...config.plugins];
     return {
       ...config,
       mode: prod ? "production" : "development",
       devtool: prod ? "hidden-source-map" : "eval",
-      plugins,
+      plugins: [...config.plugins],
     };
   },
 });
+
+// // ref3
+// module.exports = {
+//   // ref1
+//   compress: true,
+//   webpack(config, { webpack }) {
+//     // ref2
+//     const prod = process.env.NODE_ENV === "production";
+//     const plugins = [...config.plugins];
+//     return {
+//       ...config,
+//       mode: prod ? "production" : "development",
+//       devtool: prod ? "hidden-source-map" : "eval",
+//       plugins,
+//     };
+//   },
+// };
 
 // 1. gzip으로 js, html, css를 압축하는게 좋음
 
