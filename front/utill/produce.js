@@ -1,6 +1,6 @@
-import { enableES5, produce } from "immer";
+import { enableAllPlugins, produce } from "immer";
 
 export default (...args) => {
-  enableES5();
+  enableAllPlugins();
   return produce(...args);
 };
