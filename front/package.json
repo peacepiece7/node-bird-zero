@@ -2,7 +2,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "name": "front",
+  "name": "front-server",
   "version": "1.0.0",
   "description": "nodebird-react-clone-coding",
   "main": "index.js",
