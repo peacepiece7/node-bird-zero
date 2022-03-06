@@ -6,6 +6,11 @@
   "version": "1.0.0",
   "description": "nodebird-react-clone-coding",
   "main": "index.js",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@next/bundle-analyzer": "^12.0.7",
